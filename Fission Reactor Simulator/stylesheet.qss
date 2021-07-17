@@ -1,0 +1,65 @@
+ReactorGridButton {
+	border: 1px solid grey;
+	border-radius: 1px;
+}
+
+ReactorGridButton:hover {
+	border: 2px solid #9baad4;
+}
+
+ReactorGridButton:flat {
+	border: 2px solid #4d6cbf;
+}
+
+ReactorGridButton QProgressBar {
+	border: 0;
+	background-color: #F8D2D2;
+}
+
+ReactorGridButton QProgressBar::chunk {
+	border: 0;
+	background-color: #D2F8D2;
+}
+
+ReactorGridBlockHeader {
+	background-color: #20000000;
+}
+
+ToolboxLeft QToolButton {
+	width: 70px;
+	min-width: 70px;
+	max-width: 70px;
+	height: 70px;
+	min-height: 70px;
+	max-height: 70px;
+	margin: 1px;
+}
+
+ToolboxLeft #qt_toolbar_ext_button {
+	height: 12px;
+	min-height: 12px;
+	max-height: 12px;
+}
+
+ToolboxTop QToolButton {
+	width: 50px;
+	min-width: 50px;
+	max-width: 50px;
+	height: 50px;
+	min-height: 50px;
+	max-height: 50px;
+	margin-left: 1px;
+	margin-right: 1px;
+	margin-top: 0px;
+	margin-bottom: 1px;
+}
+
+ToolboxTop #qt_toolbar_ext_button {
+	width: 12px;
+	min-width: 12px;
+	max-width: 12px;
+}
+
+HairyPlotter {
+	border: 1px solid grey;
+}

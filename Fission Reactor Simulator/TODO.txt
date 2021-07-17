@@ -1,0 +1,63 @@
+TODO:
+
+- Add a window with all rod/coolant data stored, basically migrate our spreadsheet here? It should of course gather this from Assets. *DISCUSS*
+- Implement OpenGL rendering if people choose to use that instead...
+    https://forum.qt.io/topic/91248/accelerate-qgraphicsview-with-opengl-widget-correct-up-to-date-workflow/7
+    I don't think I did it properly the first time around!
+    Looking at this, it should be a bit more complicated, but then the hope is that it actually works faster!
+    See old example here, but it shows (kind of) how to modify the paint function of our widgets: 
+    https://stackoverflow.com/questions/33201384/pyqt-opengl-drawing-simple-scenes
+    https://stackoverflow.com/questions/28216001/how-to-render-text-with-qopenglwidget/33674071
+    https://forum.qt.io/topic/64310/rendering-text-in-qopenglwidget/6
+    https://www.riverbankcomputing.com/static/Docs/PyQt6/api/qtopenglwidgets/qopenglwidget.html?highlight=opengl#QOpenGLWidget
+- Perfect zoom and resize thing? *DISCUSS*
+    Related: If you make a large grid (50x50), zooming is a little laggy for some reason, dragging is fine (is it?), but zooming, eeee.
+    Not sure this matters much though. 
+    Actually, it starts to show up on smaller grids as well, it appears to be CPU bound and not GPU bound (which is in line with what we see with translation)
+    Thus far I have found the following, the slow calls are:
+        QGraphicsView.scale()
+        QGraphicsScene.setSceneRect()
+    with scale being twice as slow. 
+    Now setSceneRect could be handled by us, we could just make sceneRect much larger than it needs to be and leave it static (except for increment calls, maybe every 10 or so)
+    that would require us to clip the view to some reasonable area ourselves, but that does not seem too difficult
+    the reason for this is that changing it causes some item reindexing, which means something has to iterate over all items, which is bad and CPU bound
+    Scaling however is a bit of a problem it seems, see: https://forum.qt.io/topic/113144/qpainter-painttext-very-slow-in-qgraphicsview/8
+    Maybe we simply ask on Stackoverflow, they know everything.
+    Using OpenGLWidget doesn't help, in fact it makes things worse... lovely.
+    See link many ideas: https://stackoverflow.com/questions/43826317/how-to-optimize-qgraphicsviews-performance
+    Can also convert it all to one large pixmap and just deal with that, might make all transformation blazing fast and everything else a bit slower
+    unless we implement it well, i.e. when you set coolant only repaint part of the pixmap, this would probably work but be a bit of work
+    I vote we just leave it as is for now, fix everything else and then once v1 is released we can play with this to make v2 better at some point, 
+    if we feel like it / like learning this.
+    There are also other rendering options available, such as Vulkan, but not as trivial to implement as OpenGL and well not as portable I think
+- If simulation takes more than X (setting) seconds spawn a window that shows where it is and some basic information? How do we do that? *DISCUSS*
+    We would have to spawn a new thread with a window that would be able to read data from this thread, that sounds complicated in Python. 
+    ALTERNATIVELY, we could have the simulation run in a new thread and then if the user makes a change we terminate the simulation?
+    That sounds pretty neat actually... but again, in Python? How?
+- Specify which version of GT6 the simulator is designed for.
+- Change material costs to show X*stacksize + stacks + parts instead, even easier to use that way?
+    On a related note, perhaps the raw materials should also have a tree structure of what you turn them into? 
+    Things might be copied a bit but still, it is the natural way of working, you start with A, go to B, then C, etc...
+    Separate Curved Chromium Plate from Chromium Plate, everyone uses extruders at this point anyway?
+
+FINALISATION:
+https://stackoverflow.com/questions/9002275/how-to-build-a-single-python-file-from-multiple-scripts
+http://liftoff.github.io/pyminifier/
+
+-------------------------------------
+
+BUGS:
+
+
+
+-------------------------------------
+
+IDEAS:
+
+- Touch events possible?
+- Dynamic control?
+- Add option to set initial rod durability? This only makes sense if we can run past depletes as well, which is currently not supported (it would require multiple extrapolations).
+    It's not particularly difficult to implement, but it is also not the point of this tool to do this, at least not at this point in time. 
+- Here's a REALLY FUN AND USEFUL (actually serious) thing to try and learn, lets use tensorflow to implement reinforcement learning to optimise the designs? Is this viable?
+    My concern is this is pretty complicated and might require a relatively powerful machine to train...
+    https://www.tensorflow.org/agents/tutorials/1_dqn_tutorial
