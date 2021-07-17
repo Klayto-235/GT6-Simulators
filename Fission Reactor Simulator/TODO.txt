@@ -39,6 +39,8 @@ TODO:
     On a related note, perhaps the raw materials should also have a tree structure of what you turn them into? 
     Things might be copied a bit but still, it is the natural way of working, you start with A, go to B, then C, etc...
     Separate Curved Chromium Plate from Chromium Plate, everyone uses extruders at this point anyway?
+- Add distilled water loss per tick (calculate from HU/tick) as well as total distilled water loss, useful to keep in mind how much you need to create
+    in order to not have your boilers go off with half of your base.
 
 FINALISATION:
 https://stackoverflow.com/questions/9002275/how-to-build-a-single-python-file-from-multiple-scripts
