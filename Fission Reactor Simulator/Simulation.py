@@ -4,15 +4,12 @@ import datetime
 
 from Assets import Assets
 from Settings import Settings
+from utility import divup
 
 
 SimulationData = namedtuple("SimulationData", ["stopped_reason", "total_HU", "total_max_N", "peak_HUt", "exploded", "duration", "current_time", "current_HUt", "coolant_use"])
 RodSelectionData = namedtuple("RodSelectionData", ["rod_total_HU", "rod_peak_N", "rod_penalty", "rod_moderated", "current_durability", "current_N_count", "current_N_output", "ref_mult"])
 CellSelectionData = namedtuple("CellSelectionData", ["cell_total_L", "cell_peak_Lt", "cell_exploded", "is_H2O", "current_HUt", "current_Lt"])
-
-
-def divup(a, b):
-	return a // b + (a % b > 0)
 
 
 class RodResults():

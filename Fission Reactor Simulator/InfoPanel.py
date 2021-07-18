@@ -4,11 +4,7 @@ from math import gcd
 
 from Plot import HairyPlotter
 from Assets import Assets
-from utility import to_metric, to_human_readable_time
-
-
-def divup(a, b):
-	return a // b + (a % b > 0)
+from utility import to_metric, to_human_readable_time, divup
 
 
 class InfoPanel(QWidget):
@@ -184,6 +180,8 @@ class InfoPanel(QWidget):
 		else:
 			tempstring += "<br>Relative efficiency: N/A"
 		tempstring += "<br>Peak HU/t: " + str(data.peak_HUt) + " HU/t"
+		tempstring += "<br>Total distilled water loss: " + to_metric(data.total_HU / (80 * 20)) + "L"
+		tempstring += "<br>Peak distilled water loss: " + to_metric(data.peak_HUt / (80 * 20)) + "L/t"
 		tempstring += "<br>Exploded: "
 		if (data.exploded):
 			tempstring += "Yes<br>"
