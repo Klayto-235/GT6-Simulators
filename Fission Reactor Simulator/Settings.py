@@ -39,7 +39,8 @@ class Settings(metaclass=Singleton):
 			"EnableZoom" : "true",
 			"MinZoom" : "0.25", 
 			"MaxZoom" : "2.00", 
-			"GraphicsEngine" : "Raster"
+			"GraphicsEngine" : "Raster",
+			"MaterialStacks" : "False"
 		}
 
 		self.delayed_change_settings = {}

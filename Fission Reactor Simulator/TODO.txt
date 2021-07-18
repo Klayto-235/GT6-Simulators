@@ -30,17 +30,8 @@ TODO:
     I vote we just leave it as is for now, fix everything else and then once v1 is released we can play with this to make v2 better at some point, 
     if we feel like it / like learning this.
     There are also other rendering options available, such as Vulkan, but not as trivial to implement as OpenGL and well not as portable I think
-- If simulation takes more than X (setting) seconds spawn a window that shows where it is and some basic information? How do we do that? *DISCUSS*
-    We would have to spawn a new thread with a window that would be able to read data from this thread, that sounds complicated in Python. 
-    ALTERNATIVELY, we could have the simulation run in a new thread and then if the user makes a change we terminate the simulation?
-    That sounds pretty neat actually... but again, in Python? How?
-- Specify which version of GT6 the simulator is designed for.
-- Change material costs to show X*stacksize + stacks + parts instead, even easier to use that way?
-    On a related note, perhaps the raw materials should also have a tree structure of what you turn them into? 
-    Things might be copied a bit but still, it is the natural way of working, you start with A, go to B, then C, etc...
-    Separate Curved Chromium Plate from Chromium Plate, everyone uses extruders at this point anyway?
-- Add distilled water loss per tick (calculate from HU/tick) as well as total distilled water loss, useful to keep in mind how much you need to create
-    in order to not have your boilers go off with half of your base.
+- Progress bar for simulation? Well, maybe not a progress bar since it's hard to tell when it will end, but some sort of indicator of how it is doing.
+    Ideally this also supports some sort of "cancel" feature, in case you somehow run too long (i.e. by creating a 1000x1000 grid or something similarly pointless).
 
 FINALISATION:
 https://stackoverflow.com/questions/9002275/how-to-build-a-single-python-file-from-multiple-scripts

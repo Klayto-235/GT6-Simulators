@@ -4,8 +4,9 @@ from PyQt6.QtCore import Qt, QObject
 from math import ceil
 
 
-from utility import recursive_string_constructor, recursive_material_cost, to_whole_materials, recursive_dict_sum
+from utility import recursive_string_constructor, recursive_material_cost, to_whole_materials, recursive_dict_sum, stackify
 from Assets import Assets
+from Settings import Settings
 
 
 class MaterialTab(QWidget):
@@ -149,6 +150,12 @@ class MaterialDialog(QDialog):
 
 		self.setWindowTitle("Material costs")
 
+		self.get_stacks = Settings().get_bool("MaterialStacks")
+		if self.get_stacks:
+			self.format_function = stackify
+		else:
+			self.format_function = str
+
 		self.data = material_objects
 
 		self.calculate()
@@ -210,23 +217,23 @@ class MaterialDialog(QDialog):
 		for key,val in self.data.items():
 			if key == "Nuclear Reactor Core (2x2)" or key == "Nuclear Reactor Core (1x1)":
 				self.reactor_materials[key] = [val, {}]
-				recursive_material_cost(key, self.reactor_materials[key], self.raw_reactor_materials)
+				recursive_material_cost(self.format_function, key, self.reactor_materials[key], self.raw_reactor_materials)
 			elif key == "Ref" or key == "Abs" or key == "Mod":
 				tkey = Assets().rod[key].full_name
 				self.reactor_materials[tkey] = [val, {}]
-				recursive_material_cost(key, self.reactor_materials[tkey], self.raw_reactor_materials)
+				recursive_material_cost(self.format_function, key, self.reactor_materials[tkey], self.raw_reactor_materials)
 			elif key == "Th coolant":
 				tkey = "Th coolant (L)"
 				self.rod_materials[tkey] = [val, {}]
-				recursive_material_cost(tkey, self.rod_materials[tkey], self.raw_rod_materials)
+				recursive_material_cost(self.format_function, tkey, self.rod_materials[tkey], self.raw_rod_materials)
 			else:
 				tkey = Assets().rod[key].full_name
 				self.rod_materials[tkey] = [val, {}]
-				recursive_material_cost(key, self.rod_materials[tkey], self.raw_rod_materials)
+				recursive_material_cost(self.format_function, key, self.rod_materials[tkey], self.raw_rod_materials)
 		for key,val in self.raw_rod_materials.items():
-			self.raw_rod_materials[key][0] = to_whole_materials(val[0])
+			self.raw_rod_materials[key][0] = to_whole_materials(self.format_function, val[0])
 		for key,val in self.raw_reactor_materials.items():
-			self.raw_reactor_materials[key][0] = to_whole_materials(val[0])
+			self.raw_reactor_materials[key][0] = to_whole_materials(self.format_function, val[0])
 
 		#Deal with excess decimals for thorium coolant litres
 		if "Th coolant (L)" in self.rod_materials:

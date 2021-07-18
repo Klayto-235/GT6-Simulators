@@ -881,5 +881,4 @@ class ReactorGrid(QWidget):
 								burns_fuel = True
 					if burns_fuel and block.coolant_name == "Th":
 						result["Th coolant"] = result.get("Th coolant", 0) + sim_ref.cell_data[sim_ref.cell_dict[(i, j)]].results.totalL
-						
 		return result
