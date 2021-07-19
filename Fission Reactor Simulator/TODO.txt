@@ -32,6 +32,9 @@ TODO:
     There are also other rendering options available, such as Vulkan, but not as trivial to implement as OpenGL and well not as portable I think
 - Progress bar for simulation? Well, maybe not a progress bar since it's hard to tell when it will end, but some sort of indicator of how it is doing.
     Ideally this also supports some sort of "cancel" feature, in case you somehow run too long (i.e. by creating a 1000x1000 grid or something similarly pointless).
+- Looking at GT6 source it looks like the HU/t divisor from coolant only affects fuel rods and not breeders/absorbers as well. Is this intended?
+    I have modified the simulation to reflect this behaviour for the time being in order to accurately describe what GT6 does, regardless of whether it makes sense. :)
+
 
 FINALISATION:
 https://stackoverflow.com/questions/9002275/how-to-build-a-single-python-file-from-multiple-scripts

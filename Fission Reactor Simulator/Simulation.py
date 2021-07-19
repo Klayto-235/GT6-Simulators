@@ -8,7 +8,7 @@ from utility import divup
 
 
 SimulationData = namedtuple("SimulationData", ["stopped_reason", "total_HU", "total_max_N", "peak_HUt", "exploded", "duration", "current_time", "current_HUt", "coolant_use"])
-RodSelectionData = namedtuple("RodSelectionData", ["rod_total_HU", "rod_peak_N", "rod_penalty", "rod_moderated", "current_durability", "current_N_count", "current_N_output", "ref_mult"])
+RodSelectionData = namedtuple("RodSelectionData", ["rod_total_HU", "rod_peak_N", "rod_penalty", "rod_moderated", "current_durability", "current_N_count", "current_N_output", "ref_mult", "rod_total_HUby", "rod_total_N", "HUt_by_rod"])
 CellSelectionData = namedtuple("CellSelectionData", ["cell_total_L", "cell_peak_Lt", "cell_exploded", "is_H2O", "current_HUt", "current_Lt"])
 
 
@@ -17,9 +17,12 @@ class RodResults():
 		self.durability_data = [(0, 0)] # Durability(t)
 		self.neutron_count_data = [(0, 0)] # NeutronCount(t)
 		self.neutron_output_data = [(0, 0)] # NeutronOutput(t)
+		self.HUtby_data = [(0, 0)] # HU/t by rod(t)
 
 		self.totalHU = 0 # Total HU on rod (NOT BY ROD)
 		self.max_output = 0 # Max neutron output per tick
+		self.totalN = 0 # Total N emitted by rod
+		self.totalHUby = 0 # Total HU by rod (NOT ON ROD)
 
 
 	def append_durability(self, data):
@@ -32,6 +35,10 @@ class RodResults():
 
 	def append_neutron_output(self, data):
 		self.neutron_output_data.append(data)
+
+
+	def append_hutby(self, data):
+		self.HUtby_data.append(data)
 
 
 	def set_init_durability(self, data):
@@ -64,7 +71,8 @@ class Rod():
 		self.mod_factor = 0 # Moderator rod multiplication factor
 		self.real_neutron_emission = 0 # Real neutron emission
 		self.total_neutron_output = 0 # Total output
-		self.HUt = 0 # Current HUt output
+		self.HUt = 0 # Current HUt output (ON ROD)
+		self.HUtby = 0 # Current HUt output (BY ROD)
 		self.durability_loss = 0 # Durability loss previous second
 		self.HU_conversion_factor = 1 # Neutron to HU conversion factor
 		self.HU_conversion_divisor = 1 # Neutron to HU conversion divisor
@@ -115,8 +123,12 @@ class Rod():
 		if self.is_ref:
 			self.mod_factor = 1
 		self.neutron_count = self.neutron_self
-		self.HU_conversion_factor = Assets().rod[rod_id].HUperN[0]
-		self.HU_conversion_divisor = Assets().rod[rod_id].HUperN[1] * Assets().coolant[coolant_id].HU_div
+		if self.is_fuel:
+			self.HU_conversion_factor = Assets().rod[rod_id].HUperN[0]
+			self.HU_conversion_divisor = Assets().rod[rod_id].HUperN[1] * Assets().coolant[coolant_id].HU_div
+		else:
+			self.HU_conversion_factor = Assets().rod[rod_id].HUperN[0]
+			self.HU_conversion_divisor = Assets().rod[rod_id].HUperN[1]
 		if (self.is_fuel):
 			self.theo_max_HU = 20 * divup(self.durability, 2000) * divup(self.neutron_max, self.HU_conversion_divisor) * self.HU_conversion_factor
 		else:
@@ -133,6 +145,7 @@ class Rod():
 			self.total_neutron_output = 0
 			self.real_neutron_emission = 0
 		self.results.append_neutron_output((index, self.total_neutron_output))
+		self.results.totalN += self.total_neutron_output * 20
 
 
 	def add_neighbour(self, nid):
@@ -145,12 +158,17 @@ class Rod():
 
 	def reset_neutron_count(self):
 		self.neutron_count = self.neutron_self
+		if self.is_depleted == False:
+			self.HUtby = divup(self.neutron_self * self.HU_conversion_factor, self.HU_conversion_divisor)
+		else:
+			self.HUtby = 0
 
 
 	def evaluate_durability_and_HUt(self, index):
 		if self.is_depleted == False:
 			self.HUt = divup(self.neutron_count * self.HU_conversion_factor, self.HU_conversion_divisor)
 			self.results.totalHU += self.HUt * 20
+			self.results.totalHUby += self.HUtby * 20
 		if self.is_fuel:
 			if self.total_neutron_output <= self.neutron_max:
 				if self.is_moderated:
@@ -177,6 +195,7 @@ class Rod():
 				self.real_neutron_emission = 0
 		self.results.append_durability((index, self.durability))
 		self.results.append_neutron_count((index, self.neutron_count))
+		self.results.append_hutby((index, self.HUtby))
 
 
 	def is_active(self):
@@ -524,7 +543,10 @@ class Simulation():
 			self.rod_data[i].results.append_durability((self.simulated_time, self.rod_data[i].durability))
 			self.rod_data[i].results.append_neutron_count((self.simulated_time, self.rod_data[i].neutron_count))
 			self.rod_data[i].results.append_neutron_output((self.simulated_time, self.rod_data[i].total_neutron_output))
+			self.rod_data[i].results.append_hutby((self.simulated_time, self.rod_data[i].HUtby))
 			self.rod_data[i].results.totalHU += self.rod_data[i].HUt * 20 * temp_maxt
+			self.rod_data[i].results.totalN += self.rod_data[i].total_neutron_output * 20 * temp_maxt
+			self.rod_data[i].results.totalHUby += self.rod_data[i].HUtby * 20 * temp_maxt
 		self.results.append_HUt((self.simulated_time, self.HUt))
 		for i in range(len(self.cell_data)):
 			self.cell_data[i].results.append_Lt((self.simulated_time, self.cell_data[i].Lt))
@@ -563,34 +585,46 @@ class Simulation():
 					if self.rod_data[i].cell_size_small == False:
 						if self.rod_data[j].cell_size_small == False:
 							self.rod_data[j].neutron_count += 2 * divup(self.rod_data[i].real_neutron_emission, 2)
+							self.rod_data[i].HUtby += divup(2 * divup(self.rod_data[i].real_neutron_emission, 2) * self.rod_data[j].HU_conversion_factor, self.rod_data[j].HU_conversion_divisor)
 						else:
 							self.rod_data[j].neutron_count += divup(self.rod_data[i].real_neutron_emission, 2)
+							self.rod_data[i].HUtby += divup(divup(self.rod_data[i].real_neutron_emission, 2) * self.rod_data[j].HU_conversion_factor, self.rod_data[j].HU_conversion_divisor)
 					else:
 						self.rod_data[j].neutron_count += self.rod_data[i].real_neutron_emission
+						self.rod_data[i].HUtby += divup(self.rod_data[i].real_neutron_emission * self.rod_data[j].HU_conversion_factor, self.rod_data[j].HU_conversion_divisor)
 				elif self.rod_data[j].is_mod:
 					if self.rod_data[i].cell_size_small == False:
 						if self.rod_data[j].cell_size_small == False:
 							self.rod_data[i].neutron_count += 2 * divup(self.rod_data[i].real_neutron_emission * self.rod_data[j].mod_factor, 2)
+							self.rod_data[i].HUtby += divup(2 * divup(self.rod_data[i].real_neutron_emission * self.rod_data[j].mod_factor, 2) * self.rod_data[i].HU_conversion_factor, self.rod_data[i].HU_conversion_divisor)
 						else:
 							self.rod_data[i].neutron_count += divup(self.rod_data[i].real_neutron_emission * self.rod_data[j].mod_factor, 2)
+							self.rod_data[i].HUtby += divup(divup(self.rod_data[i].real_neutron_emission * self.rod_data[j].mod_factor, 2) * self.rod_data[i].HU_conversion_factor, self.rod_data[i].HU_conversion_divisor)
 					else:
 						self.rod_data[i].neutron_count += self.rod_data[i].real_neutron_emission * self.rod_data[j].mod_factor
+						self.rod_data[i].HUtby += divup(self.rod_data[i].real_neutron_emission * self.rod_data[j].mod_factor * self.rod_data[i].HU_conversion_factor, self.rod_data[i].HU_conversion_divisor)
 				elif self.rod_data[j].is_ref:
 					if self.rod_data[i].cell_size_small == False:
 						if self.rod_data[j].cell_size_small == False:
 							self.rod_data[i].neutron_count += 2 * divup(self.rod_data[i].real_neutron_emission, 2)
+							self.rod_data[i].HUtby += divup(2 * divup(self.rod_data[i].real_neutron_emission, 2) * self.rod_data[i].HU_conversion_factor, self.rod_data[i].HU_conversion_divisor)
 						else:
 							self.rod_data[i].neutron_count += divup(self.rod_data[i].real_neutron_emission, 2)
+							self.rod_data[i].HUtby += divup(divup(self.rod_data[i].real_neutron_emission, 2) * self.rod_data[i].HU_conversion_factor, self.rod_data[i].HU_conversion_divisor)
 					else:
 						self.rod_data[i].neutron_count += self.rod_data[i].real_neutron_emission
+						self.rod_data[i].HUtby += divup(self.rod_data[i].real_neutron_emission * self.rod_data[i].HU_conversion_factor, self.rod_data[i].HU_conversion_divisor)
 				elif self.rod_data[j].is_breeder and self.rod_data[i].is_moderated == False:
 					if self.rod_data[i].cell_size_small == False:
 						if self.rod_data[j].cell_size_small == False:
 							self.rod_data[j].neutron_count += 2 * divup(self.rod_data[i].real_neutron_emission, 2)
+							self.rod_data[i].HUtby += divup(2 * divup(self.rod_data[i].real_neutron_emission, 2) * self.rod_data[j].HU_conversion_factor, self.rod_data[j].HU_conversion_divisor)
 						else:
 							self.rod_data[j].neutron_count += divup(self.rod_data[i].real_neutron_emission, 2)
+							self.rod_data[i].HUtby += divup(divup(self.rod_data[i].real_neutron_emission, 2) * self.rod_data[j].HU_conversion_factor, self.rod_data[j].HU_conversion_divisor)
 					else:
 						self.rod_data[j].neutron_count += self.rod_data[i].real_neutron_emission
+						self.rod_data[i].HUtby += divup(self.rod_data[i].real_neutron_emission * self.rod_data[j].HU_conversion_factor, self.rod_data[j].HU_conversion_divisor)
 		# Calculates rod HUt and durability loss
 		for i in range(len(self.rod_data)):
 			self.rod_data[i].evaluate_durability_and_HUt(current_time)
@@ -673,7 +707,7 @@ class Simulation():
 				tstroutput = str(trod.results.neutron_output_data[index][1]) + "/" + str(trod.neutron_max)
 			else:
 				tstroutput = "0"
-			rdata = RodSelectionData(trod.results.totalHU, trod.results.max_output, trod.over_neutron_max, trod.is_moderated, tempstr, trod.results.neutron_count_data[index][1], tstroutput, trod.mod_factor)
+			rdata = RodSelectionData(trod.results.totalHU, trod.results.max_output, trod.over_neutron_max, trod.is_moderated, tempstr, trod.results.neutron_count_data[index][1], tstroutput, trod.mod_factor, trod.results.totalHUby, trod.results.totalN, trod.results.HUtby_data[index][1])
 			cdata = CellSelectionData(tcell.results.totalL, tcell.results.Lt_data[-1][1], tcell.exploded, tcell.coolant_name == "H2O", tcell.results.HUt_data[index][1], tcell.results.Lt_data[index][1])
 			self.info_panel.set_selection_data(rdata, cdata)
 			return

@@ -127,8 +127,10 @@ class InfoPanel(QWidget):
 	def set_selection_data(self, rdata, cdata):
 		if rdata is not None:
 			rodstring = "<b>SELECTED ROD DATA:</b>"
-			rodstring += "<br>Total HU: " + to_metric(rdata.rod_total_HU) + "HU"
-			rodstring += "<br>Peak neutron emission: " + str(rdata.rod_peak_N) + " N"
+			rodstring += "<br>Total HU on rod: " + to_metric(rdata.rod_total_HU) + "HU"
+			rodstring += "<br>Total HU by rod: " + to_metric(rdata.rod_total_HUby) + "HU"
+			rodstring += "<br>Total N emitted: " + to_metric(rdata.rod_total_N) + "N"
+			rodstring += "<br>Peak neutron emission: " + str(rdata.rod_peak_N) + " N/t"
 			rodstring += "<br>Durability penalty: "
 			if rdata.rod_penalty:
 				rodstring += "Yes"
@@ -141,8 +143,9 @@ class InfoPanel(QWidget):
 				rodstring += "No"
 			rodstring += "<br>Reflection multiplier: " + str(rdata.ref_mult)
 			rodstring += "<br><br>Current durability: " + str(rdata.current_durability)
-			rodstring += "<br>Current neutron count: " + str(rdata.current_N_count)
-			rodstring += "<br>Current neutron output: " + str(rdata.current_N_output)
+			rodstring += "<br>Current neutron count: " + str(rdata.current_N_count) + " N"
+			rodstring += "<br>Current neutron output: " + str(rdata.current_N_output) + " N/t"
+			rodstring += "<br>Current HU/t by rod: " + str(rdata.HUt_by_rod) + " HU/t"
 			self.label_rod.setText(rodstring)
 		else:
 			self.label_rod.setText("<b>SELECTED ROD DATA:</b><br>No data to show.")
