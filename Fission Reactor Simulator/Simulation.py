@@ -123,12 +123,8 @@ class Rod():
 		if self.is_ref:
 			self.mod_factor = 1
 		self.neutron_count = self.neutron_self
-		if self.is_fuel:
-			self.HU_conversion_factor = Assets().rod[rod_id].HUperN[0]
-			self.HU_conversion_divisor = Assets().rod[rod_id].HUperN[1] * Assets().coolant[coolant_id].HU_div
-		else:
-			self.HU_conversion_factor = Assets().rod[rod_id].HUperN[0]
-			self.HU_conversion_divisor = Assets().rod[rod_id].HUperN[1]
+		self.HU_conversion_factor = Assets().rod[rod_id].HUperN[0]
+		self.HU_conversion_divisor = Assets().rod[rod_id].HUperN[1] * Assets().coolant[coolant_id].HU_div
 		if (self.is_fuel):
 			self.theo_max_HU = 20 * divup(self.durability, 2000) * divup(self.neutron_max, self.HU_conversion_divisor) * self.HU_conversion_factor
 		else:
