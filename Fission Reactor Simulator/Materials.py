@@ -1,7 +1,7 @@
-from PyQt6.QtWidgets import QWidget, QDialog, QTabWidget, QLabel, QCheckBox, QVBoxLayout, QDialogButtonBox, QScrollArea, \
+from PyQt6.QtWidgets import QWidget, QDialog, QTabWidget, QLabel, QVBoxLayout, QDialogButtonBox, QScrollArea, \
     QLineEdit, QGridLayout, QTreeWidget, QTreeWidgetItem, QTreeWidgetItemIterator
 from PyQt6.QtGui import QIntValidator
-from PyQt6.QtCore import Qt, QObject
+from PyQt6.QtCore import Qt
 from math import ceil
 
 from utility import recursive_string_constructor, recursive_material_cost, to_whole_materials, recursive_dict_sum, \
@@ -33,8 +33,8 @@ class MaterialTab(QWidget):
 
         for i in range(len(data)):
             tempitem = QTreeWidgetItem(None, [data[i][1]])
-            tempitem.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-            tempitem.setCheckState(0, Qt.Unchecked)
+            tempitem.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
+            tempitem.setCheckState(0, Qt.CheckState.Unchecked)
             if data[i][0] == 0:
                 self.inside.addTopLevelItem(tempitem)
             else:
@@ -75,21 +75,21 @@ class MaterialTab(QWidget):
         has_unchecked = False
         has_semichecked = False
         for i in range(item.childCount()):
-            if item.child(i).checkState(0) == Qt.Unchecked:
+            if item.child(i).checkState(0) == Qt.CheckState.Unchecked:
                 has_unchecked = True
-            elif item.child(i).checkState(0) == Qt.Checked:
+            elif item.child(i).checkState(0) == Qt.CheckState.Checked:
                 has_checked = True
             else:
                 has_semichecked = True
         if has_semichecked:
-            item.setCheckState(0, Qt.PartiallyChecked)
+            item.setCheckState(0, Qt.CheckState.PartiallyChecked)
         else:
             if has_checked and has_unchecked:
-                item.setCheckState(0, Qt.PartiallyChecked)
+                item.setCheckState(0, Qt.CheckState.PartiallyChecked)
             elif has_checked:
-                item.setCheckState(0, Qt.Checked)
+                item.setCheckState(0, Qt.CheckState.Checked)
             else:
-                item.setCheckState(0, Qt.Unchecked)
+                item.setCheckState(0, Qt.CheckState.Unchecked)
 
 
 class InputLine(QLineEdit):

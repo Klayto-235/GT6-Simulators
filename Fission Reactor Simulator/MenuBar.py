@@ -1,7 +1,7 @@
 from enum import Enum
 from PyQt6.QtWidgets import QMenuBar, QFileDialog, QDialog, QLineEdit, QLabel, QPushButton, QMessageBox, QGridLayout, \
     QVBoxLayout, QHBoxLayout, QLayout
-from PyQt6.QtGui import QAction, QIntValidator, QIcon
+from PyQt6.QtGui import QAction, QIntValidator
 from PyQt6.QtCore import pyqtSignal
 
 import json
@@ -185,11 +185,11 @@ class MenuBar(QMenuBar):
     def load_state(self):
         open_file_name = ""
         open_file_name = QFileDialog.getOpenFileName(None, "Open file", self.root_dir, "JSON files (*.json)")
-        if (len(open_file_name) > 0):
-            if ((len(open_file_name[0]) > 5) and (open_file_name[0][-5:] == ".json")):
+        if len(open_file_name) > 0:
+            if (len(open_file_name[0]) > 5) and (open_file_name[0][-5:] == ".json"):
                 self.change_root_dir(open_file_name[0][:open_file_name[0].rfind("/")])
                 with open(open_file_name[0], "r") as input:
-                    return (open_file_name[0], json.load(input))
+                    return open_file_name[0], json.load(input)
         return None
 
     def open_dialog_new_state(self):

@@ -3,7 +3,6 @@ from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QMessageBox
 from Assets import Assets
 from Toolbox import ToolboxLeft, ToolboxTop
 from ReactorGrid import ReactorGrid
-from InfoPanel import InfoPanel
 from Simulation import Simulation
 from InfoPanel import InfoPanel
 from Historian import Historian
@@ -212,15 +211,15 @@ class DuctTape(QWidget):
         data = self.menu_bar.load_state()
         if data is None:
             qmbox = QMessageBox()
-            qmbox.setIcon(QMessageBox.Warning)
+            qmbox.setIcon(QMessageBox.Icon.Warning)
             qmbox.setText("Failed to read data from selected file.")
             qmbox.setWindowTitle("Warning")
             qmbox.setStandardButtons(QMessageBox.StandardButton.Ok)
             x = qmbox.exec()
             return
-        if self.reactor_grid.check_grid_data(data[1]) == False:
+        if not self.reactor_grid.check_grid_data(data[1]):
             qmbox = QMessageBox()
-            qmbox.setIcon(QMessageBox.Warning)
+            qmbox.setIcon(QMessageBox.Icon.Warning)
             qmbox.setText("Selected json file is not a valid save file.")
             qmbox.setWindowTitle("Warning")
             qmbox.setStandardButtons(QMessageBox.StandardButton.Ok)
@@ -246,7 +245,7 @@ class DuctTape(QWidget):
         file_name = self.menu_bar.prompt_save_file_name()
         if file_name is None:
             qmbox = QMessageBox()
-            qmbox.setIcon(QMessageBox.Warning)
+            qmbox.setIcon(QMessageBox.Icon.Warning)
             qmbox.setText("No save name selected, project will not be saved.")
             qmbox.setWindowTitle("Warning")
             qmbox.setStandardButtons(QMessageBox.StandardButton.Ok)
@@ -373,7 +372,7 @@ class DuctTape(QWidget):
     def save(self):
         if not self.menu_bar.save_state(self.project_name, self.reactor_grid.get_grid_data()):
             qmbox = QMessageBox()
-            qmbox.setIcon(QMessageBox.Warning)
+            qmbox.setIcon(QMessageBox.Icon.Warning)
             qmbox.setText("Failed to save data to selected file.")
             qmbox.setWindowTitle("Warning")
             qmbox.setStandardButtons(QMessageBox.StandardButton.Ok)

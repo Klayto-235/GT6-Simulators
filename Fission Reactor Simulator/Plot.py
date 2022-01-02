@@ -1,6 +1,4 @@
-from PyQt6.QtWidgets import QWidget
 from PyQt6.QtCore import QSize, pyqtSignal
-from PyQt6.QtGui import QMouseEvent
 from pyqtgraph import PlotWidget, InfiniteLine, setConfigOption, mkPen
 
 from Assets import Assets
@@ -62,7 +60,7 @@ class HairyPlotter(PlotWidget):
         tscale = ydata[-1]
         self.scale = 0
         tempscale = 1
-        while (tscale > 1999):
+        while tscale > 1999:
             self.scale = self.scale + 3
             tscale = tscale / 1000
             tempscale = tempscale * 1000
@@ -105,7 +103,7 @@ class HairyPlotter(PlotWidget):
 
     def inf_line_moved(self):
         temppos = round(self.selector.value())
-        if (temppos != self.old_index):
+        if temppos != self.old_index:
             self.old_index = temppos
             self.signal_plot_time_selection_shanged.emit(temppos)
 

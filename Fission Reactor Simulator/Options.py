@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QMessageBox, QWidget, QDialog, QTabWidget, QLabel, QScrollArea, QLineEdit, QFrame, \
-    QGridLayout, QDialogButtonBox, QVBoxLayout, QComboBox, QSizePolicy, QSpacerItem, QHBoxLayout, QCheckBox
-from PyQt6.QtCore import QRect, Qt
+    QGridLayout, QDialogButtonBox, QVBoxLayout, QComboBox, QSizePolicy, QSpacerItem, QCheckBox
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QDoubleValidator, QIntValidator
 
 from Settings import Settings, Keybinds
@@ -22,10 +22,10 @@ class ShortcutTab(QScrollArea):
         line2 = QFrame(self.inside)
         line1.setGeometry(0, 0, 150, 5)
         line2.setGeometry(0, 0, 100, 5)
-        line1.setFrameShape(QFrame.HLine)
-        line2.setFrameShape(QFrame.HLine)
-        line1.setFrameShadow(QFrame.Sunken)
-        line2.setFrameShadow(QFrame.Sunken)
+        line1.setFrameShape(QFrame.Shape.HLine)
+        line2.setFrameShape(QFrame.Shape.HLine)
+        line1.setFrameShadow(QFrame.Shadow.Sunken)
+        line2.setFrameShadow(QFrame.Shadow.Sunken)
         self.layout.addWidget(line1, 1, 0)
         self.layout.addWidget(line2, 1, 1)
         self.layout.setColumnMinimumWidth(0, 150)
@@ -37,8 +37,8 @@ class ShortcutTab(QScrollArea):
             self.layout.addWidget(QLabel(v, self.inside), count, 1)
             count += 1
 
-        vspacer = QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        hspacer = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        vspacer = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        hspacer = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
         self.layout.addItem(vspacer, count, 0, 2, 1)
         self.layout.addItem(hspacer, 0, 2, 1, count)
 
@@ -68,8 +68,8 @@ class GeneralOptionsTab(QScrollArea):
         self.outsideLayout = QGridLayout(self.inside)
         self.layout = QGridLayout()
         self.outsideLayout.addLayout(self.layout, 0, 0)
-        self.outsideLayout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding), 1, 0)
-        self.outsideLayout.addItem(QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum), 0, 1)
+        self.outsideLayout.addItem(QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding), 1, 0)
+        self.outsideLayout.addItem(QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum), 0, 1)
 
         tcount = 0
 
@@ -106,9 +106,9 @@ class GeneralOptionsTab(QScrollArea):
         self.layout.addWidget(templabel, tcount, 0)
         self.mstack = QCheckBox(self)
         if Settings().get_bool("MaterialStacks"):
-            self.mstack.setCheckState(Qt.Checked)
+            self.mstack.setCheckState(Qt.CheckState.Checked)
         else:
-            self.mstack.setCheckState(Qt.Unchecked)
+            self.mstack.setCheckState(Qt.CheckState.Unchecked)
         self.mstack.setToolTip("When enabled will break down the raw material costs into stacks of 64 + remainder.")
         self.layout.addWidget(self.mstack, tcount, 1)
 
@@ -140,9 +140,9 @@ class GeneralOptionsTab(QScrollArea):
         self.layout.addWidget(templabel, tcount, 0)
         self.zoom = QCheckBox(self)
         if Settings().get_bool("EnableZoom"):
-            self.zoom.setCheckState(Qt.Checked)
+            self.zoom.setCheckState(Qt.CheckState.Checked)
         else:
-            self.zoom.setCheckState(Qt.Unchecked)
+            self.zoom.setCheckState(Qt.CheckState.Unchecked)
         self.zoom.setToolTip("Enables zooming.")
         self.layout.addWidget(self.zoom, tcount, 1)
 
@@ -153,9 +153,9 @@ class GeneralOptionsTab(QScrollArea):
         self.layout.addWidget(templabel, tcount, 0)
         self.szoom = QCheckBox(self)
         if Settings().get_bool("SmoothZoom"):
-            self.szoom.setCheckState(Qt.Checked)
+            self.szoom.setCheckState(Qt.CheckState.Checked)
         else:
-            self.szoom.setCheckState(Qt.Unchecked)
+            self.szoom.setCheckState(Qt.CheckState.Unchecked)
         self.szoom.setToolTip("Enables smooth zoom, due to Qt reasons this doesn't work very well with larger grids.")
         self.layout.addWidget(self.szoom, tcount, 1)
 
@@ -167,9 +167,9 @@ class GeneralOptionsTab(QScrollArea):
         self.layout.addWidget(templabel, tcount, 0)
         self.aa = QCheckBox(self)
         if Settings().get_bool_delayed("Antialiasing"):
-            self.aa.setCheckState(Qt.Checked)
+            self.aa.setCheckState(Qt.CheckState.Checked)
         else:
-            self.aa.setCheckState(Qt.Unchecked)
+            self.aa.setCheckState(Qt.CheckState.Unchecked)
         self.aa.setToolTip(
             "Enables antialiasing, disabling this may improve performance (which because of Qt is abismal anyway).\nREQUIRES RESTART TO TAKE EFFECT.")
         self.layout.addWidget(self.aa, tcount, 1)
@@ -220,7 +220,7 @@ class GeneralOptionsTab(QScrollArea):
         Keybinds().set_layout(Settings().get("KeyboardLayout"))
         if float(self.artimelimit.text()) > 0:
             Settings().set("AutosimTimeout", self.artimelimit.text())
-        if self.mstack.checkState() == Qt.Checked:
+        if self.mstack.checkState() == Qt.CheckState.Checked:
             Settings().set("MaterialStacks", "true")
         else:
             Settings().set("MaterialStacks", "false")
@@ -228,16 +228,16 @@ class GeneralOptionsTab(QScrollArea):
             Settings().set("InitW", self.initw.text())
         if int(self.inith.text()) > 0:
             Settings().set("InitH", self.inith.text())
-        if self.zoom.checkState() == Qt.Checked:
+        if self.zoom.checkState() == Qt.CheckState.Checked:
             Settings().set("EnableZoom", "true")
         else:
             Settings().set("EnableZoom", "false")
-        if self.szoom.checkState() == Qt.Checked:
+        if self.szoom.checkState() == Qt.CheckState.Checked:
             Settings().set("SmoothZoom", "true")
         else:
             Settings().set("SmoothZoom", "false")
         tempAA = Settings().get_bool_delayed("Antialiasing")
-        if self.aa.checkState() == Qt.Checked:
+        if self.aa.checkState() == Qt.CheckState.Checked:
             Settings().set_delayed("Antialiasing", "true")
         else:
             Settings().set_delayed("Antialiasing", "false")
@@ -260,7 +260,7 @@ class GeneralOptionsTab(QScrollArea):
             "GraphicsEngine") and tempGE != Settings().get_delayed("GraphicsEngine"))
         if test:
             qmbox = QMessageBox()
-            qmbox.setIcon(QMessageBox.Warning)
+            qmbox.setIcon(QMessageBox.Icon.Warning)
             qmbox.setText("Some changes require a restart to take effect.")
             qmbox.setWindowTitle("Warning")
             qmbox.setStandardButtons(QMessageBox.StandardButton.Ok)

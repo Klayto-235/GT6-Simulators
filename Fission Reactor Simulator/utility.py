@@ -24,14 +24,14 @@ def stackify(a):
 
 def to_metric(input):
     scale = 0
-    while (input > 999):
+    while input > 999:
         input = input / 1000
         scale = scale + 3
     retstr = "{:.2f}".format(input)
-    if (scale < 25):
+    if scale < 25:
         retstr = retstr + " " + Assets().metric_prefix[scale]
     else:
-        while (input >= 10):
+        while input >= 10:
             input = input / 10
             scale = scale + 1
         retstr = retstr + "E" + str(scale) + " "
@@ -51,7 +51,7 @@ def to_whole_materials(format_function, input):
     else:
         temp2 = input % 72
         temp3 = gcd(72, temp2)
-        if (temp1 == 0):
+        if temp1 == 0:
             return str(temp2 // temp3) + "/" + str(72 // temp3)
         else:
             return format_function(temp1) + "+" + str(temp2 // temp3) + "/" + str(72 // temp3)

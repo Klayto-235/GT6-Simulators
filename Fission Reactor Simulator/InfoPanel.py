@@ -145,7 +145,7 @@ class InfoPanel(QWidget):
             self.label_rod.setText("<b>SELECTED ROD DATA:</b><br>No data to show.")
 
         cellstring = "<b>SELECTED BLOCK DATA:</b>"
-        if (cdata.is_H2O):
+        if cdata.is_H2O:
             cellstring += "<br>Total L in: " + to_metric(cdata.cell_total_L) + "L"
             cellstring += "<br>Peak L/t in: " + "{:.2f}".format(cdata.cell_peak_Lt) + " L/t"
             cellstring += "<br>Total L out: " + to_metric(cdata.cell_total_L * 160) + "L"
@@ -180,7 +180,7 @@ class InfoPanel(QWidget):
         tempstring += "<br>Total distilled water loss: " + to_metric(data.total_HU / (80 * 20)) + "L"
         tempstring += "<br>Peak distilled water loss: " + to_metric(data.peak_HUt / (80 * 20)) + "L/t"
         tempstring += "<br>Exploded: "
-        if (data.exploded):
+        if data.exploded:
             tempstring += "Yes<br>"
         else:
             tempstring += "No<br>"

@@ -1,7 +1,7 @@
 from collections import namedtuple
 from enum import Enum
 from PyQt6.QtGui import QIcon, QAction, QActionGroup
-from PyQt6.QtWidgets import QToolBar, QComboBox, QWidget, QGridLayout, QToolButton, QSizePolicy, QHBoxLayout, QLabel, \
+from PyQt6.QtWidgets import QToolBar, QComboBox, QWidget, QGridLayout, QSizePolicy, QHBoxLayout, QLabel, \
     QCheckBox, QVBoxLayout, QPushButton
 from PyQt6.QtCore import Qt, QSize, pyqtSignal
 

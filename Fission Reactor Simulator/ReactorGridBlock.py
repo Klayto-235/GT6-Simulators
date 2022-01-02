@@ -1,8 +1,7 @@
 from json import JSONEncoder
-from PyQt6.QtGui import QIcon, QResizeEvent, QColor, QPainter, QBrush, QPen, QFont
-from PyQt6.QtWidgets import QGridLayout, QWidget, QSizePolicy, QHBoxLayout, QGraphicsSimpleTextItem, QGraphicsRectItem, \
-    QGraphicsPixmapItem
-from PyQt6.QtCore import Qt, pyqtSignal, QSize, QRect
+from PyQt6.QtGui import QColor, QPainter, QPen, QFont
+from PyQt6.QtWidgets import QGraphicsSimpleTextItem, QGraphicsRectItem, QGraphicsPixmapItem
+from PyQt6.QtCore import Qt
 
 from Assets import Assets
 from Settings import Settings
@@ -68,7 +67,7 @@ class ReactorGridButton(QGraphicsRectItem):
         font = self.labels[0].font()
         font.setPixelSize(11)  # point size 8
         if not self.enable_aa:
-            font.setStyleStrategy(QFont.NoAntialias)
+            font.setStyleStrategy(QFont.StyleStrategy.NoAntialias)
         for label in self.labels:
             label.setFont(font)
 
@@ -84,7 +83,7 @@ class ReactorGridButton(QGraphicsRectItem):
         self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
 
     def get_position(self):
-        return (self.i, self.j)
+        return self.i, self.j
 
     def mousePressEvent(self, event):
         self.parentItem().on_click(self)
@@ -161,7 +160,7 @@ class ReactorGridButton(QGraphicsRectItem):
 
     def set_neutron_count(self, ncount, noutput_percent):
         self.set_label_bottom_right(str(ncount) + " N")
-        if (noutput_percent >= 0):
+        if noutput_percent >= 0:
             if noutput_percent > 100.0000000001:
                 if not self.overmax:
                     self.overmax = True
@@ -230,7 +229,7 @@ class ReactorGridBlockHeader(QGraphicsRectItem):
         font = self.label_left.font()
         font.setPixelSize(11)  # point size 8
         if not self.enable_aa:
-            font.setStyleStrategy(QFont.NoAntialias)
+            font.setStyleStrategy(QFont.StyleStrategy.NoAntialias)
         self.label_left.setFont(font)
         self.label_right.setFont(font)
 
@@ -319,7 +318,7 @@ class ReactorGridBlock(QGraphicsRectItem):
         self.setPen(QPen(Qt.PenStyle.NoPen))
 
     def get_position(self):
-        return (self.yp, self.xp)
+        return self.yp, self.xp
 
     def on_click(self, button):
         self.scene().parent().on_click(self, button)

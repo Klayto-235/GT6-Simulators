@@ -65,7 +65,7 @@ class Settings(metaclass=Singleton):
             strval = "true"
         if strval == "False":
             strval = "false"
-        if (self.data.value(key, str) != strval):
+        if self.data.value(key, str) != strval:
             self.data.setValue(key, value)
             self.was_changed = True
 
@@ -78,7 +78,7 @@ class Settings(metaclass=Singleton):
         return self.default_settings[key]
 
     def get_bool(self, key):
-        return (self.data.value(key, self.get_default(key)).lower() == "true")
+        return self.data.value(key, self.get_default(key)).lower() == "true"
 
     def get_int(self, key):
         return int(self.data.value(key, self.get_default(key)))
