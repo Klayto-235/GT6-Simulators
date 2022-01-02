@@ -2,7 +2,8 @@ from collections import namedtuple, deque
 from itertools import islice
 from enum import Enum
 from PyQt6.QtGui import QIcon, QAction, QColor, QResizeEvent, QSurfaceFormat
-from PyQt6.QtWidgets import QWidget, QGraphicsView, QGraphicsItem, QGraphicsScene, QScroller, QScrollerProperties, QSizePolicy
+from PyQt6.QtWidgets import QWidget, QGraphicsView, QGraphicsItem, QGraphicsScene, QScroller, QScrollerProperties, \
+    QSizePolicy
 from PyQt6.QtCore import Qt, QSize, pyqtSignal, QEvent, QPoint, QPointF, QTimeLine, QRect
 from PyQt6.QtOpenGLWidgets import QOpenGLWidget
 
@@ -54,10 +55,8 @@ class ZoomingGraphicsView(QGraphicsView):
 
         self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
 
-
     def clear_timeline(self):
         self.timeline.setCurrentTime(0)
-
 
     def zoom_event(self):
         testzoomFactor = 1.0 + self.num_scheduled_callings / 100.0
@@ -88,7 +87,6 @@ class ZoomingGraphicsView(QGraphicsView):
         self.translate(delta.x(), delta.y())
 
         self.parent().update_scene()
-
 
     def wheelEvent(self, event):
         if not Settings().get_bool("EnableZoom"):
@@ -132,13 +130,11 @@ class ZoomingGraphicsView(QGraphicsView):
         else:
             self.num_scheduled_callings += 1
 
-
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.RightButton:
             self.orig_x = event.position().x()
             self.orig_y = event.position().y()
         super().mousePressEvent(event)
-
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.MouseButton.RightButton:
@@ -152,7 +148,6 @@ class ZoomingGraphicsView(QGraphicsView):
             self.orig_x = event.position().x()
             self.orig_y = event.position().y()
         super().mouseMoveEvent(event)
-
 
     def resizeEvent(self, event):
         self.parent().update_scene()
@@ -173,7 +168,7 @@ class ReactorGrid(QWidget):
         self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.view.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
-        #TODO: Implement OpenGL rendering
+        # TODO: Implement OpenGL rendering
 
         # initial state
         self.current_selection = None
@@ -194,18 +189,15 @@ class ReactorGrid(QWidget):
         self.resize_right = False
         self.resize_bottom = False
 
-
     def resizeEvent(self, event):
         self.view.setGeometry(0, 0, event.size().width(), event.size().height())
-
 
     def on_click(self, block, button):
         self.signal_clicked.emit(GridTarget(block, button))
 
-
     def get_grid_data(self):
-        return [list(islice(self.grid[i], self.n_col_begin, self.n_col_end)) for i in range(self.n_row_begin, self.n_row_end)]
-
+        return [list(islice(self.grid[i], self.n_col_begin, self.n_col_end)) for i in
+                range(self.n_row_begin, self.n_row_end)]
 
     def check_grid_data(self, data):
         if not (type(data) is list):
@@ -253,7 +245,6 @@ class ReactorGrid(QWidget):
                         return False
         return True
 
-
     def set_grid_data(self, data):
         n_row = len(data)
         n_col = len(data[0])
@@ -270,7 +261,6 @@ class ReactorGrid(QWidget):
                     buttons[k].set_rod(data[i][j][2][k])
 
         self.no_resize()
-
 
     def clear_grid(self, n_row, n_col):
         while self.n_row > n_row:
@@ -295,7 +285,8 @@ class ReactorGrid(QWidget):
 
         viewlt = QPoint(0, 0)
         maplt = self.view.mapToScene(viewlt)
-        gridlt = QPointF(self.grid[self.n_row_begin][self.n_col_begin].x - 1, self.grid[self.n_row_begin][self.n_col_begin].y - 1)
+        gridlt = QPointF(self.grid[self.n_row_begin][self.n_col_begin].x - 1,
+                         self.grid[self.n_row_begin][self.n_col_begin].y - 1)
         deltax = maplt.x() - gridlt.x()
         deltay = maplt.y() - gridlt.y()
         self.view.translate(deltax, deltay)
@@ -304,10 +295,9 @@ class ReactorGrid(QWidget):
 
         self.no_resize()
 
-
     def check_auto_resize(self, block):
         if self.autoexpand_state:
-            y,x = block.get_position()
+            y, x = block.get_position()
             row = y - self.row_offset
             col = x - self.col_offset
             if row == self.n_row_begin:
@@ -318,7 +308,6 @@ class ReactorGrid(QWidget):
                 self.resize_left = True
             if col == self.n_col_end - 1:
                 self.resize_right = True
-
 
     def auto_resize(self):
         if self.resize_top:
@@ -334,16 +323,14 @@ class ReactorGrid(QWidget):
             self.size_increment_bottom()
             self.resize_bottom = False
 
-
     def no_resize(self):
         self.resize_top = False
         self.resize_left = False
         self.resize_right = False
         self.resize_bottom = False
 
-
     def shrink_to_fit(self):
-        #left
+        # left
         while (self.n_col > 1):
             empty = True
             for i in range(self.n_row_begin, self.n_row_end):
@@ -354,7 +341,7 @@ class ReactorGrid(QWidget):
                 self.size_decrement_left()
             else:
                 break
-        #right
+        # right
         while (self.n_col > 1):
             empty = True
             for i in range(self.n_row_begin, self.n_row_end):
@@ -365,7 +352,7 @@ class ReactorGrid(QWidget):
                 self.size_decrement_right()
             else:
                 break
-        #top
+        # top
         while (self.n_row > 1):
             empty = True
             for i in range(self.n_col_begin, self.n_col_end):
@@ -376,7 +363,7 @@ class ReactorGrid(QWidget):
                 self.size_decrement_top()
             else:
                 break
-        #bottom
+        # bottom
         while (self.n_row > 1):
             empty = True
             for i in range(self.n_col_begin, self.n_col_end):
@@ -388,7 +375,6 @@ class ReactorGrid(QWidget):
             else:
                 break
         self.no_resize()
-
 
     def size_increment_left(self, mark_in_history=True):
         if self.n_col_begin > 0:
@@ -406,8 +392,9 @@ class ReactorGrid(QWidget):
             self.n_col_total += 1
         self.n_col += 1
         self.update_scene()
-        self.signal_grid_resized.emit(((self.size_decrement_left, ()), (self.size_increment_left, ())) if mark_in_history else None, self.n_col, self.n_row)
-
+        self.signal_grid_resized.emit(
+            ((self.size_decrement_left, ()), (self.size_increment_left, ())) if mark_in_history else None, self.n_col,
+            self.n_row)
 
     def size_increment_right(self, mark_in_history=True):
         if self.n_col_end < self.n_col_total:
@@ -424,8 +411,9 @@ class ReactorGrid(QWidget):
             self.n_col_total += 1
         self.n_col += 1
         self.update_scene()
-        self.signal_grid_resized.emit(((self.size_decrement_right, ()), (self.size_increment_right, ())) if mark_in_history else None, self.n_col, self.n_row)
-
+        self.signal_grid_resized.emit(
+            ((self.size_decrement_right, ()), (self.size_increment_right, ())) if mark_in_history else None, self.n_col,
+            self.n_row)
 
     def size_increment_top(self, mark_in_history=True):
         if self.n_row_begin > 0:
@@ -445,8 +433,9 @@ class ReactorGrid(QWidget):
             self.n_row_end += 1
         self.n_row += 1
         self.update_scene()
-        self.signal_grid_resized.emit(((self.size_decrement_top, ()), (self.size_increment_top, ())) if mark_in_history else None, self.n_col, self.n_row)
-
+        self.signal_grid_resized.emit(
+            ((self.size_decrement_top, ()), (self.size_increment_top, ())) if mark_in_history else None, self.n_col,
+            self.n_row)
 
     def size_increment_bottom(self, mark_in_history=True):
         if self.n_row_end < self.n_row_total:
@@ -465,8 +454,9 @@ class ReactorGrid(QWidget):
             self.n_row_end += 1
         self.n_row += 1
         self.update_scene()
-        self.signal_grid_resized.emit(((self.size_decrement_bottom, ()), (self.size_increment_bottom, ())) if mark_in_history else None, self.n_col, self.n_row)
-
+        self.signal_grid_resized.emit(
+            ((self.size_decrement_bottom, ()), (self.size_increment_bottom, ())) if mark_in_history else None,
+            self.n_col, self.n_row)
 
     def size_decrement_left(self, mark_in_history=True):
         if self.n_col == 0:
@@ -477,8 +467,9 @@ class ReactorGrid(QWidget):
         self.n_col_begin += 1
         self.n_col -= 1
         self.update_scene()
-        self.signal_grid_resized.emit(((self.size_increment_left, ()), (self.size_decrement_left, ())) if mark_in_history else None, self.n_col, self.n_row)
-
+        self.signal_grid_resized.emit(
+            ((self.size_increment_left, ()), (self.size_decrement_left, ())) if mark_in_history else None, self.n_col,
+            self.n_row)
 
     def size_decrement_right(self, mark_in_history=True):
         if self.n_col == 0:
@@ -489,8 +480,9 @@ class ReactorGrid(QWidget):
             self.scene.removeItem(self.grid[i][self.n_col_end])
         self.n_col -= 1
         self.update_scene()
-        self.signal_grid_resized.emit(((self.size_increment_right, ()), (self.size_decrement_right, ())) if mark_in_history else None, self.n_col, self.n_row)
-
+        self.signal_grid_resized.emit(
+            ((self.size_increment_right, ()), (self.size_decrement_right, ())) if mark_in_history else None, self.n_col,
+            self.n_row)
 
     def size_decrement_top(self, mark_in_history=True):
         if self.n_row == 0:
@@ -501,8 +493,9 @@ class ReactorGrid(QWidget):
         self.n_row_begin += 1
         self.n_row -= 1
         self.update_scene()
-        self.signal_grid_resized.emit(((self.size_increment_top, ()), (self.size_decrement_top, ())) if mark_in_history else None, self.n_col, self.n_row)
-
+        self.signal_grid_resized.emit(
+            ((self.size_increment_top, ()), (self.size_decrement_top, ())) if mark_in_history else None, self.n_col,
+            self.n_row)
 
     def size_decrement_bottom(self, mark_in_history=True):
         if self.n_row == 0:
@@ -513,8 +506,9 @@ class ReactorGrid(QWidget):
             self.scene.removeItem(self.grid[self.n_row_end][j])
         self.n_row -= 1
         self.update_scene()
-        self.signal_grid_resized.emit(((self.size_increment_bottom, ()), (self.size_decrement_bottom, ())) if mark_in_history else None, self.n_col, self.n_row)
-
+        self.signal_grid_resized.emit(
+            ((self.size_increment_bottom, ()), (self.size_decrement_bottom, ())) if mark_in_history else None,
+            self.n_col, self.n_row)
 
     def update_scene(self):
         if (self.n_col == 0 or self.n_row == 0):
@@ -534,7 +528,6 @@ class ReactorGrid(QWidget):
             after = self.view.mapToScene(QPoint(view_size.width() // 2, view_size.height() // 2))
             delta = after - before
             self.view.translate(delta.x(), delta.y())
-
 
     def tool_click(self, target, tool):
         fill_predicate = FillPredicate.Default
@@ -575,7 +568,6 @@ class ReactorGrid(QWidget):
 
         self.auto_resize()
 
-
     def apply_tool(self, modifier, predicate, target, on_slots, func, *args):
         target_type = ReactorGridButton if on_slots else ReactorGridBlock
         if on_slots:
@@ -609,7 +601,6 @@ class ReactorGrid(QWidget):
 
         del target_copy
 
-
     def fill(self, predicate_func, target, on_slots, func, *args):
         for i in range(self.n_row_begin, self.n_row_end):
             for j in range(self.n_col_begin, self.n_col_end):
@@ -620,7 +611,6 @@ class ReactorGrid(QWidget):
                             func(GridTarget(block, slot), *args)
                 elif predicate_func(block):
                     func(GridTarget(block, None), *args)
-
 
     def floodfill(self, predicate_func, target, on_slots, func, *args):
         if not predicate_func(target.slot if on_slots else target.block):
@@ -788,41 +778,39 @@ class ReactorGrid(QWidget):
                     func(GridTarget(self.grid[i][j + 1], None), *args)
                     stack.append((i, j + 1))
 
-
     def toggle_shape(self, target, mark_in_history=True):
         block = target.block
         for slot in block.get_active_buttons():
             self.set_rod(GridTarget(block, slot), "None")
         block.toggle_shape()
         if mark_in_history:
-            self.signal_contents_changed.emit(((self.toggle_shape, (target, )), (self.toggle_shape, (target, ))))
+            self.signal_contents_changed.emit(((self.toggle_shape, (target,)), (self.toggle_shape, (target,))))
             self.check_auto_resize(block)
         else:
             self.signal_contents_changed.emit(None)
         return True
 
-
     def set_rod(self, target, name, mark_in_history=True):
         old_rod_name = target.slot.set_rod(name)
         if old_rod_name is not None:
             if mark_in_history:
-                self.signal_contents_changed.emit(((self.set_rod, (target, old_rod_name)), (self.set_rod, (target, name))))
+                self.signal_contents_changed.emit(
+                    ((self.set_rod, (target, old_rod_name)), (self.set_rod, (target, name))))
                 self.check_auto_resize(target.block)
             else:
                 self.signal_contents_changed.emit(None)
             return True
-
 
     def set_coolant(self, target, name, mark_in_history=True):
         old_coolant_name = target.block.set_coolant(name)
         if old_coolant_name is not None:
             if mark_in_history:
-                self.signal_contents_changed.emit(((self.set_coolant, (target, old_coolant_name)), (self.set_coolant, (target, name))))
+                self.signal_contents_changed.emit(
+                    ((self.set_coolant, (target, old_coolant_name)), (self.set_coolant, (target, name))))
                 self.check_auto_resize(target.block)
             else:
                 self.signal_contents_changed.emit(None)
             return True
-
 
     def erase(self, target, mark_in_history=True):
         block = target.block
@@ -832,7 +820,6 @@ class ReactorGrid(QWidget):
                 changed = True
         return changed
 
-
     def reset(self, target, mark_in_history=True):
         changed = self.erase(target, mark_in_history)
         if target.block.is_small():
@@ -840,12 +827,10 @@ class ReactorGrid(QWidget):
             changed = True
         return changed
 
-
     def select(self, target):
         self.current_selection = target
         target.slot.set_selected(True)
         self.signal_selection_changed.emit(self.current_selection)
-
 
     def deselect(self):
         if self.current_selection is not None:
@@ -853,14 +838,11 @@ class ReactorGrid(QWidget):
             self.current_selection = None
             self.signal_selection_changed.emit(self.current_selection)
 
-
     def get_grid_selection(self):
         return self.current_selection
 
-
     def set_autoexpand(self, state):
         self.autoexpand_state = state
-
 
     def find_material_cost(self, sim_ref):
         result = {}
@@ -880,5 +862,6 @@ class ReactorGrid(QWidget):
                             if button.rod_name != "Ref" and button.rod_name != "Mod":
                                 burns_fuel = True
                     if burns_fuel and block.coolant_name == "Th":
-                        result["Th coolant"] = result.get("Th coolant", 0) + sim_ref.cell_data[sim_ref.cell_dict[(i, j)]].results.totalL
+                        result["Th coolant"] = result.get("Th coolant", 0) + sim_ref.cell_data[
+                            sim_ref.cell_dict[(i, j)]].results.totalL
         return result
