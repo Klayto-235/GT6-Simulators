@@ -162,7 +162,7 @@ class MaterialDialog(QDialog):
 
 		tab_widget = QTabWidget(self)
 		tab_widget.setMinimumSize(630, 670)
-		button_box_widget = QDialogButtonBox(QDialogButtonBox.Close)
+		button_box_widget = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
 		self.rod_widget = MaterialTab(self.rod_data, "Fuel recipes", tab_widget)
 		self.raw_rod_widget = MaterialTab(self.raw_rod_data, "Raw fuel materials", tab_widget)
 		self.reactor_widget = MaterialTab(self.reactor_data, "Reactor recipes", tab_widget)

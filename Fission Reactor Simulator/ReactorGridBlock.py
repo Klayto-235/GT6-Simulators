@@ -25,7 +25,7 @@ class AARRectItem(QGraphicsRectItem):
 	def paint(self, painter, opts, widget=None):
 		painter.setPen(self.pen())
 		if self.enable_aa:
-			painter.setRenderHint(QPainter.Antialiasing)
+			painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 		painter.drawRoundedRect(self.rect(), 1, 1)
 
 
@@ -51,14 +51,14 @@ class ReactorGridButton(QGraphicsRectItem):
 		else:
 			self.tsz = 18
 			self.ofs = 22
-		self.setPen(QPen(Qt.NoPen))
+		self.setPen(QPen(Qt.PenStyle.NoPen))
 		
 		self.progress_bar_green = QGraphicsRectItem(x, y + h - 11, w, 11, self)
 		self.progress_bar_green.setBrush(QColor(210, 255, 210, 255))
-		self.progress_bar_green.setPen(QPen(Qt.NoPen))
+		self.progress_bar_green.setPen(QPen(Qt.PenStyle.NoPen))
 		self.progress_bar_red = QGraphicsRectItem(x + w, y + h - 11, 0, 11, self)
 		self.progress_bar_red.setBrush(QColor(255, 210, 210, 255))
-		self.progress_bar_red.setPen(QPen(Qt.NoPen))
+		self.progress_bar_red.setPen(QPen(Qt.PenStyle.NoPen))
 		self.rod_pixmap = QGraphicsPixmapItem(self)
 		self.rod_pixmap.setPos(self.x + self.w / 2 - self.tsz / 2, self.y + self.h / 2 - self.tsz / 2)
 		self.line = AARRectItem(x, y, w, h, self)
@@ -81,7 +81,7 @@ class ReactorGridButton(QGraphicsRectItem):
 		self.selected = False
 		self.hovered = False
 		self.setAcceptHoverEvents(True)
-		self.setAcceptedMouseButtons(Qt.LeftButton)
+		self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
 
 
 	def get_position(self):
@@ -260,14 +260,14 @@ class ReactorGridBlockHeader(QGraphicsRectItem):
 		self.label_left.setFont(font)
 		self.label_right.setFont(font)
 
-		self.setPen(QPen(Qt.NoPen))
+		self.setPen(QPen(Qt.PenStyle.NoPen))
 
 		self.large_head = QGraphicsRectItem(x, y, w, h, self)
 		self.small_head_left = QGraphicsRectItem(x, y, (w - 4) / 2, h, self)
 		self.small_head_right = QGraphicsRectItem(x + (w + 4) / 2, y, (w - 4) / 2, h, self)
-		self.large_head.setPen(QPen(Qt.NoPen))
-		self.small_head_left.setPen(QPen(Qt.NoPen))
-		self.small_head_right.setPen(QPen(Qt.NoPen))
+		self.large_head.setPen(QPen(Qt.PenStyle.NoPen))
+		self.small_head_left.setPen(QPen(Qt.PenStyle.NoPen))
+		self.small_head_right.setPen(QPen(Qt.PenStyle.NoPen))
 		self.large_head.setBrush(QColor(150, 150, 150, 70))
 		self.small_head_left.setBrush(QColor(150, 150, 150, 70))
 		self.small_head_right.setBrush(QColor(150, 150, 150, 70))
@@ -343,7 +343,7 @@ class ReactorGridBlock(QGraphicsRectItem):
 		self.expcolor = False
 		self.reset_coolant_flux()
 
-		self.setPen(QPen(Qt.NoPen))
+		self.setPen(QPen(Qt.PenStyle.NoPen))
 
 
 	def get_position(self):

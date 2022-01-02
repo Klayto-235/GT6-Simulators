@@ -32,11 +32,11 @@ class InfoPanel(QWidget):
 		self.label_coolants = QLabel(self)
 		self.label_stats = QLabel(self)
 
-		self.label_rod.setAlignment(Qt.Alignment.AlignLeft | Qt.Alignment.AlignTop)
-		self.label_cell.setAlignment(Qt.Alignment.AlignLeft | Qt.Alignment.AlignTop)
-		self.label_simulation.setAlignment(Qt.Alignment.AlignLeft | Qt.Alignment.AlignTop)
-		self.label_coolants.setAlignment(Qt.Alignment.AlignLeft | Qt.Alignment.AlignTop)
-		self.label_stats.setAlignment(Qt.Alignment.AlignLeft | Qt.Alignment.AlignTop)
+		self.label_rod.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+		self.label_cell.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+		self.label_simulation.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+		self.label_coolants.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+		self.label_stats.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
 
 		vbox_layout.addWidget(self.plot)
 		vbox_layout.addWidget(scroll_area)

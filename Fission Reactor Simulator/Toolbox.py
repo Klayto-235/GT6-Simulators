@@ -66,8 +66,8 @@ class LabelButtonColumn(QWidget):
 		vbox_layout = QVBoxLayout(self)
 		vbox_layout.setContentsMargins(0, 0, 0, 0)
 		vbox_layout.setSpacing(5)
-		vbox_layout.addWidget(self.label_top, Qt.Alignment.AlignHCenter)
-		vbox_layout.addWidget(self.button_bottom, Qt.Alignment.AlignHCenter)
+		vbox_layout.addWidget(self.label_top, Qt.AlignmentFlag.AlignHCenter)
+		vbox_layout.addWidget(self.button_bottom, Qt.AlignmentFlag.AlignHCenter)
 		vbox_layout.addStretch(1)
 
 
@@ -89,8 +89,8 @@ class ToolboxTop(QWidget):
 		
 		toolbar_left = self.create_toolbar_left()
 		toolbar_right = self.create_toolbar_right()
-		layout.addWidget(toolbar_left, 0, Qt.Alignment.AlignLeft)
-		layout.addWidget(toolbar_right, 0, Qt.Alignment.AlignRight)
+		layout.addWidget(toolbar_left, 0, Qt.AlignmentFlag.AlignLeft)
+		layout.addWidget(toolbar_right, 0, Qt.AlignmentFlag.AlignRight)
 
 		self.setMinimumWidth(630)
 
@@ -102,7 +102,7 @@ class ToolboxTop(QWidget):
 	def create_toolbar_right(self):
 		toolbar_right = QToolBar(self)
 		toolbar_right.setMovable(False)
-		toolbar_right.setOrientation(Qt.Orientations.Horizontal)
+		toolbar_right.setOrientation(Qt.Orientation.Horizontal)
 		toolbar_right.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
 		toolbar_right.setContentsMargins(0, 0, 0, 0)
 		toolbar_right.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
@@ -157,7 +157,7 @@ class ToolboxTop(QWidget):
 	def create_toolbar_left(self):
 		toolbar_left = QToolBar(self)
 		toolbar_left.setMovable(False)
-		toolbar_left.setOrientation(Qt.Orientations.Horizontal)
+		toolbar_left.setOrientation(Qt.Orientation.Horizontal)
 		toolbar_left.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
 		toolbar_left.setContentsMargins(0, 0, 0, 0)
 		toolbar_left.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
@@ -231,7 +231,7 @@ class ToolboxLeft(QWidget):
 		tempcount = 0
 		for name,record in Assets().coolant.items():
 			self.coolant_combo.addItem(QIcon(record.pixmap), name)
-			self.coolant_combo.setItemData(tempcount, Assets().coolant_tooltips[name], Qt.ToolTipRole)
+			self.coolant_combo.setItemData(tempcount, Assets().coolant_tooltips[name], Qt.ItemDataRole.ToolTipRole)
 			tempcount += 1
 		self.coolant_combo.setDisabled(True)
 		self.coolant_combo.currentTextChanged.connect(self.on_coolant_change)
@@ -244,7 +244,7 @@ class ToolboxLeft(QWidget):
 		for name,record in Assets().rod.items():
 			if name not in ["Ref", "Abs", "Mod"]:
 				self.fuel_rod_combo.addItem(QIcon(record.pixmap), name)
-				self.fuel_rod_combo.setItemData(tempcount, Assets().rod_tooltips[name], Qt.ToolTipRole)
+				self.fuel_rod_combo.setItemData(tempcount, Assets().rod_tooltips[name], Qt.ItemDataRole.ToolTipRole)
 				tempcount += 1
 		self.fuel_rod_combo.setDisabled(True)
 		self.fuel_rod_combo.currentTextChanged.connect(self.on_fuel_rod_change)
@@ -261,7 +261,7 @@ class ToolboxLeft(QWidget):
 	def create_toolbar_right(self):
 		toolbar_right = QToolBar(self)
 		toolbar_right.setMovable(False)
-		toolbar_right.setOrientation(Qt.Orientations.Vertical)
+		toolbar_right.setOrientation(Qt.Orientation.Vertical)
 		toolbar_right.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
 		toolbar_right.setContentsMargins(0, 0, 0, 0)
 		toolbar_right.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
@@ -334,7 +334,7 @@ class ToolboxLeft(QWidget):
 	def create_toolbar_left(self):
 		toolbar_left = QToolBar(self)
 		toolbar_left.setMovable(False)
-		toolbar_left.setOrientation(Qt.Orientations.Vertical)
+		toolbar_left.setOrientation(Qt.Orientation.Vertical)
 		toolbar_left.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
 		toolbar_left.setContentsMargins(0, 0, 0, 0)
 		toolbar_left.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)

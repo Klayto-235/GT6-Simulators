@@ -256,7 +256,7 @@ class GeneralOptionsTab(QScrollArea):
 			qmbox.setIcon(QMessageBox.Warning)
 			qmbox.setText("Some changes require a restart to take effect.")
 			qmbox.setWindowTitle("Warning")
-			qmbox.setStandardButtons(QMessageBox.StandardButtons.Ok)
+			qmbox.setStandardButtons(QMessageBox.StandardButton.Ok)
 			x = qmbox.exec()
 
 
@@ -272,7 +272,7 @@ class OptionsDialog(QDialog):
 
 		self.tab_widget = QTabWidget(self)
 		self.setFixedSize(600, 450)
-		self.button_box_widget = QDialogButtonBox(QDialogButtonBox.Apply | QDialogButtonBox.Save | QDialogButtonBox.Cancel | QDialogButtonBox.RestoreDefaults )
+		self.button_box_widget = QDialogButtonBox(QDialogButtonBox.StandardButton.Apply | QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.RestoreDefaults )
 
 		self.tabs = []
 
@@ -305,12 +305,12 @@ class OptionsDialog(QDialog):
 
 
 	def on_click(self, button):
-		if self.button_box_widget.buttonRole(button) == QDialogButtonBox.AcceptRole:
+		if self.button_box_widget.buttonRole(button) == QDialogButtonBox.ButtonRole.AcceptRole:
 			self.apply_options()
 			self.accept()
-		elif self.button_box_widget.buttonRole(button) == QDialogButtonBox.RejectRole:
+		elif self.button_box_widget.buttonRole(button) == QDialogButtonBox.ButtonRole.RejectRole:
 			self.reject()
-		elif self.button_box_widget.buttonRole(button) == QDialogButtonBox.ApplyRole:
+		elif self.button_box_widget.buttonRole(button) == QDialogButtonBox.ButtonRole.ApplyRole:
 			self.apply_options()
-		elif self.button_box_widget.buttonRole(button) == QDialogButtonBox.ResetRole:
+		elif self.button_box_widget.buttonRole(button) == QDialogButtonBox.ButtonRole.ResetRole:
 			self.restore_defaults()
