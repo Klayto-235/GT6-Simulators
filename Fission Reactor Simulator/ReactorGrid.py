@@ -39,7 +39,7 @@ class ZoomingGraphicsView(QGraphicsView):
 		self.minzoom = Settings().get_float("MinZoom")
 		self.maxzoom = Settings().get_float("MaxZoom")
 
-		self.setTransformationAnchor(QGraphicsView.NoAnchor)
+		self.setTransformationAnchor(QGraphicsView.ViewportAnchor.NoAnchor)
 
 		self.zooming = False
 
@@ -52,7 +52,7 @@ class ZoomingGraphicsView(QGraphicsView):
 		self.timeline.valueChanged.connect(self.zoom_event)
 		self.timeline.finished.connect(self.zooming_finished)
 
-		self.setDragMode(QGraphicsView.ScrollHandDrag)
+		self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
 
 
 	def clear_timeline(self):
@@ -170,8 +170,8 @@ class ReactorGrid(QWidget):
 		self.scene = QGraphicsScene(self)
 		self.view = ZoomingGraphicsView(self.scene, self)
 		self.view.setBackgroundBrush(QColor(248, 248, 248, 255))
-		self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff);
-		self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff);
+		self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+		self.view.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
 		#TODO: Implement OpenGL rendering
 

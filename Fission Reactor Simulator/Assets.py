@@ -275,7 +275,7 @@ class Assets(metaclass=Singleton):
 			QColor(178, 178, 198, alpha_value),
 			QColor(46, 52, 46, alpha_value)
 		]
-		coolant_stencil = QBitmap.fromPixmap(QPixmap("img/coolant_stencil.png", None, Qt.ImageConversionFlags.MonoOnly | Qt.ImageConversionFlags.ThresholdDither))
+		coolant_stencil = QBitmap.fromPixmap(QPixmap("img/coolant_stencil.png", None, Qt.ImageConversionFlag.MonoOnly | Qt.ImageConversionFlag.ThresholdDither))
 		coolant_pixmaps = [self.utility_pixmap["Empty"]]
 		for color in coolant_colors[1:]:
 			tmp = QPixmap(48, 48)

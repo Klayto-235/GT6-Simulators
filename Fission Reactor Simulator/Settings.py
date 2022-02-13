@@ -6,7 +6,7 @@ from helpers import Singleton
 
 class Settings(metaclass=Singleton):
 	def __init__(self):
-		QSettings.setDefaultFormat(QSettings.IniFormat)
+		QSettings.setDefaultFormat(QSettings.Format.IniFormat)
 		QCoreApplication.setOrganizationName("Gregarious Toolicities")
 		QCoreApplication.setApplicationName("GT6 Fission Reactor Simulator")
 		self.data = QSettings()

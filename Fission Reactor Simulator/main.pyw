@@ -28,8 +28,8 @@ class RealMainWindow(QMainWindow):
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
-	app.setOverrideCursor(Qt.ArrowCursor)
-	app.setAttribute(Qt.AA_DontShowIconsInMenus)
+	app.setOverrideCursor(Qt.CursorShape.ArrowCursor)
+	app.setAttribute(Qt.ApplicationAttribute.AA_DontShowIconsInMenus)
 	window = RealMainWindow()
 	window.show()
 	retval = app.exec()
