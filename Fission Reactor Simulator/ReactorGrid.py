@@ -134,15 +134,15 @@ class ZoomingGraphicsView(QGraphicsView):
 
 
 	def mousePressEvent(self, event):
-		if event.button() == Qt.RightButton:
+		if event.button() == Qt.MouseButton.RightButton:
 			self.orig_x = event.position().x()
 			self.orig_y = event.position().y()
 		super().mousePressEvent(event)
 
 
 	def mouseMoveEvent(self, event):
-		if event.buttons() == Qt.RightButton:
-			oldp = self.mapToScene(self.orig_x, self.orig_y);
+		if event.buttons() == Qt.MouseButton.RightButton:
+			oldp = self.mapToScene(QPointF(self.orig_x, self.orig_y).toPoint());
 			newp = self.mapToScene(event.position().toPoint());
 			delta_x = newp.x() - oldp.x()
 			delta_y = newp.y() - oldp.y()

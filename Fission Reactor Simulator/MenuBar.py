@@ -133,7 +133,7 @@ class MenuBar(QMenuBar):
 		qmbox = QMessageBox()
 		qmbox.setText(Assets().readme_message)
 		qmbox.setWindowTitle("Hello, this is help.")
-		qmbox.setStandardButtons(QMessageBox.StandardButtons.Ok)
+		qmbox.setStandardButtons(QMessageBox.StandardButton.Ok)
 		x = qmbox.exec()
 
 
@@ -141,7 +141,7 @@ class MenuBar(QMenuBar):
 		qmbox = QMessageBox()
 		qmbox.setText(Assets().about_message)
 		qmbox.setWindowTitle("About this wonderful tool.")
-		qmbox.setStandardButtons(QMessageBox.StandardButtons.Close)
+		qmbox.setStandardButtons(QMessageBox.StandardButton.Close)
 		x = qmbox.exec()
 
 
@@ -180,13 +180,13 @@ class MenuBar(QMenuBar):
 		message_box.setIcon(QMessageBox.Icon.Question)
 		message_box.setText("Save changes to the current project?")
 		message_box.setWindowTitle("You have unsaved changes")
-		message_box.setStandardButtons(QMessageBox.StandardButtons.Yes | QMessageBox.StandardButtons.No | QMessageBox.StandardButtons.Cancel)
-		message_box.setDefaultButton(QMessageBox.StandardButtons.Yes)
-		message_box.setEscapeButton(QMessageBox.StandardButtons.Cancel)
+		message_box.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel)
+		message_box.setDefaultButton(QMessageBox.StandardButton.Yes)
+		message_box.setEscapeButton(QMessageBox.StandardButton.Cancel)
 		standardButton = message_box.exec()
-		if QMessageBox.StandardButtons(standardButton) is QMessageBox.StandardButtons.Yes:
+		if QMessageBox.StandardButton(standardButton) is QMessageBox.StandardButton.Yes:
 			return DialogResult.Yes
-		elif QMessageBox.StandardButtons(standardButton) is QMessageBox.StandardButtons.Cancel:
+		elif QMessageBox.StandardButton(standardButton) is QMessageBox.StandardButton.Cancel:
 			return DialogResult.Cancel
 		else:
 			return DialogResult.No
