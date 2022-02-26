@@ -226,7 +226,7 @@ class Rod():
 		if self.is_fuel or self.is_abs or self.is_breeder:
 			tempvar = -1
 			if self.neutron_max > 0:
-				tempvar = self.results.neutron_output_data[index][1] / self.neutron_max * 100.0
+				tempvar = self.results.neutron_count_data[index][1] / self.neutron_max * 100.0
 			self.widget_handle.set_neutron_count(self.results.neutron_count_data[index][1], tempvar)
 		elif self.is_mod or self.is_ref:
 			self.widget_handle.set_moderation_factor(self.mod_factor)
