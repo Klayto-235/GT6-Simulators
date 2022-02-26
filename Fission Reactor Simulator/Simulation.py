@@ -12,6 +12,11 @@ RodSelectionData = namedtuple("RodSelectionData", ["rod_total_HU", "rod_peak_N",
 CellSelectionData = namedtuple("CellSelectionData", ["cell_total_L", "cell_peak_Lt", "cell_exploded", "is_H2O", "current_HUt", "current_Lt"])
 
 
+#CHANGE: Need to check GT code to make sure but I suspect now things can change between ticks if a rod depletes. 
+#CHANGE: Changed extrapolation to work with ticks rather than seconds, but not sure everything is fine.
+#CHANGE: Frankly, this was a mess to begin with since we wrote it slowly while decyphering the mess in GT, should just rewrite into a cleaner version. 
+
+
 class RodResults():
 	def __init__(self):
 		self.durability_data = [(0, 0)] # Durability(t)
@@ -79,6 +84,8 @@ class Rod():
 		self.over_neutron_max = False # Do we suffer a durability penalty?
 		self.cell_id = None # Cell id of the cell we are in.
 		self.results = RodResults() # Results
+		self.max_real_emission = 0 # Max possible neutron emission without modifiers (used to efficiency calculation)
+		self.max_real_output = 0 # Max possile neutron output without modifiers, 4 * max_real_emission + neutron_self
 
 
 	def set(self, whandle, rod_id, coolant_id, csf):
@@ -129,6 +136,12 @@ class Rod():
 			self.theo_max_HU = 20 * divup(self.durability, 2000) * divup(self.neutron_max, self.HU_conversion_divisor) * self.HU_conversion_factor
 		else:
 			self.theo_max_HU = 0
+		if self.is_fuel:
+			self.max_real_emission = Assets().rod[rod_id].neutron_emission + divup((self.neutron_max_raw - Assets().rod[rod_id].neutron_self), Assets().rod[rod_id].neutron_div)
+			self.max_real_output = Assets().rod[rod_id].neutron_self + 4 * self.max_real_emission
+		else:
+			self.max_real_emission = 0
+			self.max_real_output = 0
 
 
 	def calculate_real_emission(self, index):
@@ -161,23 +174,23 @@ class Rod():
 
 
 	def evaluate_durability_and_HUt(self, index):
-		if self.is_depleted == False:
-			self.HUt = divup(self.neutron_count * self.HU_conversion_factor, self.HU_conversion_divisor)
-			self.results.totalHU += self.HUt * 20
-			self.results.totalHUby += self.HUtby * 20
+		start_depleted = self.is_depleted
+		ticks_alive = 20
 		if self.is_fuel:
-			if self.total_neutron_output <= self.neutron_max:
+			if self.neutron_count <= self.neutron_max:
 				if self.is_moderated:
-					self.durability_loss = 8000
+					self.durability_loss = 400
 				else:
-					self.durability_loss = 2000
+					self.durability_loss = 100
 			else:
 				if self.is_moderated:
-					self.durability_loss = 4 * divup(8000 * self.total_neutron_output, self.neutron_max)
+					self.durability_loss = 4 * divup(400 * self.neutron_count, self.neutron_max)
 				else:
-					self.durability_loss = divup(8000 * self.total_neutron_output, self.neutron_max)
+					self.durability_loss = divup(400 * self.neutron_count, self.neutron_max)
 				self.over_neutron_max = True
-			self.durability -= self.durability_loss
+			temp_ticks = divup(self.durability, self.durability_loss)
+			ticks_alive = min(temp_ticks, ticks_alive)
+			self.durability -= ticks_alive * self.durability_loss
 			if self.durability <= 0:
 				self.is_depleted = True
 				self.durability = 0
@@ -189,6 +202,10 @@ class Rod():
 				self.is_depleted = True
 				self.durability = 0
 				self.real_neutron_emission = 0
+		if start_depleted == False:
+			self.HUt = divup(self.neutron_count * self.HU_conversion_factor, self.HU_conversion_divisor)
+			self.results.totalHU += self.HUt * ticks_alive
+			self.results.totalHUby += self.HUtby * ticks_alive
 		self.results.append_durability((index, self.durability))
 		self.results.append_neutron_count((index, self.neutron_count))
 		self.results.append_hutby((index, self.HUtby))
@@ -306,6 +323,7 @@ class Simulation():
 
 		self.simulated_time = 0
 		self.max_time = 0
+		self.max_ticks = 0
 		self.exploded = False
 		self.has_depleted_rod = False
 		self.moderation_changed = False
@@ -361,7 +379,7 @@ class Simulation():
 		if (self.rod_data[len(self.rod_data) - 1].is_depleted):
 			self.has_depleted_rod = True
 		if (self.rod_data[-1].is_fuel):
-			self.max_N_count = self.max_N_count + self.rod_data[len(self.rod_data) - 1].neutron_max_raw
+			self.max_N_count = self.max_N_count + self.rod_data[len(self.rod_data) - 1].max_real_output
 		self.button_dict[button] = len(self.rod_data) - 1
 
 
@@ -472,11 +490,14 @@ class Simulation():
 			if (self.rod_data[i].is_fuel == True):
 				self.fuel_rods.append(i)
 				if (divup(self.rod_data[i].durability, 2000) < self.max_time):
-					self.max_time = divup(self.rod_data[i].durability, 2000) + 1
+					self.max_time = divup(self.rod_data[i].durability, 100) + 1
 			if (self.rod_data[i].is_mod == True):
 				self.mod_rods.append(i)
 
-		self.max_N_count = self.max_N_count * (self.max_time - 1) * 20
+		self.max_N_count = self.max_N_count * (self.max_time - 1)
+
+		self.max_ticks = self.max_time
+		self.max_time = divup(self.max_time, 20);
 
 
 	def run_simulation(self, autorun):
@@ -521,15 +542,15 @@ class Simulation():
 		return True
 
 
-	def extrapolate(self):
-		temp_maxt = self.max_time
+	def extrapolate(self): 
+		temp_maxt = self.max_ticks
 		for i in range(len(self.rod_data)):
 			if self.rod_data[i].durability_loss > 0:
 				tempt = divup(self.rod_data[i].durability, self.rod_data[i].durability_loss)
 				if (tempt < temp_maxt):
 					temp_maxt = tempt
-		self.simulated_time = self.simulated_time + temp_maxt
-		self.results.totalHU += self.HUt * temp_maxt * 20
+		self.simulated_time = self.simulated_time + divup(temp_maxt, 20)
+		self.results.totalHU += self.HUt * temp_maxt
 		for i in range(len(self.rod_data)):
 			self.rod_data[i].durability -= self.rod_data[i].durability_loss * temp_maxt
 			if self.rod_data[i].durability <= 0:
@@ -540,15 +561,15 @@ class Simulation():
 			self.rod_data[i].results.append_neutron_count((self.simulated_time, self.rod_data[i].neutron_count))
 			self.rod_data[i].results.append_neutron_output((self.simulated_time, self.rod_data[i].total_neutron_output))
 			self.rod_data[i].results.append_hutby((self.simulated_time, self.rod_data[i].HUtby))
-			self.rod_data[i].results.totalHU += self.rod_data[i].HUt * 20 * temp_maxt
-			self.rod_data[i].results.totalN += self.rod_data[i].total_neutron_output * 20 * temp_maxt
-			self.rod_data[i].results.totalHUby += self.rod_data[i].HUtby * 20 * temp_maxt
+			self.rod_data[i].results.totalHU += self.rod_data[i].HUt * temp_maxt
+			self.rod_data[i].results.totalN += self.rod_data[i].total_neutron_output * temp_maxt
+			self.rod_data[i].results.totalHUby += self.rod_data[i].HUtby * temp_maxt
 		self.results.append_HUt((self.simulated_time, self.HUt))
 		for i in range(len(self.cell_data)):
 			self.cell_data[i].results.append_Lt((self.simulated_time, self.cell_data[i].Lt))
-			self.cell_data[i].results.totalL += self.cell_data[i].Lt * 20 * temp_maxt
+			self.cell_data[i].results.totalL += self.cell_data[i].Lt * temp_maxt
 			self.cell_data[i].results.append_HUt((self.simulated_time, self.cell_data[i].HUt))
-			self.cell_data[i].results.totalHU += self.cell_data[i].HUt * 20 * temp_maxt
+			self.cell_data[i].results.totalHU += self.cell_data[i].HUt * temp_maxt
 
 
 	def cell_update_step(self, current_time):
