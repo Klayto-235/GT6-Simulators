@@ -34,8 +34,8 @@ class MaterialTab(QWidget):
 
 		for i in range(len(data)):
 			tempitem = QTreeWidgetItem(None, [data[i][1]])
-			tempitem.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-			tempitem.setCheckState(0, Qt.Unchecked)
+			tempitem.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
+			tempitem.setCheckState(0, Qt.CheckState.Unchecked)
 			if data[i][0] == 0:
 				self.inside.addTopLevelItem(tempitem)
 			else:
@@ -162,7 +162,7 @@ class MaterialDialog(QDialog):
 
 		tab_widget = QTabWidget(self)
 		tab_widget.setMinimumSize(630, 670)
-		button_box_widget = QDialogButtonBox(QDialogButtonBox.Close)
+		button_box_widget = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
 		self.rod_widget = MaterialTab(self.rod_data, "Fuel recipes", tab_widget)
 		self.raw_rod_widget = MaterialTab(self.raw_rod_data, "Raw fuel materials", tab_widget)
 		self.reactor_widget = MaterialTab(self.reactor_data, "Reactor recipes", tab_widget)
