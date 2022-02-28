@@ -2,7 +2,6 @@
 	"name": "fission_web",
 	"version": "0.0.0",
 	"description": "Gregtech 6 fission reactor simulator",
-	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"app": "./node_modules/parcel/lib/bin.js ./src/index.html"
