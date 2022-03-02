@@ -6,8 +6,8 @@ import InfoPanel from './InfoPanel';
 
 
 const AppWrapper = styled.div`
-	background-color: ${props => props.theme.bg};
-	color: ${props => props.theme.fg};
+	background-color: ${props => props.theme.base_bg};
+	color: ${props => props.theme.base_fg};
 	font-family: ${props => props.theme.font_family};
 `;
 

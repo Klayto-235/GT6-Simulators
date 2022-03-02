@@ -7,10 +7,12 @@ import App from './App';
 
 
 const theme = {
-	fg: "black",
-	bg: "#f0f0f0",
-	border: "#d0d0d0",
-	button_active: "#d0d0d0",
+	base_fg: "black",
+	base_bg: "#f0f0f0",
+	base_border: "1px solid #d0d0d0",
+	base_active: "#d0d0d0",
+	accent_bg: "white",
+	accent_border: "1px solid #808080",
 	font_family: "sans-serif"
 };
 
