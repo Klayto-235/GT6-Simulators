@@ -4,8 +4,8 @@
 	"description": "Gregtech 6 fission reactor simulator",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"app": "./node_modules/parcel/lib/bin.js ./src/index.html",
-		"build": "./node_modules/parcel/lib/bin.js build ./src/index.html"
+		"app": "node ./node_modules/parcel/lib/bin.js ./src/index.html",
+		"build": "node ./node_modules/parcel/lib/bin.js build ./src/index.html"
 	},
 	"author": "",
 	"license": "MIT",

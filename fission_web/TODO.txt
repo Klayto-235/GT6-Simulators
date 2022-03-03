@@ -1,2 +1,2 @@
 - static font to ensure unicode characters (triangle, check mark, etc.)?
-- add keyboard shortcuts
+- bundle js, css, and html into one file?
