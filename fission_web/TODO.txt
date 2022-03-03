@@ -1,3 +1,2 @@
 - static font to ensure unicode characters (triangle, check mark, etc.)?
-- is useCallback something we should be using?
-- hide menu on click outside
+- add keyboard shortcuts

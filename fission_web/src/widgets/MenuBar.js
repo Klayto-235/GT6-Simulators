@@ -53,22 +53,8 @@ class MenuItemMenu extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			isMenuContentVisible: false,
-			ref: undefined
-		};
+		this.state = {ref: undefined};
 		this.ref = React.createRef();
-
-		this.showMenuContent = this.showMenuContent.bind(this);
-		this.hideMenuContent = this.hideMenuContent.bind(this);
-	}
-
-	showMenuContent() {
-		this.setState({isMenuContentVisible: true});
-	}
-
-	hideMenuContent() {
-		this.setState({isMenuContentVisible: false});
 	}
 
 	componentDidMount() {
@@ -78,13 +64,13 @@ class MenuItemMenu extends React.Component {
 	render() {
 		return (
 			<MenuItemMenuWrapper ref={this.ref}>
-				<button onMouseEnter={this.showMenuContent} onMouseLeave={this.hideMenuContent}>
+				<button onMouseEnter={this.props.onMouseEnter}>
 					<span>✓</span>
 					{this.props.name}
 					<span>▸</span>
 				</button>
-				{this.state.isMenuContentVisible &&
-					<MenuContent onMouseEnter={this.showMenuContent} onMouseLeave={this.hideMenuContent} parentRef={this.state.ref}>
+				{this.props.active &&
+					<MenuContent parentRef={this.state.ref}>
 						{this.props.children}
 					</MenuContent>}
 			</MenuItemMenuWrapper>
@@ -94,7 +80,9 @@ class MenuItemMenu extends React.Component {
 
 MenuItemMenu.propTypes = {
 	name: PropTypes.string,
-	children: menu_children_validator
+	children: menu_children_validator,
+	onMouseEnter: PropTypes.func,
+	active: PropTypes.bool
 };
 
 const MenuItemButtonStyle = styled.button`
@@ -122,7 +110,7 @@ const MenuItemButtonStyle = styled.button`
 class MenuItemButton extends React.Component {
 	render() {
 		return (
-			<MenuItemButtonStyle onClick={this.props.onClick}>
+			<MenuItemButtonStyle onClick={this.props.onClick} onMouseEnter={this.props.onMouseEnter}>
 				<span className={this.props.checked ? "" : "hidden"}>✓</span>
 				{this.props.name}
 			</MenuItemButtonStyle>
@@ -133,7 +121,8 @@ class MenuItemButton extends React.Component {
 MenuItemButton.propTypes = {
 	onClick: PropTypes.func,
 	checked: PropTypes.bool,
-	name: PropTypes.string
+	name: PropTypes.string,
+	onMouseEnter: PropTypes.func
 };
 
 MenuItemButton.defaultProps = {
@@ -163,7 +152,10 @@ class MenuContent extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {positionClass: typeof this.props.parentRef == "undefined" ? "" : "subMenuRight"};
+		this.state = {
+			positionClass: typeof this.props.parentRef == "undefined" ? "" : "subMenuRight",
+			activeItem: -1
+		};
 		this.ref = React.createRef();
 	}
 
@@ -178,10 +170,19 @@ class MenuContent extends React.Component {
 		}
 	}
 
+	onMouseEnterItem(itemIndex) {
+		this.setState({activeItem: itemIndex});
+	}
+
 	render() {
+		let index = -1;
 		return <MenuContentStyle ref={this.ref} className={this.state.positionClass}
 			onMouseEnter={this.props.onMouseEnter} onMouseLeave={this.props.onMouseLeave}>
-				{this.props.children}
+				{React.Children.map(this.props.children, child => (++index, React.cloneElement(child, {
+					key: index,
+					onMouseEnter: this.onMouseEnterItem.bind(this, index),
+					active: index == this.state.activeItem
+				})))}
 			</MenuContentStyle>;
 	}
 }
@@ -229,6 +230,10 @@ Menu.propTypes = {
 	children: menu_children_validator
 };
 
+const MenuBarHeadersWrapper = styled.div`
+	display: inline-block;
+`;
+
 const MenuBarWrapper = styled.div`
 	border-bottom: ${props => props.theme.base_border};
 	white-space: nowrap;
@@ -242,8 +247,10 @@ class MenuBar extends React.Component {
 			isMenuVisible: false,
 			activeMenu: -1
 		};
+		this.ref = React.createRef();
 
 		this.toggleMenu = this.toggleMenu.bind(this);
+		this.onClickOutside = this.onClickOutside.bind(this);
 	}
 
 	toggleMenu() {
@@ -256,16 +263,32 @@ class MenuBar extends React.Component {
 		this.setState({activeMenu: menuIndex});
 	}
 
+	onClickOutside(event) {
+		if (this.ref && !this.ref.current.contains(event.target)) {
+			this.setState({isMenuVisible: false});
+        }
+	}
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.onClickOutside);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('mousedown', this.onClickOutside);
+	}
+
 	render() {
-		let index = 0;
+		let index = -1;
 		return (
 			<MenuBarWrapper className={typeof this.props.className == "undefined" ? "" : this.props.className}>
-				{React.Children.map(this.props.children, child => React.cloneElement(child, {
-					key: index++,
-					onClick: this.toggleMenu,
-					onMouseEnter: this.setActiveMenu.bind(this, index),
-					visible: this.state.activeMenu == index && this.state.isMenuVisible
-				}))}
+				<MenuBarHeadersWrapper ref={this.ref}>
+					{React.Children.map(this.props.children, child => (++index, React.cloneElement(child, {
+						key: index,
+						onClick: this.toggleMenu,
+						onMouseEnter: this.setActiveMenu.bind(this, index),
+						visible: this.state.activeMenu == index && this.state.isMenuVisible
+					})))}
+				</MenuBarHeadersWrapper>
 			</MenuBarWrapper>
 		);
 	}
