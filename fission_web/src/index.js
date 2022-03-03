@@ -13,6 +13,7 @@ const theme = {
 	base_active: "#d0d0d0",
 	accent_bg: "white",
 	accent_border: "1px solid #808080",
+	secondary_fg: "#808080",
 	font_family: "sans-serif"
 };
 

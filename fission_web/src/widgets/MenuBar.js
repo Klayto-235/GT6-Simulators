@@ -20,33 +20,42 @@ const MenuItemSeparator = styled.hr`
 	margin: 0.2em 5px;
 `;
 
+const MenuItemBaseStyle = styled.button`
+	border: none;
+	font-size: 0.9rem;
+	padding: 0.3em 10px 0.3em 5px;
+	background-color: inherit;
+	display: block;
+	text-align: left;
+	width: 100%;
+
+	&:hover {
+		background-color: ${props => props.theme.base_active};
+	}
+
+	& span:first-child {
+		padding: 0 0.4em;
+	}
+
+	& span:last-child {
+		float: right;
+		margin-left: 1em;
+	}
+`;
+
+const MenuItemMenuStyle = styled(MenuItemBaseStyle)`
+	& span:first-child {
+		visibility: hidden;
+	}
+
+	& span:last-child {
+		position: relative;
+		bottom: 1px;
+	}
+`;
+
 const MenuItemMenuWrapper = styled.div`
 	position: relative;
-
-	& > button {
-		border: none;
-		font-size: 0.9rem;
-		padding: 0.3em 10px 0.3em 5px;
-		background-color: inherit;
-		display: block;
-		text-align: left;
-		width: 100%;
-
-		&:hover {
-			background-color: ${props => props.theme.base_active};
-		}
-
-		& span:first-child {
-			padding: 0 0.4em;
-			visibility: hidden;
-		}
-
-		& span:last-child {
-			float: right;
-			position: relative;
-			bottom: 1px;
-		}
-	}
 `;
 
 class MenuItemMenu extends React.Component {
@@ -64,11 +73,11 @@ class MenuItemMenu extends React.Component {
 	render() {
 		return (
 			<MenuItemMenuWrapper ref={this.ref}>
-				<button onMouseEnter={this.props.onMouseEnter}>
+				<MenuItemMenuStyle onMouseEnter={this.props.onMouseEnter}>
 					<span>✓</span>
 					{this.props.name}
 					<span>▸</span>
-				</button>
+				</MenuItemMenuStyle>
 				{this.props.active &&
 					<MenuContent parentRef={this.state.ref}>
 						{this.props.children}
@@ -85,21 +94,9 @@ MenuItemMenu.propTypes = {
 	active: PropTypes.bool
 };
 
-const MenuItemButtonStyle = styled.button`
-	border: none;
-	font-size: 0.9rem;
-	padding: 0.3em 10px 0.3em 5px;
-	background-color: inherit;
-	display: block;
-	text-align: left;
-	width: 100%;
-
-	&:hover {
-		background-color: ${props => props.theme.base_active};
-	}
-
-	& span:first-child {
-		padding: 0 0.4em;
+const MenuItemButtonStyle = styled(MenuItemBaseStyle)`
+	& span:last-child {
+		color: ${props => props.theme.secondary_fg};
 	}
 
 	& .hidden {
@@ -113,6 +110,7 @@ class MenuItemButton extends React.Component {
 			<MenuItemButtonStyle onClick={this.props.onClick} onMouseEnter={this.props.onMouseEnter}>
 				<span className={this.props.checked ? "" : "hidden"}>✓</span>
 				{this.props.name}
+				<span>{this.props.hotkey}</span>
 			</MenuItemButtonStyle>
 		);
 	}
@@ -122,7 +120,8 @@ MenuItemButton.propTypes = {
 	onClick: PropTypes.func,
 	checked: PropTypes.bool,
 	name: PropTypes.string,
-	onMouseEnter: PropTypes.func
+	onMouseEnter: PropTypes.func,
+	hotkey: PropTypes.string
 };
 
 MenuItemButton.defaultProps = {
@@ -135,6 +134,7 @@ const MenuContentStyle = styled.div`
 	position: absolute;
 	z-index: 1;
 	min-width: 10em;
+	width: max-content;
 	padding: 0.2em 0;
 	
 	& .subMenuRight {
