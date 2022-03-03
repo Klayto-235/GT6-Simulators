@@ -79,7 +79,7 @@ class MenuItemMenu extends React.Component {
 					<span>▸</span>
 				</MenuItemMenuStyle>
 				{this.props.active &&
-					<MenuContent parentRef={this.state.ref}>
+					<MenuContent onClickButton={this.props.onClickButton} parentRef={this.state.ref}>
 						{this.props.children}
 					</MenuContent>}
 			</MenuItemMenuWrapper>
@@ -91,7 +91,8 @@ MenuItemMenu.propTypes = {
 	name: PropTypes.string,
 	children: menu_children_validator,
 	onMouseEnter: PropTypes.func,
-	active: PropTypes.bool
+	active: PropTypes.bool,
+	onClickButton: PropTypes.func
 };
 
 const MenuItemButtonStyle = styled(MenuItemBaseStyle)`
@@ -107,7 +108,7 @@ const MenuItemButtonStyle = styled(MenuItemBaseStyle)`
 class MenuItemButton extends React.Component {
 	render() {
 		return (
-			<MenuItemButtonStyle onClick={this.props.onClick} onMouseEnter={this.props.onMouseEnter}>
+			<MenuItemButtonStyle onClick={() => (this.props.onClick && this.props.onClick(), this.props.onClickButton())} onMouseEnter={this.props.onMouseEnter}>
 				<span className={this.props.checked ? "" : "hidden"}>✓</span>
 				{this.props.name}
 				<span>{this.props.hotkey}</span>
@@ -121,7 +122,8 @@ MenuItemButton.propTypes = {
 	checked: PropTypes.bool,
 	name: PropTypes.string,
 	onMouseEnter: PropTypes.func,
-	hotkey: PropTypes.string
+	hotkey: PropTypes.string,
+	onClickButton: PropTypes.func
 };
 
 MenuItemButton.defaultProps = {
@@ -181,7 +183,8 @@ class MenuContent extends React.Component {
 				{React.Children.map(this.props.children, child => (++index, React.cloneElement(child, {
 					key: index,
 					onMouseEnter: this.onMouseEnterItem.bind(this, index),
-					active: index == this.state.activeItem
+					active: index == this.state.activeItem,
+					onClickButton: this.props.onClickButton
 				})))}
 			</MenuContentStyle>;
 	}
@@ -191,7 +194,8 @@ MenuContent.propTypes = {
 	children: PropTypes.any,
 	parentRef: PropTypes.any,
 	onMouseEnter: PropTypes.func,
-	onMouseLeave: PropTypes.func
+	onMouseLeave: PropTypes.func,
+	onClickButton: PropTypes.func
 };
 
 const MenuHeader = styled.button`
@@ -216,7 +220,7 @@ class Menu extends React.Component {
 			<MenuWrapper>
 				<MenuHeader className={this.props.visible ? "visible" : ""} onClick={this.props.onClick}
 					onMouseEnter={this.props.onMouseEnter}>{this.props.header}</MenuHeader>
-				{this.props.visible && <MenuContent>{this.props.children}</MenuContent>}
+				{this.props.visible && <MenuContent onClickButton={this.props.onClickButton}>{this.props.children}</MenuContent>}
 			</MenuWrapper>
 		);
 	}
@@ -227,7 +231,8 @@ Menu.propTypes = {
 	onMouseEnter: PropTypes.func,
 	header: PropTypes.string,
 	visible: PropTypes.bool,
-	children: menu_children_validator
+	children: menu_children_validator,
+	onClickButton: PropTypes.func
 };
 
 const MenuBarHeadersWrapper = styled.div`
@@ -251,6 +256,7 @@ class MenuBar extends React.Component {
 
 		this.toggleMenu = this.toggleMenu.bind(this);
 		this.onClickOutside = this.onClickOutside.bind(this);
+		this.onClickButton = this.onClickButton.bind(this);
 	}
 
 	toggleMenu() {
@@ -267,6 +273,10 @@ class MenuBar extends React.Component {
 		if (this.ref && !this.ref.current.contains(event.target)) {
 			this.setState({isMenuVisible: false});
         }
+	}
+
+	onClickButton() {
+		this.setState({isMenuVisible: false});
 	}
 
 	componentDidMount() {
@@ -286,7 +296,8 @@ class MenuBar extends React.Component {
 						key: index,
 						onClick: this.toggleMenu,
 						onMouseEnter: this.setActiveMenu.bind(this, index),
-						visible: this.state.activeMenu == index && this.state.isMenuVisible
+						visible: this.state.activeMenu == index && this.state.isMenuVisible,
+						onClickButton: this.onClickButton
 					})))}
 				</MenuBarHeadersWrapper>
 			</MenuBarWrapper>
