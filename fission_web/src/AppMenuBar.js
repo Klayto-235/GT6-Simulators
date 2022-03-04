@@ -33,8 +33,6 @@ class AppMenuBar extends React.Component {
 						<MenuItemButton name="Open"/>
 						<MenuItemButton name="Save"/>
 						<MenuItemButton name="Save As"/>
-						<MenuItemSeparator/>
-						<MenuItemButton name="Quit"/>
 					</Menu>
 					<Menu header="Edit">
 						<MenuItemButton name="Undo"/>

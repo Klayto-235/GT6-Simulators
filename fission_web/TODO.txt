@@ -1,2 +1,1 @@
 - static font to ensure unicode characters (triangle, check mark, etc.)?
-- deal with warning (styled-components probably forwarding onClickButton to html tag etc.)

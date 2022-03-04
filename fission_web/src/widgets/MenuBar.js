@@ -180,12 +180,20 @@ class MenuContent extends React.Component {
 		let index = -1;
 		return <MenuContentStyle ref={this.ref} className={this.state.positionClass}
 			onMouseEnter={this.props.onMouseEnter} onMouseLeave={this.props.onMouseLeave}>
-				{React.Children.map(this.props.children, child => (++index, React.cloneElement(child, {
-					key: index,
-					onMouseEnter: this.onMouseEnterItem.bind(this, index),
-					active: index == this.state.activeItem,
-					onClickButton: this.props.onClickButton
-				})))}
+				{React.Children.map(this.props.children, child => (++index,
+					child.type == MenuItemSeparator ?
+					React.cloneElement(child, {
+						key: index,
+						onMouseEnter: this.onMouseEnterItem.bind(this, index),
+						active: index == this.state.activeItem
+					}) :
+					React.cloneElement(child, {
+						key: index,
+						onMouseEnter: this.onMouseEnterItem.bind(this, index),
+						active: index == this.state.activeItem,
+						onClickButton: this.props.onClickButton
+					})
+				))}
 			</MenuContentStyle>;
 	}
 }
