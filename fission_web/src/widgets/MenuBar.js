@@ -270,7 +270,7 @@ class MenuBar extends React.Component {
 	}
 
 	onClickOutside(event) {
-		if (this.ref && !this.ref.current.contains(event.target)) {
+		if (!this.ref?.current.contains(event.target)) {
 			this.setState({isMenuVisible: false});
         }
 	}

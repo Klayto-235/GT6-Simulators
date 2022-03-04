@@ -1,2 +1,2 @@
 - static font to ensure unicode characters (triangle, check mark, etc.)?
-- bundle js, css, and html into one file?
+- deal with warning (styled-components probably forwarding onClickButton to html tag etc.)
