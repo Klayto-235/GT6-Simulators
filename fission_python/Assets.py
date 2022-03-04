@@ -20,25 +20,25 @@ class Assets(metaclass=Singleton):
 
 		# Utility
 		utility_images = {
-			"Shape" :		"img/shape_tool.png",
-			"Select" :		"img/select_tool.png",
-			"Erase" :		"img/erase_tool.png",
-			"Fill" :		"img/fill_tool.png",
-			"Floodfill" :	"img/floodfill_tool.png",
-			"Reset" :		"img/reset_tool.png",
-			"Plus" :		"img/plus.png",
-			"Minus" :		"img/minus.png",
-			"Play" :		"img/play.png",
-			"Width" :		"img/width.png",
-			"Height" :		"img/height.png",
-			"AddColLeft" :	"img/add_col_left.png",
-			"RemColLeft" :	"img/rem_col_left.png",
-			"AddColRight" :	"img/add_col_right.png",
-			"RemColRight" :	"img/rem_col_right.png",
-			"AddRowTop" :	"img/add_row_top.png",
-			"RemRowTop" :	"img/rem_row_top.png",
-			"AddRowBot" :	"img/add_row_bot.png",
-			"RemRowBot" :	"img/rem_row_bot.png"
+			"Shape" :		"../assets/img/shape_tool.png",
+			"Select" :		"../assets/img/select_tool.png",
+			"Erase" :		"../assets/img/erase_tool.png",
+			"Fill" :		"../assets/img/fill_tool.png",
+			"Floodfill" :	"../assets/img/floodfill_tool.png",
+			"Reset" :		"../assets/img/reset_tool.png",
+			"Plus" :		"../assets/img/plus.png",
+			"Minus" :		"../assets/img/minus.png",
+			"Play" :		"../assets/img/play.png",
+			"Width" :		"../assets/img/width.png",
+			"Height" :		"../assets/img/height.png",
+			"AddColLeft" :	"../assets/img/add_col_left.png",
+			"RemColLeft" :	"../assets/img/rem_col_left.png",
+			"AddColRight" :	"../assets/img/add_col_right.png",
+			"RemColRight" :	"../assets/img/rem_col_right.png",
+			"AddRowTop" :	"../assets/img/add_row_top.png",
+			"RemRowTop" :	"../assets/img/rem_row_top.png",
+			"AddRowBot" :	"../assets/img/add_row_bot.png",
+			"RemRowBot" :	"../assets/img/rem_row_bot.png"
 		}
 		empty_pixmap = QPixmap(48, 48)
 		empty_pixmap.fill(QColor(0, 0, 0, 0))
@@ -53,48 +53,48 @@ class Assets(metaclass=Singleton):
 		
 		# Rods
 		rod_images = {
-			"Ref" :		"img/rod_reflector.png",
-			"Abs" :		"img/rod_absorber.png",
-			"Mod" :		"img/rod_moderator.png",
-			"U-238" :	"img/rod_U-238.png",
-			"U-235" :	"img/rod_U-235.png",
-			"U-233" :	"img/rod_U-233.png",
-			"Th-232" :	"img/rod_Th-232.png",
-			"Co-60" :	"img/rod_Co-60.png",
-			"Pu-244" :	"img/rod_Pu-244.png",
-			"Pu-243" :	"img/rod_Pu-243.png",
-			"Pu-241" :	"img/rod_Pu-241.png",
-			"Pu-239" :	"img/rod_Pu-239.png",
-			"Am-245" :	"img/rod_Am-245.png",
-			"Am-241" :	"img/rod_Am-241.png",
-			"Nq-528" :	"img/rod_Nq-528.png",
-			"Nq-522" :	"img/rod_Nq-522.png",
-			"U-238B" :	"img/rod_U-238B.png",
-			"Th-232B" :	"img/rod_Th-232B.png"
+			"Ref" :		"../assets/img/rod_reflector.png",
+			"Abs" :		"../assets/img/rod_absorber.png",
+			"Mod" :		"../assets/img/rod_moderator.png",
+			"U-238" :	"../assets/img/rod_U-238.png",
+			"U-235" :	"../assets/img/rod_U-235.png",
+			"U-233" :	"../assets/img/rod_U-233.png",
+			"Th-232" :	"../assets/img/rod_Th-232.png",
+			"Co-60" :	"../assets/img/rod_Co-60.png",
+			"Pu-244" :	"../assets/img/rod_Pu-244.png",
+			"Pu-243" :	"../assets/img/rod_Pu-243.png",
+			"Pu-241" :	"../assets/img/rod_Pu-241.png",
+			"Pu-239" :	"../assets/img/rod_Pu-239.png",
+			"Am-245" :	"../assets/img/rod_Am-245.png",
+			"Am-241" :	"../assets/img/rod_Am-241.png",
+			"Nq-528" :	"../assets/img/rod_Nq-528.png",
+			"Nq-522" :	"../assets/img/rod_Nq-522.png",
+			"U-238B" :	"../assets/img/rod_U-238B.png",
+			"Th-232B" :	"../assets/img/rod_Th-232B.png"
 		}
 		rod_pixmaps = {"None" : self.utility_pixmap["Empty"]}
 		for name,path in rod_images.items():
 			rod_pixmaps[name] = QPixmap(path)
 
 		top_images = {
-			"Ref" :		"img/top_reflector.png",
-			"Abs" :		"img/top_absorber.png",
-			"Mod" :		"img/top_moderator.png",
-			"U-238" :	"img/top_U-238.png",
-			"U-235" :	"img/top_U-235.png",
-			"U-233" :	"img/top_U-233.png",
-			"Th-232" :	"img/top_Th-232.png",
-			"Co-60" :	"img/top_Co-60.png",
-			"Pu-244" :	"img/top_Pu-244.png",
-			"Pu-243" :	"img/top_Pu-243.png",
-			"Pu-241" :	"img/top_Pu-241.png",
-			"Pu-239" :	"img/top_Pu-239.png",
-			"Am-245" :	"img/top_Am-245.png",
-			"Am-241" :	"img/top_Am-241.png",
-			"Nq-528" :	"img/top_Nq-528.png",
-			"Nq-522" :	"img/top_Nq-522.png",
-			"U-238B" :	"img/top_U-238B.png",
-			"Th-232B" :	"img/top_Th-232B.png"
+			"Ref" :		"../assets/img/top_reflector.png",
+			"Abs" :		"../assets/img/top_absorber.png",
+			"Mod" :		"../assets/img/top_moderator.png",
+			"U-238" :	"../assets/img/top_U-238.png",
+			"U-235" :	"../assets/img/top_U-235.png",
+			"U-233" :	"../assets/img/top_U-233.png",
+			"Th-232" :	"../assets/img/top_Th-232.png",
+			"Co-60" :	"../assets/img/top_Co-60.png",
+			"Pu-244" :	"../assets/img/top_Pu-244.png",
+			"Pu-243" :	"../assets/img/top_Pu-243.png",
+			"Pu-241" :	"../assets/img/top_Pu-241.png",
+			"Pu-239" :	"../assets/img/top_Pu-239.png",
+			"Am-245" :	"../assets/img/top_Am-245.png",
+			"Am-241" :	"../assets/img/top_Am-241.png",
+			"Nq-528" :	"../assets/img/top_Nq-528.png",
+			"Nq-522" :	"../assets/img/top_Nq-522.png",
+			"U-238B" :	"../assets/img/top_U-238B.png",
+			"Th-232B" :	"../assets/img/top_Th-232B.png"
 		}
 		top_pixmaps = {"None" : self.utility_pixmap["Empty"]}
 		for name,path in top_images.items():
@@ -275,7 +275,7 @@ class Assets(metaclass=Singleton):
 			QColor(178, 178, 198, alpha_value),
 			QColor(46, 52, 46, alpha_value)
 		]
-		coolant_stencil = QBitmap.fromPixmap(QPixmap("img/coolant_stencil.png", None, Qt.ImageConversionFlag.MonoOnly | Qt.ImageConversionFlag.ThresholdDither))
+		coolant_stencil = QBitmap.fromPixmap(QPixmap("../assets/img/coolant_stencil.png", None, Qt.ImageConversionFlag.MonoOnly | Qt.ImageConversionFlag.ThresholdDither))
 		coolant_pixmaps = [self.utility_pixmap["Empty"]]
 		for color in coolant_colors[1:]:
 			tmp = QPixmap(48, 48)
