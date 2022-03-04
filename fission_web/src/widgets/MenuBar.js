@@ -15,7 +15,6 @@ function menu_children_validator(props, propName, componentName) {
 }
 
 const MenuItemSeparator = styled.hr`
-	margin: 0;
 	border: ${props => props.theme.base_border};
 	margin: 0.2em 5px;
 `;
@@ -298,7 +297,7 @@ class MenuBar extends React.Component {
 	render() {
 		let index = -1;
 		return (
-			<MenuBarWrapper className={typeof this.props.className == "undefined" ? "" : this.props.className}>
+			<MenuBarWrapper className={this.props.className}>
 				<MenuBarHeadersWrapper ref={this.ref}>
 					{React.Children.map(this.props.children, child => (++index, React.cloneElement(child, {
 						key: index,
@@ -315,7 +314,7 @@ class MenuBar extends React.Component {
 
 MenuBar.propTypes = {
 	className: PropTypes.string,
-	children: function (props, propName, componentName) {
+	children: function(props, propName, componentName) {
 		const prop = props[propName];
 	
 		let error = null;

@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Normalize } from 'styled-normalize';
 import { ThemeProvider } from 'styled-components';
-import "./index.css";
 import App from './App';
 
 
@@ -14,6 +13,7 @@ const theme = {
 	accent_bg: "white",
 	accent_border: "1px solid #808080",
 	secondary_fg: "#808080",
+	secondary_border: "1px solid white",
 	font_family: "sans-serif"
 };
 
