@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { children_class_validator } from './util';
 
 
 class ToolItemSeparator extends React.Component {
@@ -12,8 +13,8 @@ class ToolItemSeparator extends React.Component {
 class ToolItemButton extends React.Component {
 	render() {
 		return (
-			<button className={this.props.name ? " hasName" : ""} onClick={this.props.onClick}>
-				<img src={this.props.image}/>
+			<button className={(this.props.checked ? "checked" : "") + (this.props.name ? " hasName" : "")} onClick={this.props.onClick}>
+				<img draggable="false" src={this.props.image}/>
 				{this.props.name}
 			</button>
 		);
@@ -23,7 +24,39 @@ class ToolItemButton extends React.Component {
 ToolItemButton.propTypes = {
 	name: PropTypes.string,
 	image: PropTypes.string,
-	onClick: PropTypes.func
+	onClick: PropTypes.func,
+	checked: PropTypes.bool
+};
+
+class ToolBarButtonGroup extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			activeButton: -1
+		};
+	}
+
+	onClick(buttonIndex) {
+		this.setState(prevState => ({activeButton: buttonIndex == prevState.activeButton ? -1 : buttonIndex}));
+	}
+
+	render() {
+		let index = -1;
+		return (
+			<>
+				{React.Children.map(this.props.children, child => (++index, React.cloneElement(child, {
+					key: index,
+					onClick: this.onClick.bind(this, index),
+					checked: this.state.activeButton == index
+				})))}
+			</>
+		);
+	}
+}
+
+ToolBarButtonGroup.propTypes = {
+	children: children_class_validator([ToolItemSeparator, ToolItemButton])
 };
 
 const ToolBarWrapper = styled.div`
@@ -33,8 +66,9 @@ const ToolBarWrapper = styled.div`
 	& > span {
 		align-self: stretch;
 		margin: 5px 2px;
-		border-left: ${props => props.theme.base_border};
+		border-left: ${props => props.theme.secondary_border};
 		border-right: ${props => props.theme.secondary_border};
+		border-right-color: white;
 	}
 
 	& > button {
@@ -47,6 +81,12 @@ const ToolBarWrapper = styled.div`
 
 		&:hover {
 			background-color: ${props => props.theme.accent_bg};
+			border: ${props => props.theme.base_border};
+		}
+
+		&.checked,
+		&:active {
+			background-color: ${props => props.theme.secondary_active};
 			border: ${props => props.theme.base_border};
 		}
 
@@ -65,8 +105,9 @@ const ToolBarWrapper = styled.div`
 		& > span {
 			margin: 2px 5px;
 			border: unset;
-			border-top: ${props => props.theme.base_border};
+			border-top: ${props => props.theme.secondary_border};
 			border-bottom: ${props => props.theme.secondary_border};
+			border-bottom-color: white;
 		}
 
 		& > button {
@@ -91,20 +132,11 @@ class ToolBar extends React.Component {
 ToolBar.propTypes = {
 	className: PropTypes.string,
 	horizontal: PropTypes.bool,
-	children: function(props, propName, componentName) {
-		const prop = props[propName];
-	
-		let error = null;
-		React.Children.forEach(prop, function (child) {
-			if (child.type !== ToolItemButton && child.type !== ToolItemSeparator)
-				error = new Error('Children of type ' + componentName + ' should be of type ToolItemButton or ToolItemSeparator.');
-		});
-		return error;
-	}
+	children: children_class_validator([ToolItemSeparator, ToolItemButton, ToolBarButtonGroup])
 };
 
 ToolBar.defaultProps = {
 	horizontal: true
 };
 
-export { ToolBar, ToolItemButton, ToolItemSeparator };
+export { ToolBar, ToolItemButton, ToolItemSeparator, ToolBarButtonGroup };

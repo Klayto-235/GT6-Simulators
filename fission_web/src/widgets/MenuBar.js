@@ -1,21 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { children_class_validator } from './util';
 
-
-function menu_children_validator(props, propName, componentName) {
-	const prop = props[propName];
-
-	let error = null;
-	React.Children.forEach(prop, function (child) {
-		if (child.type !== MenuItemButton && child.type !== MenuItemSeparator && child.type !== MenuItemMenu)
-			error = new Error('Children of type ' + componentName + ' should be of type MenuItemButton, MenuItemSeparator, or MenuItemMenu.');
-	});
-	return error;
-}
 
 const MenuItemSeparator = styled.hr`
-	border: ${props => props.theme.base_border};
+	border: ${props => props.theme.secondary_border};
 	margin: 0.2em 5px;
 `;
 
@@ -41,6 +31,41 @@ const MenuItemBaseStyle = styled.button`
 		margin-left: 1em;
 	}
 `;
+
+const MenuItemButtonStyle = styled(MenuItemBaseStyle)`
+	& span:last-child {
+		color: ${props => props.theme.secondary_fg};
+	}
+
+	& .hidden {
+		visibility: hidden;
+	}
+`;
+
+class MenuItemButton extends React.Component {
+	render() {
+		return (
+			<MenuItemButtonStyle onClick={() => (this.props.onClick && this.props.onClick(), this.props.onClickButton())} onMouseEnter={this.props.onMouseEnter}>
+				<span className={this.props.checked ? "" : "hidden"}>✓</span>
+				{this.props.name}
+				<span>{this.props.hotkey}</span>
+			</MenuItemButtonStyle>
+		);
+	}
+}
+
+MenuItemButton.propTypes = {
+	onClick: PropTypes.func,
+	checked: PropTypes.bool,
+	name: PropTypes.string,
+	onMouseEnter: PropTypes.func,
+	hotkey: PropTypes.string,
+	onClickButton: PropTypes.func
+};
+
+MenuItemButton.defaultProps = {
+	checked: false
+};
 
 const MenuItemMenuStyle = styled(MenuItemBaseStyle)`
 	& span:first-child {
@@ -88,45 +113,10 @@ class MenuItemMenu extends React.Component {
 
 MenuItemMenu.propTypes = {
 	name: PropTypes.string,
-	children: menu_children_validator,
+	children: children_class_validator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
 	onMouseEnter: PropTypes.func,
 	active: PropTypes.bool,
 	onClickButton: PropTypes.func
-};
-
-const MenuItemButtonStyle = styled(MenuItemBaseStyle)`
-	& span:last-child {
-		color: ${props => props.theme.secondary_fg};
-	}
-
-	& .hidden {
-		visibility: hidden;
-	}
-`;
-
-class MenuItemButton extends React.Component {
-	render() {
-		return (
-			<MenuItemButtonStyle onClick={() => (this.props.onClick && this.props.onClick(), this.props.onClickButton())} onMouseEnter={this.props.onMouseEnter}>
-				<span className={this.props.checked ? "" : "hidden"}>✓</span>
-				{this.props.name}
-				<span>{this.props.hotkey}</span>
-			</MenuItemButtonStyle>
-		);
-	}
-}
-
-MenuItemButton.propTypes = {
-	onClick: PropTypes.func,
-	checked: PropTypes.bool,
-	name: PropTypes.string,
-	onMouseEnter: PropTypes.func,
-	hotkey: PropTypes.string,
-	onClickButton: PropTypes.func
-};
-
-MenuItemButton.defaultProps = {
-	checked: false
 };
 
 const MenuContentStyle = styled.div`
@@ -238,7 +228,7 @@ Menu.propTypes = {
 	onMouseEnter: PropTypes.func,
 	header: PropTypes.string,
 	visible: PropTypes.bool,
-	children: menu_children_validator,
+	children: children_class_validator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
 	onClickButton: PropTypes.func
 };
 
@@ -247,7 +237,7 @@ const MenuBarHeadersWrapper = styled.div`
 `;
 
 const MenuBarWrapper = styled.div`
-	border-bottom: ${props => props.theme.base_border};
+	border-bottom: ${props => props.theme.secondary_border};
 	white-space: nowrap;
 `;
 

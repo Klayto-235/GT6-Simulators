@@ -18,7 +18,9 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.17.5",
+		"@parcel/optimizer-data-url": "^2.3.2",
 		"@parcel/reporter-bundle-analyzer": "^2.3.2",
+		"@parcel/transformer-inline-string": "^2.3.2",
 		"babel-plugin-styled-components": "^2.0.6",
 		"eslint": "^8.10.0",
 		"eslint-plugin-react": "^7.29.2",
