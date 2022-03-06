@@ -1,1 +1,2 @@
 - static font to ensure unicode characters (triangle, check mark, etc.)?
+- parcel hmr error in production build??
