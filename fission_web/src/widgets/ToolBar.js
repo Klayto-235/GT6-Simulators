@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import { children_class_validator } from './util';
 
 
-class ToolItemSeparator extends React.Component {
-	render() {
-		return <span/>;
+const ToolItemBlank = styled.div`
+	& > * {
+		display: block;
 	}
-}
+`;
+
+const ToolItemSeparator = styled.span``;
 
 class ToolItemButton extends React.Component {
 	render() {
@@ -132,11 +134,11 @@ class ToolBar extends React.Component {
 ToolBar.propTypes = {
 	className: PropTypes.string,
 	horizontal: PropTypes.bool,
-	children: children_class_validator([ToolItemSeparator, ToolItemButton, ToolBarButtonGroup])
+	children: children_class_validator([ToolItemSeparator, ToolItemButton, ToolBarButtonGroup, ToolItemBlank])
 };
 
 ToolBar.defaultProps = {
 	horizontal: true
 };
 
-export { ToolBar, ToolItemButton, ToolItemSeparator, ToolBarButtonGroup };
+export { ToolBar, ToolItemButton, ToolItemSeparator, ToolBarButtonGroup, ToolItemBlank };
