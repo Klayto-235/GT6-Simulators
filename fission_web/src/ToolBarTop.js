@@ -1,7 +1,7 @@
 import React from 'react';
 import { ToolBar, ToolItemButton, ToolItemSeparator, ToolItemBlank } from './widgets/ToolBar';
 import image from 'data-url:../../assets/img/fill_tool.png';
-import { Checkbox } from './widgets/input';
+import { Checkbox, Dropdown, DropdownItem } from './widgets/input';
 
 
 class ToolBarTop extends React.Component {
@@ -32,6 +32,15 @@ class ToolBarTop extends React.Component {
 						<input type="checkbox"/>
 						<label> Bleee</label>
 					</span>
+				</ToolItemBlank>
+				<ToolItemBlank>
+					<Dropdown>
+						<DropdownItem name="None"/>
+						<DropdownItem image={image}/>
+						<DropdownItem image={image} name="Fill"/>
+						<DropdownItem image={image} name="Fill"/>
+						<DropdownItem image={image} name="Test"/>
+					</Dropdown>
 				</ToolItemBlank>
 			</ToolBar>
 		);

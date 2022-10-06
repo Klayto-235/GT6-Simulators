@@ -1,2 +1,3 @@
 - static font to ensure unicode characters (triangle, check mark, etc.)?
 - parcel hmr error in production build??
+- apply user-select: none to disable text selection on buttons etc.
