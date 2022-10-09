@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { children_class_validator } from './util';
+import { Button as ToolItemButton } from './input';
 
 
 const ToolItemBlank = styled.div`
@@ -11,24 +12,6 @@ const ToolItemBlank = styled.div`
 `;
 
 const ToolItemSeparator = styled.span``;
-
-class ToolItemButton extends React.Component {
-	render() {
-		return (
-			<button className={(this.props.checked ? "checked" : "") + (this.props.name ? " hasName" : "")} onClick={this.props.onClick}>
-				<img draggable="false" src={this.props.image}/>
-				{this.props.name}
-			</button>
-		);
-	}
-}
-
-ToolItemButton.propTypes = {
-	name: PropTypes.string,
-	image: PropTypes.string,
-	onClick: PropTypes.func,
-	checked: PropTypes.bool
-};
 
 class ToolBarButtonGroup extends React.Component {
 	constructor(props) {
@@ -73,34 +56,6 @@ const ToolBarWrapper = styled.div`
 		border-right-color: white;
 	}
 
-	& > button {
-		font-size: 0.9em;
-		padding: 0;
-		margin: 0 1px;
-		border: ${props => props.theme.base_border};
-		border-color: ${props => props.theme.base_bg};
-		border-radius: 3px;
-
-		&:hover {
-			background-color: ${props => props.theme.accent_bg};
-			border: ${props => props.theme.base_border};
-		}
-
-		&.checked,
-		&:active {
-			background-color: ${props => props.theme.secondary_active};
-			border: ${props => props.theme.base_border};
-		}
-
-		& img {
-			display: block;
-		}
-
-		&.hasName {
-			padding: 0 calc(1px + 0.5em);
-		}
-	}
-
 	&.vertical {
 		flex-direction: column;
 
@@ -110,10 +65,6 @@ const ToolBarWrapper = styled.div`
 			border-top: ${props => props.theme.secondary_border};
 			border-bottom: ${props => props.theme.secondary_border};
 			border-bottom-color: white;
-		}
-
-		& > button {
-			margin: 1px 0;
 		}
 	}
 `;

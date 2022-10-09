@@ -22,7 +22,7 @@ class ToolBarTop extends React.Component {
 	render() {
 		return (
 			<ToolBar className="toolBarTop">
-			<ToolItemButton name="Fill" image={image}/>
+				<ToolItemButton name="Fill" image={image}/>
 				<ToolItemButton name="Fill"/>
 				<ToolItemSeparator/>
 				<ToolItemButton image={image}/>
@@ -34,12 +34,12 @@ class ToolBarTop extends React.Component {
 					</span>
 				</ToolItemBlank>
 				<ToolItemBlank>
-					<Dropdown>
-						<DropdownItem name="None"/>
+					<Dropdown textWidth="2em" maxHeight="300px">
 						<DropdownItem image={image}/>
 						<DropdownItem image={image} name="Fill"/>
 						<DropdownItem image={image} name="Fill"/>
 						<DropdownItem image={image} name="Test"/>
+						<DropdownItem name="None"/>
 					</Dropdown>
 				</ToolItemBlank>
 			</ToolBar>

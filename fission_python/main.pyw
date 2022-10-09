@@ -28,6 +28,7 @@ class RealMainWindow(QMainWindow):
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
+	app.setStyle('Fusion')
 	app.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 	app.setAttribute(Qt.ApplicationAttribute.AA_DontShowIconsInMenus)
 	window = RealMainWindow()
