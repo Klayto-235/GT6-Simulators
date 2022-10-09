@@ -150,7 +150,7 @@ const DropdownWrapper = styled.div`
 		position: absolute;
 		z-index: 1;
 		margin: 0 1px;
-		overflow-y: scroll;
+		overflow-y: auto;
 
 		& button {
 			width: 100%;
