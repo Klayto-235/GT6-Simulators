@@ -283,19 +283,19 @@ class Assets(metaclass=Singleton):
 			tmp.setMask(coolant_stencil)
 			coolant_pixmaps.append(tmp)
 			
-		self.coolant = { # pixmap, color, capacity, temperature, mod_emission, mod_self, mod_max, mod_div, moderates, HU_div, full_name
-			"None" :	CoolantRecord(	coolant_pixmaps[0],		coolant_colors[0],	0,		-1,		( 1, 1 ),	( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		False,	1,	"No coolant"				),
-			"IC2" :		CoolantRecord(	coolant_pixmaps[1],		coolant_colors[1],	20,		1200,	( 4, 1 ),	( 4, 1 ),	( 1, 1 ),	( mul, 2 ),		False,	1,	"IC2 coolant"				), 
-			"Na" :		CoolantRecord(	coolant_pixmaps[2],		coolant_colors[2],	30,		1100,	( 1, 1 ),	( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		False,	6,	"Sodium (Na)"				), 
-			"Sn" :		CoolantRecord(	coolant_pixmaps[3],		coolant_colors[3],	40,		2800,	( 1, 1 ),	( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		False,	3,	"Tin (Sn)"					), 
-			"D2O" :		CoolantRecord(	coolant_pixmaps[4],		coolant_colors[4],	50,		600,	( 1, 1 ),	( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		True,	1,	"Heavy water (D2O)"			), 
-			"DHO" :		CoolantRecord(	coolant_pixmaps[5],		coolant_colors[5],	40,		550,	( 1, 1 ),	( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		True,	1,	"Semiheavy water (DHO)"		), 
-			"T2O" :		CoolantRecord(	coolant_pixmaps[6],		coolant_colors[6],	60,		650,	( 1, 1 ),	( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		True,	1,	"Tritiated water (T2O)"		), 
-			"H2O" :		CoolantRecord(	coolant_pixmaps[7],		coolant_colors[7],	80,		420,	( 1, 1 ),	( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		True,	1,	"Distilled water (H2O)"				), 
-			"CO2" :		CoolantRecord(	coolant_pixmaps[8],		coolant_colors[8],	20,		950,	( 1, 1 ),	( 3, 1 ),	( 1, 1 ),	( add, -1 ),	False,	1,	"Carbon Dioxide (CO2)"		), 
-			"He" :		CoolantRecord(	coolant_pixmaps[9],		coolant_colors[9],	30,		1150,	( 1, 2 ),	( 4, 1 ),	( 1, 1 ),	( add, 1 ),		False,	1,	"Helium (He)"				), 
-			"LiCl" :	CoolantRecord(	coolant_pixmaps[10],	coolant_colors[10],	15,		1600,	( 1, 2 ),	( 5, 1 ),	( 5, 4 ),	( mul, 1 ),		False,	1,	"Lithium Chloride (LiCl)"	), 
-			"Th" :		CoolantRecord(	coolant_pixmaps[11],	coolant_colors[11],	10000,	-1,		( 1, 2 ),	( 0, 1 ),	( 4, 1 ),	( add, -1 )	,	False,	1,	"Thorium salts (Th)"		)
+		self.coolant = { #				pixmap,					color,				capacity,	temperature,	mod_emission,	mod_self,	mod_max,	mod_div,		moderates,	HU_div,		full_name
+			"None" :	CoolantRecord(	coolant_pixmaps[0],		coolant_colors[0],	0,			-1,				( 1, 1 ),		( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		False,		1,			"No coolant"				),
+			"IC2" :		CoolantRecord(	coolant_pixmaps[1],		coolant_colors[1],	20,			1200,			( 4, 1 ),		( 4, 1 ),	( 1, 1 ),	( mul, 2 ),		False,		1,			"IC2 coolant"				), 
+			"Na" :		CoolantRecord(	coolant_pixmaps[2],		coolant_colors[2],	30,			1100,			( 1, 1 ),		( 1, 1 ),	( 1, 1 ),	( add, -1 ),	False,		6,			"Sodium (Na)"				), 
+			"Sn" :		CoolantRecord(	coolant_pixmaps[3],		coolant_colors[3],	40,			2800,			( 1, 1 ),		( 1, 1 ),	( 1, 1 ),	( add, -1 ),	False,		3,			"Tin (Sn)"					), 
+			"D2O" :		CoolantRecord(	coolant_pixmaps[4],		coolant_colors[4],	50,			600,			( 1, 1 ),		( 1, 1 ),	( 1, 8 ),	( mul, 1 ),		True,		1,			"Heavy water (D2O)"			), 
+			"DHO" :		CoolantRecord(	coolant_pixmaps[5],		coolant_colors[5],	40,			550,			( 1, 1 ),		( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		True,		1,			"Semiheavy water (DHO)"		), 
+			"T2O" :		CoolantRecord(	coolant_pixmaps[6],		coolant_colors[6],	60,			650,			( 1, 1 ),		( 1, 1 ),	( 1, 16 ),	( mul, 1 ),		True,		1,			"Tritiated water (T2O)"		), 
+			"H2O" :		CoolantRecord(	coolant_pixmaps[7],		coolant_colors[7],	80,			420,			( 1, 1 ),		( 1, 1 ),	( 1, 1 ),	( mul, 1 ),		True,		1,			"Distilled water (H2O)"				), 
+			"CO2" :		CoolantRecord(	coolant_pixmaps[8],		coolant_colors[8],	20,			950,			( 1, 1 ),		( 3, 1 ),	( 1, 1 ),	( mul, 1 ),		False,		1,			"Carbon Dioxide (CO2)"		), 
+			"He" :		CoolantRecord(	coolant_pixmaps[9],		coolant_colors[9],	30,			1150,			( 1, 2 ),		( 4, 1 ),	( 1, 1 ),	( add, 1 ),		False,		1,			"Helium (He)"				), 
+			"LiCl" :	CoolantRecord(	coolant_pixmaps[10],	coolant_colors[10],	15,			1600,			( 1, 2 ),		( 5, 1 ),	( 5, 4 ),	( mul, 1 ),		False,		1,			"Lithium Chloride (LiCl)"	), 
+			"Th" :		CoolantRecord(	coolant_pixmaps[11],	coolant_colors[11],	10000,		-1,				( 1, 2 ),		( 0, 1 ),	( 4, 1 ),	( add, -1 ),	False,		1,			"Thorium salts (Th)"		)
 		}
 
 		self.coolant_tooltips = {}
