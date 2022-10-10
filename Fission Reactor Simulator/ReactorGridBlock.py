@@ -332,12 +332,11 @@ class ReactorGridBlock(QGraphicsRectItem):
 
 		self.button_large = ReactorGridButton(self.x + 2, self.y + 2, (self.w - 4), (self.w - 4), -1, -1, self)
 		
-		for button in self.buttons_small:
-			button.hide()
+		self.button_large.hide()
 
 		self.header = ReactorGridBlockHeader(self.x + 2, self.y + 2, self.w - 4, 13, self)
 
-		self.shape_small = False
+		self.shape_small = True
 		self.coolant_name = None
 		self.set_coolant("None")
 		self.expcolor = False
