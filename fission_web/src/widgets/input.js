@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { children_class_validator } from './util';
+import { childrenClassValidator } from '../util';
 
 
 const ButtonStyle = styled.button`
@@ -47,7 +47,8 @@ Button.propTypes = {
 	name: PropTypes.string,
 	image: PropTypes.string,
 	onClick: PropTypes.func,
-	checked: PropTypes.bool
+	checked: PropTypes.bool,
+	group: PropTypes.bool
 };
 
 const CheckboxButton = styled.button`
@@ -228,7 +229,7 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
-	children: children_class_validator([DropdownItem], 1),
+	children: childrenClassValidator([DropdownItem], 1),
 	textWidth: PropTypes.number,
 	maxHeight: PropTypes.number
 };

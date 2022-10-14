@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { children_class_validator } from './util';
+import { childrenClassValidator } from '../util';
 
 
 const MenuItemSeparator = styled.hr`
@@ -113,7 +113,7 @@ class MenuItemMenu extends React.Component {
 
 MenuItemMenu.propTypes = {
 	name: PropTypes.string,
-	children: children_class_validator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
+	children: childrenClassValidator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
 	onMouseEnter: PropTypes.func,
 	active: PropTypes.bool,
 	onClickButton: PropTypes.func
@@ -228,7 +228,7 @@ Menu.propTypes = {
 	onMouseEnter: PropTypes.func,
 	header: PropTypes.string,
 	visible: PropTypes.bool,
-	children: children_class_validator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
+	children: childrenClassValidator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
 	onClickButton: PropTypes.func
 };
 

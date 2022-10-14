@@ -1,7 +1,7 @@
 import React from "react";
 
 
-function children_class_validator(classList, minChildren=0) {
+function childrenClassValidator(classList, minChildren=0) {
 	return function(props, propName, componentName) {
 		const prop = props[propName];
 	
@@ -19,4 +19,20 @@ function children_class_validator(classList, minChildren=0) {
 	};
 }
 
-export { children_class_validator };
+function recursiveMap(children, fn) {
+	return React.Children.map(children, child => {
+		if (!React.isValidElement(child)) {
+			return child;
+		}
+
+		if (child.props.children) {
+			child = React.cloneElement(child, {
+				children: recursiveMap(child.props.children, fn)
+			});
+		}
+	
+		return fn(child);
+	});
+}
+
+export { childrenClassValidator, recursiveMap };
