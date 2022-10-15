@@ -52,6 +52,18 @@ import topImage16 from 'data-url:../../assets/img/top_Nq-522.png';
 import topImage17 from 'data-url:../../assets/img/top_U-238B.png';
 import topImage18 from 'data-url:../../assets/img/top_Th-232B.png';
 
+import coolantImage1  from 'data-url:../../assets/img/coolant_IC2.png';
+import coolantImage2  from 'data-url:../../assets/img/coolant_Na.png';
+import coolantImage3  from 'data-url:../../assets/img/coolant_Sn.png';
+import coolantImage4  from 'data-url:../../assets/img/coolant_D2O.png';
+import coolantImage5  from 'data-url:../../assets/img/coolant_DHO.png';
+import coolantImage6  from 'data-url:../../assets/img/coolant_T2O.png';
+import coolantImage7  from 'data-url:../../assets/img/coolant_H2O.png';
+import coolantImage8  from 'data-url:../../assets/img/coolant_CO2.png';
+import coolantImage9  from 'data-url:../../assets/img/coolant_He.png';
+import coolantImage10 from 'data-url:../../assets/img/coolant_LiCl.png';
+import coolantImage11 from 'data-url:../../assets/img/coolant_Th.png';
+
 
 let assets = {
 	'utilityImages': {
@@ -114,6 +126,21 @@ let assets = {
 		"Nq-522":	topImage16,
 		"U-238B":	topImage17,
 		"Th-232B":	topImage18
+	},
+
+	'coolantImages': {
+		"None":	utilityImage1,
+		"IC2":	coolantImage1,
+		"Na":	coolantImage2,
+		"Sn":	coolantImage3,
+		"D2O":	coolantImage4,
+		"DHO":	coolantImage5,
+		"T2O":	coolantImage6,
+		"H2O":	coolantImage7,
+		"CO2":	coolantImage8,
+		"He":	coolantImage9,
+		"LiCl":	coolantImage10,
+		"Th":	coolantImage11
 	}
 };
 
