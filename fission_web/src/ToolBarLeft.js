@@ -14,6 +14,9 @@ class ToolBarLeft extends React.Component {
 			activeTool: -1,
 			activeModifier: -1
 		};
+
+		this.onChangeTool = this.onChangeTool.bind(this);
+		this.onChangeModifier = this.onChangeModifier.bind(this);
 	}
 
 	onChangeTool(buttonIndex) {
@@ -25,10 +28,14 @@ class ToolBarLeft extends React.Component {
 	}
 
 	render() {
+		const tool = this.state.activeTool;
 		return (
 			<ToolBar className="toolBarLeft" horizontal={false}>
-				<Dropdown style={{width: "100%"}} maxHeight="calc((52px + 1em)*8 + 18px)">
+				<Dropdown style={{width: "100%", display: (tool >= 8 && tool < 12 ? "none" : "block")}} maxHeight="calc((52px + 1em)*8 + 18px)" disabled={tool < 0 || tool > 3}>
 					{Object.entries(assets.rodImages).map(kv => <DropdownItem name={kv[0]} image={kv[1]} key={kv[0]}/>)}
+				</Dropdown>
+				<Dropdown style={{width: "100%", display: (tool >= 8 && tool < 12 ? "block" : "none")}} maxHeight="calc((52px + 1em)*8 + 18px)">
+					{Object.entries(assets.coolantImages).map(kv => <DropdownItem name={kv[0]} image={kv[1]} key={kv[0]}/>)}
 				</Dropdown>
 				<ToolItemSeparator/>
 				<ToolItemBlank>

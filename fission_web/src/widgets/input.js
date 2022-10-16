@@ -207,6 +207,18 @@ const DropdownWrapper = styled.div`
 			}
 		}
 	}
+
+	&.disabled > button {
+		background:${props => props.theme.base_bg};
+
+		span:nth-child(2) {
+			visibility: hidden;
+		}
+
+		img {
+			visibility: hidden;
+		}
+	}
 `;
 
 class Dropdown extends React.Component {
@@ -253,7 +265,7 @@ class Dropdown extends React.Component {
 	render() {
 		let index = -1;
 		return (
-			<DropdownWrapper ref={this.ref} style={this.props.style} className={this.props.className}>
+			<DropdownWrapper ref={this.ref} style={this.props.style} className={`${this.props.disabled ? "disabled" : ""} ${this.props.className ? this.props.className : ""}`}>
 				<button onClick={this.toggleMenu}>
 					<img draggable="false" src={this.props.children[this.state.activeOption].props.image}/>
 					<span>{this.props.children[this.state.activeOption].props.name}</span>
@@ -276,7 +288,8 @@ Dropdown.propTypes = {
 	style: PropTypes.object,
 	className: PropTypes.string,
 	children: childrenClassValidator([DropdownItem], 1),
-	maxHeight: PropTypes.string
+	maxHeight: PropTypes.string,
+	disabled: PropTypes.bool
 };
 
 export { Button, ButtonGroup, Checkbox, Dropdown, DropdownItem };
