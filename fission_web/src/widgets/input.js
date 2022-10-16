@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { childrenClassValidator } from '../util';
+import { childrenClassValidator, recursiveMap } from '../util';
 
 
 const ButtonStyle = styled.button`
-	font-size: 0.9em;
+	font-size: 0.9rem;
 	padding: 0;
 	margin: 1px;
 	border: ${props => props.theme.base_border};
@@ -28,14 +28,15 @@ const ButtonStyle = styled.button`
 	}
 
 	&.hasName {
-		padding: 0 calc(1px + 0.5em);
+		padding: 0 calc(1px + 0.45rem);
 	}
 `;
 
 class Button extends React.Component {
 	render() {
 		return (
-			<ButtonStyle className={(this.props.checked ? "checked" : "") + (this.props.name ? " hasName" : "")} onClick={this.props.onClick}>
+			<ButtonStyle onClick={this.props.onClick} style={this.props.style}
+			className={`${this.props.checked ? "checked" : ""} ${this.props.name ? "hasName" : ""} ${this.props.className ? this.props.className : ""}`}>
 				<img draggable="false" src={this.props.image}/>
 				{this.props.name}
 			</ButtonStyle>
@@ -48,14 +49,53 @@ Button.propTypes = {
 	image: PropTypes.string,
 	onClick: PropTypes.func,
 	checked: PropTypes.bool,
-	group: PropTypes.bool
+	group: PropTypes.number,
+	index: PropTypes.number,
+	className: PropTypes.string,
+	style: PropTypes.object
+};
+
+class ButtonGroup extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			activeButton: -1
+		};
+	}
+
+	onClick(buttonIndex) {
+		this.setState(prevState => {
+			const newActiveButton = buttonIndex == prevState.activeButton ? -1 : buttonIndex;
+			if (this.props.onChange) this.props.onChange(newActiveButton);
+			return {activeButton: newActiveButton};
+		});
+	}
+
+	render() {
+		return (
+			<>
+				{recursiveMap(this.props.children, child => (
+				(child.type == Button && (child.props?.group == this.props?.id)) ? React.cloneElement(child, {
+					onClick: this.onClick.bind(this, child.props.index),
+					checked: this.state.activeButton == child.props.index
+				}) : child))}
+			</>
+		);
+	}
+}
+
+ButtonGroup.propTypes = {
+	children: PropTypes.node,
+	id: PropTypes.number,
+	onChange: PropTypes.func
 };
 
 const CheckboxButton = styled.button`
 	border: none;
 	background-color: ${props => props.theme.base_bg};
 	font-size: 0.9rem;
-	padding: 0 0.2em 0 0;
+	padding: 0 0.2rem 0 0;
 	white-space: nowrap;
 
 	& span {
@@ -82,7 +122,7 @@ const CheckboxButton = styled.button`
 class Checkbox extends React.Component {
 	render() {
 		return (
-			<CheckboxButton onClick={this.props.onClick} className={this.props.className}>
+			<CheckboxButton onClick={this.props.onClick} className={this.props.className} style={this.props.style}>
 				<span className={this.props.checked ? "" : "unchecked"}>✓</span>
 				{this.props.name}
 			</CheckboxButton>
@@ -94,7 +134,8 @@ Checkbox.propTypes = {
 	name: PropTypes.string,
 	checked: PropTypes.bool,
 	onClick: PropTypes.func,
-	className: PropTypes.string
+	className: PropTypes.string,
+	style: PropTypes.object
 };
 
 class DropdownItem extends React.Component {
@@ -118,26 +159,25 @@ const DropdownWrapper = styled.div`
 	position: relative;
 
 	& button {
-		font-size: 0.9em;
+		font-size: 0.9rem;
 		padding: 0;
 
 		&:hover {
 			background: ${props => props.theme.accent_bg};
 		}
-		
-		& img {
-			vertical-align: middle;
-		}
 	}
 
 	& > button {
+		display: flex;
+		width: 100%;
+		align-items: center;
 		border: ${props => props.theme.base_border};
 		border-radius: 3px;
 		background: linear-gradient(${props => props.theme.accent_bg}, ${props => props.theme.base_bg});
 		margin: 0 1px;
 
 		& span:nth-child(2) {
-			display: inline-block;
+			flex: 1;
 			text-align: left;
 		}
 
@@ -160,6 +200,10 @@ const DropdownWrapper = styled.div`
 
 			&:hover {
 				border: none;
+			}
+
+			& img {
+				vertical-align: middle;
 			}
 		}
 	}
@@ -209,10 +253,10 @@ class Dropdown extends React.Component {
 	render() {
 		let index = -1;
 		return (
-			<DropdownWrapper ref={this.ref}>
+			<DropdownWrapper ref={this.ref} style={this.props.style} className={this.props.className}>
 				<button onClick={this.toggleMenu}>
 					<img draggable="false" src={this.props.children[this.state.activeOption].props.image}/>
-					<span style={{width: this.props?.textWidth}}>{this.props.children[this.state.activeOption].props.name}</span>
+					<span>{this.props.children[this.state.activeOption].props.name}</span>
 					<span>▾</span>
 				</button>
 				{this.state.isMenuVisible &&
@@ -229,9 +273,10 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
+	style: PropTypes.object,
+	className: PropTypes.string,
 	children: childrenClassValidator([DropdownItem], 1),
-	textWidth: PropTypes.number,
-	maxHeight: PropTypes.number
+	maxHeight: PropTypes.string
 };
 
-export { Button, Checkbox, Dropdown, DropdownItem };
+export { Button, ButtonGroup, Checkbox, Dropdown, DropdownItem };

@@ -1,7 +1,7 @@
 import React from 'react';
-import { ToolBar, ToolItemButton, ToolItemSeparator, ToolItemBlank } from './widgets/ToolBar';
+import { ToolBar, ToolItemSeparator, ToolItemBlank } from './widgets/ToolBar';
 import image from 'data-url:../../assets/img/fill_tool.png';
-import { Checkbox, Dropdown, DropdownItem } from './widgets/input';
+import { Checkbox, Dropdown, DropdownItem, Button } from './widgets/input';
 
 
 class ToolBarTop extends React.Component {
@@ -22,10 +22,10 @@ class ToolBarTop extends React.Component {
 	render() {
 		return (
 			<ToolBar className="toolBarTop">
-				<ToolItemButton name="Fill" image={image}/>
-				<ToolItemButton name="Fill"/>
+				<Button name="Fill" image={image}/>
+				<Button name="Fill"/>
 				<ToolItemSeparator/>
-				<ToolItemButton image={image}/>
+				<Button image={image}/>
 				<ToolItemBlank>
 					<Checkbox name="test" checked={this.state.checked} onClick={this.onCheckboxClicked}/>
 					<span>

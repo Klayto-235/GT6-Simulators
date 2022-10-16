@@ -287,7 +287,7 @@ class MenuBar extends React.Component {
 	render() {
 		let index = -1;
 		return (
-			<MenuBarWrapper className={this.props.className}>
+			<MenuBarWrapper className={this.props.className} style={this.props.style}>
 				<MenuBarHeadersWrapper ref={this.ref}>
 					{React.Children.map(this.props.children, child => (++index, React.cloneElement(child, {
 						key: index,
@@ -304,6 +304,7 @@ class MenuBar extends React.Component {
 
 MenuBar.propTypes = {
 	className: PropTypes.string,
+	style: PropTypes.object,
 	children: function(props, propName, componentName) {
 		const prop = props[propName];
 	
