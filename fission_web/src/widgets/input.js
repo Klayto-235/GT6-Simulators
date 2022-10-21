@@ -26,7 +26,7 @@ const ButtonStyle = styled.button`
 		display: block;
 	}
 
-	&.hasName {
+	&.hasName img {
 		padding: 0 calc(1px + 0.5em);
 	}
 `;
@@ -44,7 +44,7 @@ class Button extends React.Component {
 
 	render() {
 		return (
-			<ButtonStyle onClick={this.onClick} style={this.props.style}
+			<ButtonStyle onClick={this.onClick} style={this.props.style} tabIndex={-1}
 			className={`${this.props.checked ? "checked" : ""} ${this.props.name ? "hasName" : ""} ${this.props.className ? this.props.className : ""}`}>
 				<img draggable="false" src={this.props.image}/>
 				{this.props.name}
@@ -124,7 +124,7 @@ const CheckboxButton = styled.button`
 class Checkbox extends React.Component {
 	render() {
 		return (
-			<CheckboxButton onClick={this.props.onClick} className={this.props.className} style={this.props.style}>
+			<CheckboxButton onClick={this.props.onClick} className={this.props.className} style={this.props.style} tabIndex={-1}>
 				<span className={this.props.checked ? "" : "unchecked"}>✓</span>
 				{this.props.name}
 			</CheckboxButton>
@@ -147,7 +147,7 @@ Checkbox.defaultProps = {
 class DropdownItem extends React.Component {
 	render() {
 		return (
-			<button onClick={this.props.onClick}>
+			<button onClick={this.props.onClick} tabIndex={-1}>
 				<img draggable="false" src={this.props.image}/>
 				{this.props.name}
 			</button>
@@ -247,7 +247,7 @@ class Dropdown extends React.Component {
 		let index = -1;
 		return (
 			<DropdownWrapper ref={this.ref} style={this.props.style} className={`${this.props.disabled ? "disabled" : ""} ${this.props.className ? this.props.className : ""}`}>
-				<button onClick={this.props.onClickButton}>
+				<button onClick={this.props.onClickButton} tabIndex={-1}>
 					<img draggable="false" src={this.props.children[this.props.activeItem].props.image}/>
 					<span>{this.props.children[this.props.activeItem].props.name}</span>
 					<span>▾</span>

@@ -44,7 +44,7 @@ const MenuItemButtonStyle = styled(MenuItemBaseStyle)`
 class MenuItemButton extends React.Component {
 	render() {
 		return (
-			<MenuItemButtonStyle onClick={() => (this.props.onClick && this.props.onClick(), this.props.onClickButton())} onMouseEnter={this.props.onMouseEnter}>
+			<MenuItemButtonStyle onClick={() => (this.props.onClick && this.props.onClick(), this.props.onClickButton())}onMouseEnter={this.props.onMouseEnter} tabIndex={-1}>
 				<span className={this.props.checked ? "" : "hidden"}>✓</span>
 				{this.props.name}
 				<span>{this.props.hotkey}</span>
@@ -96,7 +96,7 @@ class MenuItemMenu extends React.Component {
 	render() {
 		return (
 			<MenuItemMenuWrapper ref={this.ref}>
-				<MenuItemMenuStyle onMouseEnter={this.props.onMouseEnter}>
+				<MenuItemMenuStyle onMouseEnter={this.props.onMouseEnter} tabIndex={-1}>
 					<span>✓</span>
 					{this.props.name}
 					<span>▸</span>
@@ -217,7 +217,7 @@ class Menu extends React.Component {
 	render() {
 		return (
 			<MenuWrapper>
-				<MenuHeader className={this.props.visible ? "visible" : ""} onClick={this.props.onClick}
+				<MenuHeader className={this.props.visible ? "visible" : ""} onClick={this.props.onClick} tabIndex={-1}
 					onMouseEnter={this.props.onMouseEnter}>{this.props.header}</MenuHeader>
 				{this.props.visible && <MenuContent onClickButton={this.props.onClickButton}>{this.props.children}</MenuContent>}
 			</MenuWrapper>
