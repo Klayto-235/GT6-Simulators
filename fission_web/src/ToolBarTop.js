@@ -1,47 +1,49 @@
 import React from 'react';
-import { ToolBar, ToolItemSeparator, ToolItemBlank } from './widgets/ToolBar';
-import image from 'data-url:../../assets/img/fill_tool.png';
-import { Checkbox, Dropdown, DropdownItem, Button } from './widgets/input';
+import styled from 'styled-components';
+import { ToolBar, ToolItemSeparator, ToolItemBlank, ToolItemSpacer } from './widgets/ToolBar';
+import { Checkbox, Button } from './widgets/input';
+import assets from './assets.js';
 
+
+const SmallButton = styled(Button)`
+	& img {
+		width: 25px;
+	}
+`;
 
 class ToolBarTop extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			checked: true
-		};
-
-		this.onCheckboxClicked = this.onCheckboxClicked.bind(this);
-	}
-
-	onCheckboxClicked() {
-		this.setState(state => ({checked: !state.checked}));
+		this.buttons = ["AddColLeft", "AddColRight", "AddRowTop", "AddRowBot", "RemColLeft", "RemColRight", "RemRowTop", "RemRowBot"];
 	}
 	
 	render() {
 		return (
 			<ToolBar className="toolBarTop">
-				<Button name="Fill" image={image}/>
-				<Button name="Fill"/>
+				<ToolItemBlank style={{lineHeight: "1.5em"}}>
+					Grid size: 4x4
+					<Button name="Shrink to fit" className="shaped" style={{display: "block", padding: "0.5ex 1em"}}/>
+				</ToolItemBlank>
 				<ToolItemSeparator/>
-				<Button image={image}/>
 				<ToolItemBlank>
-					<Checkbox name="test" checked={this.state.checked} onClick={this.onCheckboxClicked}/>
-					<span>
-						<input type="checkbox"/>
-						<label> Bleee</label>
-					</span>
+					{this.buttons.slice(0, 4).map(key => <SmallButton image={assets.utilityImages[key]} key={key} className="shaped"/>)}
+					<br/>
+					{this.buttons.slice(4).map(key => <SmallButton image={assets.utilityImages[key]} key={key} className="shaped"/>)}
 				</ToolItemBlank>
-				<ToolItemBlank>
-					<Dropdown textWidth="2em" maxHeight="300px">
-						<DropdownItem image={image}/>
-						<DropdownItem image={image} name="Fill"/>
-						<DropdownItem image={image} name="Fill"/>
-						<DropdownItem image={image} name="Test"/>
-						<DropdownItem name="None"/>
-					</Dropdown>
+				<ToolItemSpacer style={{flexGrow: 1}}/>
+				<ToolItemBlank style={{textAlign: "left", lineHeight: "1.5em"}}>
+					<Checkbox name="Autoexpand"/>
+					<br/>
+					<Checkbox name="Show HU/t"/>
 				</ToolItemBlank>
+				<ToolItemSeparator/>
+				<ToolItemBlank style={{textAlign: "left", lineHeight: "1.5em"}}>
+					<Checkbox name="Autorun"/>
+					<br/>
+					<Checkbox name="Penalty Stop"/>
+				</ToolItemBlank>
+				<Button image={assets.utilityImages["Play"]}/>
 			</ToolBar>
 		);
 	}

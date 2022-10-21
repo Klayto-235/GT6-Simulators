@@ -25,12 +25,15 @@ body,
   flex: 1;
   display: flex;
   flex-direction: row;
+  margin: 4px;
+  gap: 4px;
 }
 
 .infoPanel {
   flex: 0;
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
 .gridEditor {
@@ -38,18 +41,18 @@ body,
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr;
+  gap: 4px;
 }
 
 .toolBarLeft {
   grid-column: 1;
   grid-row: 1/3;
-  margin-left: 2px;
-  margin-top: 4px;
 }
 
 .toolBarTop {
   grid-column: 2;
   grid-row: 1;
+  margin-left: 8px;
 }
 
 .reactorGrid {

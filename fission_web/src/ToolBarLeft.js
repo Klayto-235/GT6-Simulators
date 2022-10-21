@@ -95,13 +95,13 @@ class ToolBarLeft extends React.Component {
 				{this.hotkeys}
 				<ToolBar className="toolBarLeft" horizontal={false}>
 					{(tool < 8 || tool >= 12) && (
-					<Dropdown style={{width: "100%"}} onClickItem={this.onClickRodDropdownItem} onClickOutside={this.onClickOutsideDropdown}
+					<Dropdown style={{width: "100%", marginBottom: "2px"}} onClickItem={this.onClickRodDropdownItem} onClickOutside={this.onClickOutsideDropdown}
 					onClickButton={this.onClickButtonDropdown} menuVisible={this.state.isDropdownMenuVisible} maxDropdownHeight="calc((52px + 1em)*8 + 18px)"
 					activeItem={this.state.activeRodDropdownItem} disabled={tool < 0 || tool >= 4}>
 						{this.rodDropdownItems.map(key => <DropdownItem name={key} image={assets.rodImages[key]} key={key}/>)}
 					</Dropdown>)}
 					{(tool >= 8 && tool < 12) && (
-					<Dropdown style={{width: "100%"}} onClickItem={this.onClickCoolantDropdownItem} onClickOutside={this.onClickOutsideDropdown}
+					<Dropdown style={{width: "100%", marginBottom: "2px"}} onClickItem={this.onClickCoolantDropdownItem} onClickOutside={this.onClickOutsideDropdown}
 					onClickButton={this.onClickButtonDropdown} menuVisible={this.state.isDropdownMenuVisible} maxDropdownHeight="calc((52px + 1em)*8 + 18px)"
 					activeItem={this.state.activeCoolantDropdownItem}>
 						{this.coolantDropdownItems.map(key => <DropdownItem name={key} image={assets.coolantImages[key]} key={key}/>)}

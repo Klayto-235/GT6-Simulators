@@ -29,6 +29,19 @@ const ButtonStyle = styled.button`
 	&.hasName img {
 		padding: 0 calc(1px + 0.5em);
 	}
+
+	&.shaped {
+		border: ${props => props.theme.base_border};
+		background: linear-gradient(${props => props.theme.accent_bg}, ${props => props.theme.base_bg});
+
+		&:hover {
+			background: ${props => props.theme.accent_bg};
+		}
+
+		&:active {
+			background-color: ${props => props.theme.secondary_active};
+		}
+	}
 `;
 
 class Button extends React.Component {
@@ -170,6 +183,10 @@ const DropdownWrapper = styled.div`
 		&:hover {
 			background: ${props => props.theme.accent_bg};
 		}
+
+		&:active {
+			background-color: ${props => props.theme.secondary_active};
+		}
 	}
 
 	& > button {
@@ -179,7 +196,7 @@ const DropdownWrapper = styled.div`
 		border: ${props => props.theme.base_border};
 		border-radius: 3px;
 		background: linear-gradient(${props => props.theme.accent_bg}, ${props => props.theme.base_bg});
-		margin: 0 1px;
+		margin: 0;
 
 		& span:nth-child(2) {
 			flex: 1;
