@@ -42,13 +42,10 @@ const ToolBarWrapper = styled.div`
 
 class ToolBar extends React.Component {
 	render() {
-		let index = -1;
 		return (
 			<ToolBarWrapper style={this.props.style}
 			className={`${this.props.className ? this.props.className : ""} ${this.props.horizontal ? "" : "vertical"} ${this.props.inline ? "inline" : ""}`}>
-				{React.Children.map(this.props.children, child => (++index, React.cloneElement(child, {
-					key: index
-				})))}
+				{this.props.children}
 			</ToolBarWrapper>
 		);
 	}

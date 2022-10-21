@@ -11,7 +11,6 @@ const MenuItemSeparator = styled.hr`
 
 const MenuItemBaseStyle = styled.button`
 	border: none;
-	font-size: 0.9rem;
 	padding: 0.3em 10px 0.3em 5px;
 	background-color: inherit;
 	display: block;
@@ -119,6 +118,10 @@ MenuItemMenu.propTypes = {
 	onClickButton: PropTypes.func
 };
 
+MenuItemMenu.defaultProps = {
+	active: false
+};
+
 const MenuContentStyle = styled.div`
 	background-color: ${props => props.theme.accent_bg};
 	border: ${props => props.theme.accent_border};
@@ -188,7 +191,7 @@ class MenuContent extends React.Component {
 }
 
 MenuContent.propTypes = {
-	children: PropTypes.any,
+	children: PropTypes.node,
 	parentRef: PropTypes.any,
 	onMouseEnter: PropTypes.func,
 	onMouseLeave: PropTypes.func,
@@ -197,7 +200,6 @@ MenuContent.propTypes = {
 
 const MenuHeader = styled.button`
 	border: none;
-	font-size: 0.9rem;
 	padding: 0.2em 0.5em;
 	background-color: inherit;
 	transition: background-color 0.2s;
@@ -232,6 +234,10 @@ Menu.propTypes = {
 	onClickButton: PropTypes.func
 };
 
+Menu.defaultProps = {
+	visible: false
+};
+
 const MenuBarHeadersWrapper = styled.div`
 	display: inline-block;
 `;
@@ -257,9 +263,7 @@ class MenuBar extends React.Component {
 	}
 
 	toggleMenu() {
-		this.setState(prevState => ({
-			isMenuVisible: !prevState.isMenuVisible
-		}));
+		this.setState(state => ({isMenuVisible: !state.isMenuVisible}));
 	}
 
 	setActiveMenu(menuIndex) {
@@ -305,16 +309,7 @@ class MenuBar extends React.Component {
 MenuBar.propTypes = {
 	className: PropTypes.string,
 	style: PropTypes.object,
-	children: function(props, propName, componentName) {
-		const prop = props[propName];
-	
-		let error = null;
-		React.Children.forEach(prop, function (child) {
-			if (child.type !== Menu)
-				error = new Error('Children of type ' + componentName + ' should be of type Menu.');
-		});
-		return error;
-	}
+	children: childrenClassValidator([Menu])
 };
 
 export { MenuBar, Menu, MenuItemButton, MenuItemMenu, MenuItemSeparator };

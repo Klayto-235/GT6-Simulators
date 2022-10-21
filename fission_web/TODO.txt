@@ -1,3 +1,7 @@
 - static font to ensure unicode characters (triangle, check mark, etc.)?
 - parcel hmr error in production build??
 - apply user-select: none to disable text selection on buttons etc.
+- the longest rod names cause buttons to get larger; either make font smaller or buttons larger to start with
+- remove browser focus outline when using keyboard?
+- is there any benefit in making lists of props for widgets in ToolBarLeft constructor as opposed to leaveing them in the render method? E.g. instead of rodDropdownItems being a list of keys, it could be a list of jsx elements.
+- add hotkeys, tooltips

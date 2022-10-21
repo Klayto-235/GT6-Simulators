@@ -20,7 +20,7 @@ class AppMenuBar extends React.Component {
 
 	onClickTest(event) {
 		if (event) event.preventDefault();
-		this.setState(prevState => ({testChecked: !prevState.testChecked}));
+		this.setState(state => ({testChecked: !state.testChecked}));
 	}
 
 	render() {

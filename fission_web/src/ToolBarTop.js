@@ -16,7 +16,7 @@ class ToolBarTop extends React.Component {
 	}
 
 	onCheckboxClicked() {
-		this.setState(prevState => ({checked: !prevState.checked}));
+		this.setState(state => ({checked: !state.checked}));
 	}
 	
 	render() {

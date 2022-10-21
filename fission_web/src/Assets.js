@@ -65,7 +65,7 @@ import coolantImage10 from "data-url:../../assets/img/coolant_LiCl.png";
 import coolantImage11 from "data-url:../../assets/img/coolant_Th.png";
 
 
-let assets = {
+const assets = {
 	"utilityImages": {
 		"Empty":        utilityImage1,
 		"Shape":		utilityImage2,
