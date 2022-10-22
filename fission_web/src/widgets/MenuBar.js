@@ -54,12 +54,12 @@ class MenuItemButton extends React.Component {
 }
 
 MenuItemButton.propTypes = {
-	onClick: PropTypes.func,
-	checked: PropTypes.bool,
-	name: PropTypes.string,
-	onMouseEnter: PropTypes.func,
-	hotkey: PropTypes.string,
-	onClickButton: PropTypes.func
+	onClick:		PropTypes.func,
+	checked:		PropTypes.bool,
+	name:			PropTypes.string,
+	onMouseEnter:	PropTypes.func,
+	hotkey:			PropTypes.string,
+	onClickButton:	PropTypes.func
 };
 
 MenuItemButton.defaultProps = {
@@ -111,11 +111,11 @@ class MenuItemMenu extends React.Component {
 }
 
 MenuItemMenu.propTypes = {
-	name: PropTypes.string,
-	children: childrenClassValidator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
-	onMouseEnter: PropTypes.func,
-	active: PropTypes.bool,
-	onClickButton: PropTypes.func
+	name:			PropTypes.string,
+	children:		childrenClassValidator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
+	onMouseEnter:	PropTypes.func,
+	active:			PropTypes.bool,
+	onClickButton:	PropTypes.func
 };
 
 MenuItemMenu.defaultProps = {
@@ -191,11 +191,11 @@ class MenuContent extends React.Component {
 }
 
 MenuContent.propTypes = {
-	children: PropTypes.node,
-	parentRef: PropTypes.any,
-	onMouseEnter: PropTypes.func,
-	onMouseLeave: PropTypes.func,
-	onClickButton: PropTypes.func
+	children:		PropTypes.node,
+	parentRef:		PropTypes.any,
+	onMouseEnter:	PropTypes.func,
+	onMouseLeave:	PropTypes.func,
+	onClickButton:	PropTypes.func
 };
 
 const MenuHeader = styled.button`
@@ -226,12 +226,12 @@ class Menu extends React.Component {
 }
 
 Menu.propTypes = {
-	onClick: PropTypes.func,
-	onMouseEnter: PropTypes.func,
-	header: PropTypes.string,
-	visible: PropTypes.bool,
-	children: childrenClassValidator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
-	onClickButton: PropTypes.func
+	onClick:		PropTypes.func,
+	onMouseEnter:	PropTypes.func,
+	header:			PropTypes.string,
+	visible:		PropTypes.bool,
+	children:		childrenClassValidator([MenuItemMenu, MenuItemButton, MenuItemSeparator]),
+	onClickButton:	PropTypes.func
 };
 
 Menu.defaultProps = {
@@ -307,9 +307,9 @@ class MenuBar extends React.Component {
 }
 
 MenuBar.propTypes = {
-	className: PropTypes.string,
-	style: PropTypes.object,
-	children: childrenClassValidator([Menu])
+	className:	PropTypes.string,
+	style:		PropTypes.object,
+	children:	childrenClassValidator([Menu])
 };
 
 export { MenuBar, Menu, MenuItemButton, MenuItemMenu, MenuItemSeparator };

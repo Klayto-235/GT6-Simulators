@@ -67,14 +67,14 @@ class Button extends React.Component {
 }
 
 Button.propTypes = {
-	name: PropTypes.string,
-	image: PropTypes.string,
-	onClick: PropTypes.func,
-	checked: PropTypes.bool,
-	group: PropTypes.number,
-	index: PropTypes.number,
-	className: PropTypes.string,
-	style: PropTypes.object
+	name:		PropTypes.string,
+	image:		PropTypes.string,
+	onClick:	PropTypes.func,
+	checked:	PropTypes.bool,
+	group:		PropTypes.number,
+	index:		PropTypes.number,
+	className:	PropTypes.string,
+	style:		PropTypes.object
 };
 
 Button.defaultProps = {
@@ -96,15 +96,15 @@ class ButtonGroup extends React.Component {
 }
 
 ButtonGroup.propTypes = {
-	children: PropTypes.node,
-	id: PropTypes.number,
-	onClickButton: PropTypes.func,
-	activeButton: PropTypes.number
+	children:		PropTypes.node,
+	id:				PropTypes.number,
+	onClickButton:	PropTypes.func,
+	activeButton:	PropTypes.number
 };
 
 ButtonGroup.defaultProps = {
-	onClickButton: () => {},
-	activeButton: -1
+	onClickButton:	() => {},
+	activeButton:	-1
 };
 
 const CheckboxButton = styled.button`
@@ -146,11 +146,11 @@ class Checkbox extends React.Component {
 }
 
 Checkbox.propTypes = {
-	name: PropTypes.string,
-	checked: PropTypes.bool,
-	onClick: PropTypes.func,
-	className: PropTypes.string,
-	style: PropTypes.object
+	name:		PropTypes.string,
+	checked:	PropTypes.bool,
+	onClick:	PropTypes.func,
+	className:	PropTypes.string,
+	style:		PropTypes.object
 };
 
 Checkbox.defaultProps = {
@@ -169,9 +169,9 @@ class DropdownItem extends React.Component {
 }
 
 DropdownItem.propTypes = {
-	image: PropTypes.string,
-	name: PropTypes.string,
-	onClick: PropTypes.func
+	image:		PropTypes.string,
+	name:		PropTypes.string,
+	onClick:	PropTypes.func
 };
 
 const DropdownWrapper = styled.div`
@@ -283,24 +283,24 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
-	style: PropTypes.object,
-	className: PropTypes.string,
-	children: childrenClassValidator([DropdownItem], 1),
-	maxDropdownHeight: PropTypes.string,
-	disabled: PropTypes.bool,
-	activeItem: PropTypes.number,
-	menuVisible: PropTypes.bool,
-	onClickButton: PropTypes.func,
-	onClickItem: PropTypes.func,
-	onClickOutside: PropTypes.func
+	style:				PropTypes.object,
+	className:			PropTypes.string,
+	children:			childrenClassValidator([DropdownItem], 1),
+	maxDropdownHeight:	PropTypes.string,
+	disabled:			PropTypes.bool,
+	activeItem:			PropTypes.number,
+	menuVisible:		PropTypes.bool,
+	onClickButton:		PropTypes.func,
+	onClickItem:		PropTypes.func,
+	onClickOutside:		PropTypes.func
 };
 
 Dropdown.defaultProps = {
-	disabled: false,
-	activeItem: 0,
-	menuVisible: false,
-	onClickButton: () => {},
-	onClickItem: () => {}
+	disabled:		false,
+	activeItem:		0,
+	menuVisible:	false,
+	onClickButton:	() => {},
+	onClickItem:	() => {}
 };
 
 export { Button, ButtonGroup, Checkbox, Dropdown, DropdownItem };

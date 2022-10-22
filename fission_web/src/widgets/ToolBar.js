@@ -52,16 +52,16 @@ class ToolBar extends React.Component {
 }
 
 ToolBar.propTypes = {
-	horizontal: PropTypes.bool,
-	inline: PropTypes.bool,
-	children: PropTypes.node,
-	className: PropTypes.string,
-	style: PropTypes.object
+	horizontal:	PropTypes.bool,
+	inline:		PropTypes.bool,
+	children:	PropTypes.node,
+	className:	PropTypes.string,
+	style:		PropTypes.object
 };
 
 ToolBar.defaultProps = {
-	horizontal: true,
-	inline: false
+	horizontal:	true,
+	inline:		false
 };
 
 export { ToolBar, ToolItemSeparator, ToolItemSpacer, ToolItemBlank };
