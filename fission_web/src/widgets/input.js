@@ -58,7 +58,7 @@ class Button extends React.Component {
 	render() {
 		return (
 			<ButtonStyle onClick={this.onClick} style={this.props.style} tabIndex={-1}
-			className={`${this.props.checked ? "checked" : ""} ${this.props.name ? "hasName" : ""} ${this.props.className ? this.props.className : ""}`}>
+			className={`${this.props.checked ? "checked" : ""} ${this.props.name ? "hasName" : ""} ${this.props.className}`}>
 				<img draggable="false" src={this.props.image}/>
 				{this.props.name}
 			</ButtonStyle>
@@ -263,7 +263,7 @@ class Dropdown extends React.Component {
 	render() {
 		let index = -1;
 		return (
-			<DropdownWrapper ref={this.ref} style={this.props.style} className={`${this.props.disabled ? "disabled" : ""} ${this.props.className ? this.props.className : ""}`}>
+			<DropdownWrapper ref={this.ref} style={this.props.style} className={`${this.props.disabled ? "disabled" : ""} ${this.props.className}`}>
 				<button onClick={this.props.onClickButton} tabIndex={-1}>
 					<img draggable="false" src={this.props.children[this.props.activeItem].props.image}/>
 					<span>{this.props.children[this.props.activeItem].props.name}</span>
@@ -296,6 +296,7 @@ Dropdown.propTypes = {
 };
 
 Dropdown.defaultProps = {
+	className:		"",
 	disabled:		false,
 	activeItem:		0,
 	menuVisible:	false,

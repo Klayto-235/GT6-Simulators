@@ -43,7 +43,7 @@ class ToolBar extends React.Component {
 	render() {
 		return (
 			<ToolBarWrapper style={this.props.style}
-			className={`${this.props.className ? this.props.className : ""} ${this.props.horizontal ? "" : "vertical"} ${this.props.inline ? "inline" : ""}`}>
+			className={`${this.props.className} ${this.props.horizontal ? "" : "vertical"} ${this.props.inline ? "inline" : ""}`}>
 				{this.props.horizontal ? this.props.children : recursiveMap(this.props.children, child => child.type == ToolItemSeparator ?
 				React.cloneElement(child, {className: `vertical ${child.props.className ? child.props.className : ""}`}) : child)}
 			</ToolBarWrapper>
@@ -60,6 +60,7 @@ ToolBar.propTypes = {
 };
 
 ToolBar.defaultProps = {
+	className:	"",
 	horizontal:	true,
 	inline:		false
 };
