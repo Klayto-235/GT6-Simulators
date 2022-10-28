@@ -1,14 +1,14 @@
 import React from 'react';
 import { ScrollArea } from './widgets/ScrollArea';
+import { ReactorBlock } from './widgets/ReactorBlock';
 
 
 class ReactorGrid extends React.Component {
 	render() {
 		return (
 			<ScrollArea className="reactorGrid">
-				<div style={{background: "red", width: "300px", height: "300px"}}>
-					reactorGrid
-				</div>
+				<ReactorBlock/><ReactorBlock/><br/>
+				<ReactorBlock/><ReactorBlock/>
 			</ScrollArea>
 		);
 	}
