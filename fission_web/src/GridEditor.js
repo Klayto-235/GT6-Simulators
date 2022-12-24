@@ -2,7 +2,8 @@ import React from 'react';
 import { GlobalHotKeys } from 'react-hotkeys';
 import ToolBarLeft from './ToolBarLeft';
 import ToolBarTop from './ToolBarTop';
-import ReactorGrid from './ReactorGrid';
+import { ScrollArea } from './widgets/ScrollArea';
+import { ReactorBlock } from './widgets/ReactorBlock';
 import config from './config.js';
 
 
@@ -105,7 +106,10 @@ class GridEditor extends React.Component {
 					isCheckedAutorun={this.state.isCheckedAutorun} isCheckedPenaltyStop={this.state.isCheckedPenaltyStop} onClickShrinkToFit={this.onClickShrinkToFit}
 					onClickGridResize={this.onClickGridResize} toggleAutoexpand={this.toggleAutoexpand} toggleShowHUpt={this.toggleShowHUpt}
 					toggleAutorun={this.toggleAutorun} togglePenaltyStop={this.togglePenaltyStop}/>
-					<ReactorGrid/>
+					<ScrollArea className="reactorGrid">
+						<ReactorBlock/><ReactorBlock/><br/>
+						<ReactorBlock/><ReactorBlock/>
+					</ScrollArea>
 				</div>
 			</>
 		);

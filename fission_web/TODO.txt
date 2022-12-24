@@ -1,3 +1,5 @@
 - static font to ensure unicode characters (triangle, check mark, etc.)?
 - is there any benefit in making lists of props for widgets in ToolBarLeft constructor as opposed to leaveing them in the render method? E.g. instead of rodDropdownItems being a list of keys, it could be a list of jsx elements.
 - add hotkeys, tooltips
+- holding LMB while scrolling breaks zoom-in point (aha, probably cause dragging doesn't work properly on linux/chromium)
+- dragging doesn't work on linux/chromium (doesn't seem to support translate CSS prop.)

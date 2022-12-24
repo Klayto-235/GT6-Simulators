@@ -85,7 +85,7 @@ class ScrollArea extends React.Component {
 	onWheel(event) {
 		event.preventDefault();
 		const areaRect = this.ref.current.getBoundingClientRect();
-		let magnify = (event.deltaY < 0 ? 1 : -1);
+		let magnify = event.deltaY < 0 ? 1 : -1;
 		let refPoint = event.deltaY > 0 ? [areaRect.width/2, areaRect.height/2] : [event.clientX - areaRect.x, event.clientY - areaRect.y];
 		this.setState((state, props) => {
 			if (state.contentScaleLevel + magnify > props.maxScaleLevel || state.contentScaleLevel + magnify < props.minScaleLevel) magnify = 0;

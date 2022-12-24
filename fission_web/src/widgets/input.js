@@ -205,6 +205,7 @@ const DropdownWrapper = styled.div`
 
 		& span:last-child {
 			margin-left: 0.5em;
+			margin-right: 0.25em;
 		}
 	}
 

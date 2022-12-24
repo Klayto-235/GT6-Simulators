@@ -141,6 +141,20 @@ const assets = {
 		"He":	coolantImage9,
 		"LiCl":	coolantImage10,
 		"Th":	coolantImage11
+	},
+
+	"coolantColors": {
+		"IC2":	"#20626f40",
+		"Na":	"#17179440",
+		"Sn":	"#bdbdbd40",
+		"D2O":	"#c6c65640",
+		"DHO":	"#b1b18a40",
+		"T2O":	"#c6565640",
+		"H2O":	"#4b57d240",
+		"CO2":	"#7b7b7b40",
+		"He":	"#91716640",
+		"LiCl":	"#b2b2c640",
+		"Th":	"#2e342e40"
 	}
 };
 

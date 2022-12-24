@@ -87,16 +87,16 @@ class ToolBarLeft extends React.Component {
 						<ButtonGroup onClickButton={this.onClickTool} activeButton={tool}>
 							<ButtonGroup id={1} onClickButton={this.props.onClickModifier} activeButton={this.props.activeModifier}>
 								<ToolBar inline={true} horizontal={false}>
-									{this.props.buttons.slice(0, 4).map((rod, index) => <Button name={rod} image={assets.rodImages[rod]} key={rod} index={index}/>)}
+									{this.props.buttons.slice(0, 4).map((rod, index) => <Button name={rod} image={assets.rodImages[rod]} key={index} index={index}/>)}
 									<ToolItemSeparator/>
-									{this.props.buttons.slice(4, 7).map((rod, index) => <Button name={rod} image={assets.rodImages[rod]} key={rod} index={index + 4}/>)}
+									{this.props.buttons.slice(4, 7).map((rod, index) => <Button name={rod} image={assets.rodImages[rod]} key={index} index={index + 4}/>)}
 									<ToolItemSeparator/>
 									<Button name={this.props.buttons[7]} image={assets.utilityImages[this.props.buttons[7]]} group={1} index={7}/>
 								</ToolBar>
 								<ToolBar inline={true} horizontal={false}>
-									{this.props.buttons.slice(8, 12).map((coolant, index) => <Button name={coolant} image={assets.coolantImages[coolant]} key={coolant} index={index + 8}/>)}
+									{this.props.buttons.slice(8, 12).map((coolant, index) => <Button name={coolant} image={assets.coolantImages[coolant]} key={index} index={index + 8}/>)}
 									<ToolItemSeparator/>
-									{this.props.buttons.slice(12, 15).map((utility, index) => <Button name={utility} image={assets.utilityImages[utility]} key={utility} index={index + 12}/>)}
+									{this.props.buttons.slice(12, 15).map((utility, index) => <Button name={utility} image={assets.utilityImages[utility]} key={index} index={index + 12}/>)}
 									<ToolItemSeparator/>
 									<Button name={this.props.buttons[15]} image={assets.utilityImages[this.props.buttons[15]]} group={1} index={15}/>
 								</ToolBar>
