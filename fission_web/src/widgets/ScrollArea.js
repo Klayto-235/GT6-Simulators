@@ -13,6 +13,7 @@ const ScrollAreaContentWrapper = styled.div`
 	display: inline-block;
 	transition: transform 0.2s;
 	transform-origin: 0 0;
+	width: max-content;
 `;
 
 class ScrollArea extends React.Component {
@@ -89,7 +90,8 @@ class ScrollArea extends React.Component {
 		let refPoint = event.deltaY > 0 ? [areaRect.width/2, areaRect.height/2] : [event.clientX - areaRect.x, event.clientY - areaRect.y];
 		this.setState((state, props) => {
 			if (state.contentScaleLevel + magnify > props.maxScaleLevel || state.contentScaleLevel + magnify < props.minScaleLevel) magnify = 0;
-			refPoint = [refPoint[0] - state.contentPos[0] - state.contentScalePos[0], refPoint[1] - state.contentPos[1] - state.contentScalePos[1]];
+			refPoint = [refPoint[0] - state.contentPos[0] - props.offset[0] - state.contentScalePos[0],
+				refPoint[1] - state.contentPos[1] - props.offset[1] - state.contentScalePos[1]];
 			const scaleFactor = props.scaleBase ** magnify;
 			return {
 				contentScaleLevel: state.contentScaleLevel + magnify,
@@ -103,7 +105,7 @@ class ScrollArea extends React.Component {
 			<ScrollAreaWrapper style={this.props.style} className={this.props.className} onMouseDown={this.onMouseDown} ref={this.ref}>
                 <ScrollAreaContentWrapper style={{transform: `translate(${this.state.contentScalePos[0]}px, ${this.state.contentScalePos[1]}px)
 				scale(${this.props.scaleBase ** this.state.contentScaleLevel})`,
-				translate: `${this.state.contentPos[0]}px ${this.state.contentPos[1]}px`}}>
+				translate: `${this.state.contentPos[0] + this.props.offset[0]}px ${this.state.contentPos[1] + this.props.offset[1]}px`}}>
 					{this.props.children}
 				</ScrollAreaContentWrapper>
             </ScrollAreaWrapper>
@@ -117,14 +119,16 @@ ScrollArea.propTypes = {
 	children:		PropTypes.node,
 	scaleBase:		PropTypes.number,
 	maxScaleLevel:	PropTypes.number,
-	minScaleLevel:	PropTypes.number
+	minScaleLevel:	PropTypes.number,
+	offset:			PropTypes.arrayOf(PropTypes.number)
 };
 
 ScrollArea.defaultProps = {
 	className:		"",
 	scaleBase:		2,
 	maxScaleLevel:	2,
-	minScaleLevel:	-2
+	minScaleLevel:	-2,
+	offset:			[0, 0]
 };
 
 export { ScrollArea };
