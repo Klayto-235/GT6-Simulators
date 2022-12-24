@@ -165,8 +165,10 @@ class GridEditor extends React.Component {
 	}
 
 	render() {
-		let onClickSlot = this.onClickSlot;
-		let selectedSlot = this.state.selectedSlot;
+		const onClickSlot = this.onClickSlot;
+		const selectedSlot = this.state.selectedSlot;
+		const rowOffset = this.state.gridBounds[1];
+		const colOffset = this.state.gridBounds[0];
 		return (
 			<>
 				{this.hotkeys}
@@ -181,14 +183,14 @@ class GridEditor extends React.Component {
 					toggleAutorun={this.toggleAutorun} togglePenaltyStop={this.togglePenaltyStop}/>
 					<ScrollArea className="reactorGrid" offset={[this.state.gridBounds[0]*130, this.state.gridBounds[1]*130]}>
 						{this.state.grid.map(function(line, row) {
-							return <>
+							return <React.Fragment key={row + rowOffset}>
 								{line.map(function(block, col) {
-									return <ReactorBlock key={block.id} onClick={onClickSlot.bind(null, row, col)}
+									return <ReactorBlock key={col + colOffset} onClick={onClickSlot.bind(null, row, col)}
 									checked={selectedSlot[0] == row && selectedSlot[1] == col ? selectedSlot[2] : -1}
 									coolant={block.coolant} label={block.label} showProgress={block.showProgress} progress={block.progress}
 									rods={block.rods} labels1={block.labels1} labels2={block.labels2}/>;})}
-								<br key={`b${row}`}/>
-							</>;
+								<br/>
+							</React.Fragment>;
 						})}
 					</ScrollArea>
 				</div>
