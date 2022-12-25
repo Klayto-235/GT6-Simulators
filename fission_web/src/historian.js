@@ -16,7 +16,7 @@ let historian = {
 			const events = this.history[this.historyIndex][0].slice().reverse();
 			this.historyIndex -= 1;
 			this.preventCommit = true;
-			for (const e in events) e();
+			events.forEach(e => e());
 			this.preventCommit = false;
 			this.enableDisableUndoRedo();
 		}
@@ -27,7 +27,7 @@ let historian = {
 			this.historyIndex += 1;
 			const events = this.history[this.historyIndex][1];
 			this.preventCommit = true;
-			for (const e in events) e();
+			events.forEach(e => e());
 			this.preventCommit = false;
 			this.enableDisableUndoRedo();
 		}
