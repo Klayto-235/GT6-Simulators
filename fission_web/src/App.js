@@ -10,7 +10,7 @@ const AppWrapper = styled.div`
 	color: ${props => props.theme.base_fg};
 	font-family: ${props => props.theme.font_family};
 	image-rendering: pixelated;
-	overflow: auto;
+	overflow: hidden;
 `;
 
 function App() {

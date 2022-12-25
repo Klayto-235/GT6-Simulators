@@ -47,12 +47,17 @@ let historian = {
 				this.history.push([this.undoBuffer, this.redoBuffer]);
 			} else {
 				this.historyIndex += 1;
-				this.this.history.splice(this.historyIndex, Infinity, [this.undoBuffer, this.redoBuffer]);
+				this.history.splice(this.historyIndex, Infinity, [this.undoBuffer, this.redoBuffer]);
 			}
 			this.undoBuffer = [];
 			this.redoBuffer = [];
 			this.enableDisableUndoRedo();
 		}
+	},
+
+	dropEvents: function() {
+		this.undoBuffer = [];
+		this.redoBuffer = [];
 	},
 
 	insertEvent: function(undoEvent, redoEvent) {

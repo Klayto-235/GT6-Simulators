@@ -5,6 +5,7 @@ import ToolBarTop from './ToolBarTop';
 import { ScrollArea } from './widgets/ScrollArea';
 import { ReactorBlock } from './widgets/ReactorBlock';
 import config from './config.js';
+import historian from './historian.js';
 
 
 class GridBlockProperties {
@@ -39,7 +40,12 @@ class GridEditor extends React.Component {
 			DecrementRight:		this.onClickGridResize.bind(this, 5),
 			DecrementTop:		this.onClickGridResize.bind(this, 6),
 			DecrementBottom:	this.onClickGridResize.bind(this, 7),
-			Run:				this.onClickRun.bind(this)
+			Run:				this.onClickRun.bind(this),
+			Undo:				historian.undo.bind(historian),
+			Redo:				historian.redo.bind(historian)
+		}} keyMap={{
+			Undo: "ctrl+z",
+			Redo: "ctrl+y"
 		}}/>;
 
 		this.state = {
@@ -73,6 +79,9 @@ class GridEditor extends React.Component {
 	}
 
 	onClickGridResize(buttonIndex) {
+		// React update batching *should not* cause problems for historian
+		// (see https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973)
+		historian.commitEvent(this.onClickGridResize.bind(this, (buttonIndex + 4) % 8), this.onClickGridResize.bind(this, buttonIndex));
 		this.setState(function(state) {
 			let gridBounds = [...state.gridBounds];
 			let grid = state.grid.map(line => ([...line]));
@@ -98,26 +107,31 @@ class GridEditor extends React.Component {
 						gridBounds[0] += 1;
 						grid.forEach(line => line.shift());
 					}
+					else historian.dropEvents();
 					break;
 				case 5:
 					if (gridBounds[2] - gridBounds[0] > 1) {
 						gridBounds[2] -= 1;
 						grid.forEach(line => line.pop());
 					}
+					else historian.dropEvents();
 					break;
 				case 6:
 					if (gridBounds[3] - gridBounds[1] > 1) {
 						gridBounds[1] += 1;
 						grid.shift();
 					}
+					else historian.dropEvents();
 					break;
 				case 7:
 					if (gridBounds[3] - gridBounds[1] > 1) {
 						gridBounds[3] -= 1;
 						grid.pop();
 					}
+					else historian.dropEvents();
 					break;
 			}
+			historian.registerEvents();
 			return {gridBounds: gridBounds, grid: grid};
 		});
 	}
