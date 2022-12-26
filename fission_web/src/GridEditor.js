@@ -54,12 +54,15 @@ class GridEditor extends React.Component {
 			activeModifier:			-1,
 			gridBounds:				[0, 0, 1, 1],
 			grid:					Array(Array(new GridBlockProperties())),
+			scrollAreaOffset:		[0, 0],
 			selectedSlot:			[0, 0, -1],
 			isCheckedAutoexpand:	config.autoExpand,
 			isCheckedShowHUpt:		config.showHUpt,
 			isCheckedAutorun:		config.autoRun,
 			isCheckedPenaltyStop:	config.penaltyStop
 		};
+
+		this.scrollAreaRef = React.createRef();
 
 		this.onClickTool =						this.onClickTool.bind(this);
 		this.onClickModifier =					this.onClickModifier.bind(this);
@@ -85,10 +88,12 @@ class GridEditor extends React.Component {
 		this.setState(function(state) {
 			let gridBounds = [...state.gridBounds];
 			let grid = state.grid.map(line => ([...line]));
+			let scrollAreaOffset = state.scrollAreaOffset.slice();
 			switch (buttonIndex) {
 				case 0:
 					gridBounds[0] -= 1;
 					grid.forEach(line => line.unshift(new GridBlockProperties()));
+					scrollAreaOffset[0] -= 130 * this.scrollAreaRef.current.props.scaleBase ** this.scrollAreaRef.current.state.contentScaleLevel;
 					break;
 				case 1:
 					gridBounds[2] += 1;
@@ -97,6 +102,7 @@ class GridEditor extends React.Component {
 				case 2:
 					gridBounds[1] -= 1;
 					grid.unshift(Array(gridBounds[2] - gridBounds[0]).fill(0).map(() => new GridBlockProperties()));
+					scrollAreaOffset[1] -= 130 * this.scrollAreaRef.current.props.scaleBase ** this.scrollAreaRef.current.state.contentScaleLevel;
 					break;
 				case 3:
 					gridBounds[3] += 1;
@@ -106,6 +112,7 @@ class GridEditor extends React.Component {
 					if (gridBounds[2] - gridBounds[0] > 1) {
 						gridBounds[0] += 1;
 						grid.forEach(line => line.shift());
+						scrollAreaOffset[0] += 130 * this.scrollAreaRef.current.props.scaleBase ** this.scrollAreaRef.current.state.contentScaleLevel;
 					}
 					else historian.dropEvents();
 					break;
@@ -120,6 +127,7 @@ class GridEditor extends React.Component {
 					if (gridBounds[3] - gridBounds[1] > 1) {
 						gridBounds[1] += 1;
 						grid.shift();
+						scrollAreaOffset[1] += 130 * this.scrollAreaRef.current.props.scaleBase ** this.scrollAreaRef.current.state.contentScaleLevel;
 					}
 					else historian.dropEvents();
 					break;
@@ -132,7 +140,7 @@ class GridEditor extends React.Component {
 					break;
 			}
 			historian.registerEvents();
-			return {gridBounds: gridBounds, grid: grid};
+			return {gridBounds: gridBounds, grid: grid, scrollAreaOffset: scrollAreaOffset};
 		});
 	}
 
@@ -195,7 +203,7 @@ class GridEditor extends React.Component {
 					onClickShrinkToFit={this.onClickShrinkToFit} onClickGridResize={this.onClickGridResize}
 					toggleAutoexpand={this.toggleAutoexpand} toggleShowHUpt={this.toggleShowHUpt}
 					toggleAutorun={this.toggleAutorun} togglePenaltyStop={this.togglePenaltyStop}/>
-					<ScrollArea className="reactorGrid" offset={[this.state.gridBounds[0]*130, this.state.gridBounds[1]*130]}>
+					<ScrollArea className="reactorGrid" offset={this.state.scrollAreaOffset} ref={this.scrollAreaRef}>
 						{this.state.grid.map(function(line, row) {
 							return <React.Fragment key={row + rowOffset}>
 								{line.map(function(block, col) {
