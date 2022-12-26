@@ -3,7 +3,7 @@ import utilityImage2  from "data-url:../../assets/img/shape_tool.png";
 import utilityImage3  from "data-url:../../assets/img/erase_tool.png";
 import utilityImage4  from "data-url:../../assets/img/fill_tool.png";
 import utilityImage5  from "data-url:../../assets/img/floodfill_tool.png";
-import utilityImage6  from "data-url:../../assets/img/reset_tool.png";
+import utilityImage6  from "data-url:../../assets/img/reset_tool_2.png";
 import utilityImage7  from "data-url:../../assets/img/play.png";
 import utilityImage8  from "data-url:../../assets/img/add_col_left_small.png";
 import utilityImage9  from "data-url:../../assets/img/rem_col_left_small.png";

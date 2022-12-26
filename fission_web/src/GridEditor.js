@@ -17,8 +17,18 @@ class GridBlockProperties {
 		this.rods			= ["None", "None", "None", "None"];
 		this.labels1		= ["", "", "", ""];
 		this.labels2		= ["", "", "", ""];
-		this.id				= GridBlockProperties.idCounter;
-		GridBlockProperties.idCounter += 1;
+	}
+
+	clone() {
+		let other = new GridBlockProperties();
+		other.coolant = this.coolant;
+		other.label = this.label;
+		other.showProgress = this.showProgress;
+		other.progress = this.progress;
+		other.rods = this.rods;
+		other.labels1 = this.labels1;
+		other.labels2 = this.labels2;
+		return other;
 	}
 }
 GridBlockProperties.idCounter = 1;
@@ -49,7 +59,7 @@ class GridEditor extends React.Component {
 		}}/>;
 
 		this.state = {
-			toolBarLeftButtons:		config.rods.concat("Ref", "Abs", "Mod", "Fill", config.coolants, "Shape", "Reset", "Erase", "Floodfill"),
+			toolBarLeftButtons:		config.rods.concat("Ref", "Abs", "Mod", config.coolants, "Reset", "Fill", "Floodfill"),
 			activeTool:				-1,
 			activeModifier:			-1,
 			gridBounds:				[0, 0, 1, 1],
@@ -183,7 +193,14 @@ class GridEditor extends React.Component {
 	}
 
 	onClickSlot(row, col, slot) {
-		
+		this.setState(function(state) {
+			let grid = state.grid.map(line => (line.slice()));
+			let clone = grid[row][col].clone();
+			if (state.activeModifier < 0) {
+				null;
+			}
+			return {grid: grid};
+		});
 	}
 
 	render() {
