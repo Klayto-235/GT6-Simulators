@@ -1,3 +1,5 @@
 - static font to ensure unicode characters (triangle, check mark, etc.)?
 - is there any benefit in making lists of props for widgets in ToolBarLeft constructor as opposed to leaveing them in the render method? E.g. instead of rodDropdownItems being a list of keys, it could be a list of jsx elements.
 - add hotkeys, tooltips
+- perhaps historian should just store state and return this state on undo/redo so it does not keep references to "this" (see below)
+- why must one redo as many times as they did undo when there is no more history to get back to actual events? There are checks for this in historian?? Hmm, doesn't happen always. It did after this warning: Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method. historyIndex indicated 35 even though it should have been -1.

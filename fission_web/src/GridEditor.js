@@ -12,7 +12,6 @@ class GridBlockProperties {
 	constructor() {
 		this.coolant		= "None";
 		this.label			= "";
-		this.showProgress	= [false, false, false, false];
 		this.progress		= [0, 0, 0, 0];
 		this.rods			= ["None", "None", "None", "None"];
 		this.labels1		= ["", "", "", ""];
@@ -23,15 +22,26 @@ class GridBlockProperties {
 		let other = new GridBlockProperties();
 		other.coolant = this.coolant;
 		other.label = this.label;
-		other.showProgress = this.showProgress;
-		other.progress = this.progress;
-		other.rods = this.rods;
-		other.labels1 = this.labels1;
-		other.labels2 = this.labels2;
+		other.progress = this.progress.slice();
+		other.rods = this.rods.slice();
+		other.labels1 = this.labels1.slice();
+		other.labels2 = this.labels2.slice();
 		return other;
 	}
+
+	setRod(slot, rod) {
+		this.rods[slot] = rod;
+	}
+
+	setCoolant(coolant) {
+		this.coolant = coolant;
+	}
+
+	resetContents() {
+		for (let i = 0; i < 4; ++i) this.setRod(i, "None");
+		this.setCoolant("None");
+	}
 }
-GridBlockProperties.idCounter = 1;
 
 
 class GridEditor extends React.Component {
@@ -66,6 +76,7 @@ class GridEditor extends React.Component {
 			grid:					Array(Array(new GridBlockProperties())),
 			scrollAreaOffset:		[0, 0],
 			selectedSlot:			[0, 0, -1],
+			historyCommit:			0,
 			isCheckedAutoexpand:	config.autoExpand,
 			isCheckedShowHUpt:		config.showHUpt,
 			isCheckedAutorun:		config.autoRun,
@@ -92,13 +103,11 @@ class GridEditor extends React.Component {
 	}
 
 	onClickGridResize(buttonIndex) {
-		// React update batching *should not* cause problems for historian
-		// (see https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973)
-		historian.commitEvent(this.onClickGridResize.bind(this, (buttonIndex + 4) % 8), this.onClickGridResize.bind(this, buttonIndex));
 		this.setState(function(state) {
 			let gridBounds = [...state.gridBounds];
 			let grid = state.grid.map(line => ([...line]));
 			let scrollAreaOffset = state.scrollAreaOffset.slice();
+			const historyCommit = state.historyCommit + 1;
 			switch (buttonIndex) {
 				case 0:
 					gridBounds[0] -= 1;
@@ -124,14 +133,12 @@ class GridEditor extends React.Component {
 						grid.forEach(line => line.shift());
 						scrollAreaOffset[0] += 130 * this.scrollAreaRef.current.props.scaleBase ** this.scrollAreaRef.current.state.contentScaleLevel;
 					}
-					else historian.dropEvents();
 					break;
 				case 5:
 					if (gridBounds[2] - gridBounds[0] > 1) {
 						gridBounds[2] -= 1;
 						grid.forEach(line => line.pop());
 					}
-					else historian.dropEvents();
 					break;
 				case 6:
 					if (gridBounds[3] - gridBounds[1] > 1) {
@@ -139,18 +146,15 @@ class GridEditor extends React.Component {
 						grid.shift();
 						scrollAreaOffset[1] += 130 * this.scrollAreaRef.current.props.scaleBase ** this.scrollAreaRef.current.state.contentScaleLevel;
 					}
-					else historian.dropEvents();
 					break;
 				case 7:
 					if (gridBounds[3] - gridBounds[1] > 1) {
 						gridBounds[3] -= 1;
 						grid.pop();
 					}
-					else historian.dropEvents();
 					break;
 			}
-			historian.registerEvents();
-			return {gridBounds: gridBounds, grid: grid, scrollAreaOffset: scrollAreaOffset};
+			return {gridBounds: gridBounds, grid: grid, scrollAreaOffset: scrollAreaOffset, historyCommit: historyCommit};
 		});
 	}
 
@@ -186,21 +190,90 @@ class GridEditor extends React.Component {
 		this.setState(state => {
 			let buttons = [...state.toolBarLeftButtons];
 			buttons[state.activeTool] = itemName;
-			return {
-				toolBarLeftButtons: buttons
-			};
+			return {toolBarLeftButtons: buttons};
 		});
 	}
 
-	onClickSlot(row, col, slot) {
+	onClickSlot(rowID, colID, slot) {
+		this.applyTool(rowID, colID, slot, null);
+	}
+
+	applyTool(rowID, colID, slot, tool) {
 		this.setState(function(state) {
-			let grid = state.grid.map(line => (line.slice()));
-			let clone = grid[row][col].clone();
-			if (state.activeModifier < 0) {
-				null;
+			if (tool === null) {
+				if (state.activeTool < 0) tool = {type: 0};
+				else if (state.activeTool >= 0 && state.activeTool < 7) 
+					tool = {type: 1, name: state.toolBarLeftButtons[state.activeTool], mod: state.activeModifier};
+				else if (state.activeTool >= 7 && state.activeTool < 11) 
+					tool = {type: 2, name: state.toolBarLeftButtons[state.activeTool], mod: state.activeModifier};
+				else if (state.activeTool == 11) 
+					tool = {type: 3, mod: state.activeModifier};
 			}
-			return {grid: grid};
+
+			let selectedSlot = state.selectedSlot;
+			let grid = state.grid;
+			let historyCommit = state.historyCommit;
+			if (tool.type == 0) {
+				if (rowID == selectedSlot[0] && colID == selectedSlot[1] && slot == selectedSlot[2]) selectedSlot = [null, null, -1];
+				else selectedSlot = [rowID, colID, slot];
+			}
+			else {
+				historyCommit += 1;
+				grid = grid.map(line => (line.slice()));
+				const row = rowID - state.gridBounds[1];
+				const col = colID - state.gridBounds[0];
+				if (tool.mod < 0) {
+					let clone = grid[row][col].clone();
+					switch (tool.type) {
+						case 1:
+							clone.setRod(slot, tool.name);
+							break;
+						case 2:
+							clone.setCoolant(tool.name);
+							break;
+						case 3:
+							clone.resetContents();
+							break;
+					}
+					grid[row][col] = clone;
+				}
+				else if (tool.mod == 12) { // Fill
+	
+				}
+				else if (tool.mod == 13) { // Floodfill
+	
+				}
+			}
+
+			return {grid: grid, selectedSlot: selectedSlot, historyCommit: historyCommit};
 		});
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.historyCommit != this.state.historyCommit) {
+			let undoState = {
+				gridBounds: prevState.gridBounds,
+				grid: prevState.grid,
+				scrollAreaOffset: prevState.scrollAreaOffset
+			};
+			let redoState = {
+				gridBounds: this.state.gridBounds,
+				grid: this.state.grid,
+				scrollAreaOffset: this.state.scrollAreaOffset
+			};
+			historian.commitEvent(this.setState.bind(this, function(state) {
+				if (state.selectedSlot[0] < undoState.gridBounds[0] || state.selectedSlot[0] >= undoState.gridBounds[2] ||
+					state.selectedSlot[1] < undoState.gridBounds[1] || state.selectedSlot[1] >= undoState.gridBounds[3])
+					undoState.selectedSlot = [null, null, -1];
+					return undoState;
+			}), this.setState.bind(this, function(state) {
+				if (state.selectedSlot[0] < redoState.gridBounds[0] || state.selectedSlot[0] >= redoState.gridBounds[2] ||
+					state.selectedSlot[1] < redoState.gridBounds[1] || state.selectedSlot[1] >= redoState.gridBounds[3])
+					redoState.selectedSlot = [null, null, -1];
+					return redoState;
+			}));
+			historian.registerEvents();
+		}
 	}
 
 	render() {
@@ -222,11 +295,13 @@ class GridEditor extends React.Component {
 					toggleAutorun={this.toggleAutorun} togglePenaltyStop={this.togglePenaltyStop}/>
 					<ScrollArea className="reactorGrid" offset={this.state.scrollAreaOffset} ref={this.scrollAreaRef}>
 						{this.state.grid.map(function(line, row) {
-							return <React.Fragment key={row + rowOffset}>
+							const rowID = row + rowOffset;
+							return <React.Fragment key={rowID}>
 								{line.map(function(block, col) {
-									return <ReactorBlock key={col + colOffset} onClick={onClickSlot.bind(null, row, col)}
-									checked={selectedSlot[0] == row && selectedSlot[1] == col ? selectedSlot[2] : -1}
-									coolant={block.coolant} label={block.label} showProgress={block.showProgress} progress={block.progress}
+									const colID = col + colOffset;
+									return <ReactorBlock key={colID} onClick={onClickSlot.bind(null, rowID, colID)}
+									checked={selectedSlot[0] == rowID && selectedSlot[1] == colID ? selectedSlot[2] : -1}
+									coolant={block.coolant} label={block.label} progress={block.progress}
 									rods={block.rods} labels1={block.labels1} labels2={block.labels2}/>;})}
 								<br/>
 							</React.Fragment>;
